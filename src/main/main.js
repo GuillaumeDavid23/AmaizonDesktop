@@ -14,7 +14,7 @@ function createWindow() {
         }
     });
 
-    win.loadURL('http://localhost:3000/');
+    win.loadURL(dotenv.APP_URL);
 
     win.on('closed', () => {
         win = null;
