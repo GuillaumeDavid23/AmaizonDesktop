@@ -1,0 +1,21 @@
+.connectForm form div label {
+    font-size: 1.2em !important;
+}
+
+.invalid-feedback {
+    font-size: 1em;
+}
+
+a:hover {
+    text-decoration: underline;
+    transition: 0.5s;
+}
+
+.connectBlock {
+    margin: 1rem 0;
+    padding: 2rem;
+    background-color: #ece6de;
+    border: 1px solid black;
+    color: #647f94;
+    border-radius: 30px;
+}
