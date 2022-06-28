@@ -1,0 +1,41 @@
+
+$sidebar-bg-color: #DCD0C1;
+$sidebar-color: #2e3a43 !default;
+$sidebar-width: 270px !default;
+$sidebar-collapsed-width: 80px !default;
+$highlight-color: #647F94 !default;
+$submenu-bg-color: #ECE6DE !default;
+$submenu-bg-color-collapsed: #ECE6DE !default;
+$icon-bg-color: #ECE6DE !default;
+$icon-size: 35px !default;
+$submenu-indent: 24px !default;
+$breakpoint-xs: 480px !default;
+$breakpoint-sm: 576px !default;
+$breakpoint-md: 768px !default;
+$breakpoint-lg: 992px !default;
+$breakpoint-xl: 1200px !default;
+$breakpoint-xxl: 1600px !default;
+
+@import '~react-pro-sidebar/dist/scss/styles.scss';
+
+.pro-item-content{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.pro-inner-list-item .pro-item-content{
+    font-size: 14px;
+    font-weight:bolder;
+
+}
+
+.logout{
+    color: #647F94 !important; 
+    border-color: #647F94 !important;
+}
+
+.logout:hover{
+    border-color: #647F94 !important;
+    color: white !important;
+    background-color: #647F94 !important;
+}
