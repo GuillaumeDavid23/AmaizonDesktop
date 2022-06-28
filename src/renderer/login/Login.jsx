@@ -6,9 +6,7 @@ import { ConnectForm } from "./components";
 const Login = () => {
     return (
         <AnimatedPage>
-            <div className="">
-                <ConnectForm />
-            </div>
+            <ConnectForm />
         </AnimatedPage>
     );
 };
