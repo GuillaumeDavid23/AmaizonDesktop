@@ -47,18 +47,3 @@ a {
   color: #00A3E1;
   cursor: pointer;
 }
-button {
-  display: block;
-  font-size: calc(2vw + 0.5rem);
-  margin-top: 1em;
-  padding: 0.5rem 1rem;
-  color: #fff;
-  border: 0.2rem solid #fff;
-  background-color: transparent;
-  cursor: pointer;
-  transition: background 0.2s linear;
-}
-button:hover {
-  color: #33058D;
-  background-color: #fff;
-}
