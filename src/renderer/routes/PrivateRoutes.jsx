@@ -1,5 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom";
 
+import MenuRoute from "./MenuRoute";
+
 const PrivateRoute = ({ children }) => {
     const authTokens =
         JSON.parse(localStorage.getItem("REACT_TOKEN_AUTH_AMAIZON")) || null;
@@ -8,7 +10,7 @@ const PrivateRoute = ({ children }) => {
     return !authTokens ? (
         <Navigate to="/login" state={{ from: location }} replace />
     ) : (
-        children
+        <MenuRoute>{children}</MenuRoute>
     );
 };
 

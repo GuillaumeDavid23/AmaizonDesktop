@@ -40,33 +40,19 @@ const Home = (props) => {
 
     return (
         <AnimatedPage>
-            <Container fluid className="homePage p-0">
-                <Box className="h-100 d-flex">
-                    <Box>
-                        <Navigation />
-                    </Box>
-
-                    <Box className="w-100">
-                        <Box className="w-100">
-                            <Title text="Accueil" />
-                        </Box>
-                        <Row className="ps-4 pe-4 mt-5">
-                            <Col xs={3}>
-                                <ListAppoint
-                                    title="Aujourd'hui"
-                                    data={appointments}
-                                />
-                            </Col>
-                            <Col xs={3}>
-                                <ListAppoint
-                                    title="Demain"
-                                    data={appointments}
-                                />
-                            </Col>
-                        </Row>
-                    </Box>
+            <Box className="w-100">
+                <Box className="w-100">
+                    <Title text="Accueil" />
                 </Box>
-            </Container>
+                <Row className="ps-4 pe-4 mt-5">
+                    <Col xs={3}>
+                        <ListAppoint title="Aujourd'hui" data={appointments} />
+                    </Col>
+                    <Col xs={3}>
+                        <ListAppoint title="Demain" data={appointments} />
+                    </Col>
+                </Row>
+            </Box>
         </AnimatedPage>
     );
 };

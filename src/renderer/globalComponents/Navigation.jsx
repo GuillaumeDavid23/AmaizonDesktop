@@ -1,6 +1,7 @@
 import React from "react";
 
 import { useAuth } from "../hooks";
+import { useNavigate } from "react-router-dom";
 
 import { TextField, IconButton, Box, Button } from "@mui/material";
 import { Image } from "react-bootstrap";
@@ -28,6 +29,7 @@ const Navigation = (props) => {
     const [collapsed, isCollapsed] = React.useState(false);
 
     const { handleLogout } = useAuth();
+    const navigate = useNavigate();
 
     return (
         <ProSidebar collapsed={collapsed}>
@@ -56,9 +58,16 @@ const Navigation = (props) => {
             </SidebarHeader>
             <SidebarContent>
                 <Menu iconShape="circle">
-                    <MenuItem icon={<IoHome />}>Accueil</MenuItem>
+                    <MenuItem
+                        icon={<IoHome />}
+                        onClick={() => navigate("/home")}
+                    >
+                        Accueil
+                    </MenuItem>
                     <SubMenu title="Clients" icon={<FaUserAlt />}>
-                        <MenuItem>Liste des clients</MenuItem>
+                        <MenuItem onClick={() => navigate("/customers")}>
+                            Liste des clients
+                        </MenuItem>
                         <MenuItem>Ajouter un client</MenuItem>
                     </SubMenu>
                     <SubMenu title="Annonces" icon={<FaBuilding />}>
