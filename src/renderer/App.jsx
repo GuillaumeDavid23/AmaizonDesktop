@@ -1,38 +1,15 @@
 import React from "react";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
-import AuthProvider from "./services/AuthProvider";
+import MainRouter from "./routes/MainRouter";
 
-import PrivateRoute from "./routes/PrivateRoutes";
-
-import Login from "./login/Login";
-import Home from "./home/Home";
+import "./App.css";
 
 const App = () => {
     return (
         <BrowserRouter>
-            <AuthProvider>
-                <Routes>
-                    <Route
-                        index
-                        element={
-                            <PrivateRoute>
-                                <Home />
-                            </PrivateRoute>
-                        }
-                    />
-                    <Route path="/login" element={<Login />} />
-                    <Route
-                        path="/home"
-                        element={
-                            <PrivateRoute>
-                                <Home />
-                            </PrivateRoute>
-                        }
-                    />
-                </Routes>
-            </AuthProvider>
+            <MainRouter />
         </BrowserRouter>
     );
 };
