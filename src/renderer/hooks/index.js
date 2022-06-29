@@ -1,3 +1,4 @@
 import useSlideSnack from "./useSnack";
+import useAuth from "./useAuth";
 
-export { useSlideSnack };
+export { useSlideSnack, useAuth };
