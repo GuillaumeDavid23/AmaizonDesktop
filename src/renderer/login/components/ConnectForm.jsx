@@ -1,6 +1,9 @@
 // React import
 import React from "react";
 
+// Navigation import
+import { useNavigate } from "react-router-dom";
+
 // HookForm imports
 import { useForm, Controller } from "react-hook-form";
 
@@ -21,7 +24,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 // Custom hook import
-import { useSlideSnack } from "../../hooks";
+import { useSlideSnack, useAuth } from "../../hooks";
 
 // Custom function import
 import { sleep } from "../../../utils/funcs";
@@ -87,6 +90,8 @@ const CFReducer = (states, action) => {
 };
 
 const ConnectForm = () => {
+    const auth = useAuth();
+
     // setting up component reducer
     const [states, dispatch] = React.useReducer(CFReducer, initialStates);
 
@@ -94,6 +99,8 @@ const ConnectForm = () => {
     const {
         snackParams: { snackMessage, snackSeverity },
     } = states;
+
+    const navigate = useNavigate();
 
     // Destructuring Snackbar from custom hook
     const { handleOpen, renderSnack } = useSlideSnack({
@@ -171,7 +178,7 @@ const ConnectForm = () => {
                         });
 
                         if (response.message === "Utilisateur connecté !") {
-                            // window.location.href = window.electron.API_URL;
+                            navigate("/home", { state: { oui: 4 } });
                         }
                     } else {
                         // Set error snackParams

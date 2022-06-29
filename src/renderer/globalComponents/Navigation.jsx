@@ -1,4 +1,7 @@
 import React from "react";
+
+import { useAuth } from "../hooks";
+
 import { TextField, IconButton, Box, Button } from "@mui/material";
 import { Image } from "react-bootstrap";
 import LogoFull from "../../assets/images/LogoFull.png";
@@ -23,6 +26,8 @@ import "./Navigation.scss";
 
 const Navigation = (props) => {
     const [collapsed, isCollapsed] = React.useState(false);
+
+    const { handleLogout } = useAuth();
 
     return (
         <ProSidebar collapsed={collapsed}>
@@ -74,6 +79,7 @@ const Navigation = (props) => {
                     variant="outlined"
                     className="mt-3 logout"
                     hidden={collapsed}
+                    onClick={handleLogout}
                 >
                     DECONNEXION
                 </Button>
@@ -81,7 +87,6 @@ const Navigation = (props) => {
                     sx={{ color: "#2e3a43", alignSelf: "baseline" }}
                     aria-label="disconnect button"
                     component="span"
-                    onClick={() => alert("disconnected")}
                     hidden={!collapsed}
                 >
                     <FaDoorOpen />

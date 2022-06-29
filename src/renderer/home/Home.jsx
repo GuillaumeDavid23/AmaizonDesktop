@@ -6,6 +6,7 @@ import { Box, Typography } from "@mui/material";
 import Moment from "react-moment";
 import "./Home.css";
 import ListAppoint from "../globalComponents/ListAppoint";
+
 const Home = (props) => {
     const appointments = [
         {
@@ -36,7 +37,7 @@ const Home = (props) => {
             id_agent: "61f80338a0495a41d29c8c81",
         },
     ];
-    
+
     return (
         <AnimatedPage>
             <Container fluid className="homePage p-0">
