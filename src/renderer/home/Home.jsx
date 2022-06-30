@@ -181,7 +181,6 @@ const Home = (props) => {
         <AnimatedPage>
             <Box className="w-100">
                 <Box className="w-100">
-                    <Title text="Accueil" />
                     <Box className="w-100">
                         <Box
                             className="w-100 d-flex align-items-center"
@@ -239,14 +238,6 @@ const Home = (props) => {
                         </Row>
                     </Box>
                 </Box>
-                <Row className="ps-4 pe-4 mt-5">
-                    <Col xs={3}>
-                        <ListAppoint title="Aujourd'hui" data={appointments} />
-                    </Col>
-                    <Col xs={3}>
-                        <ListAppoint title="Demain" data={appointments} />
-                    </Col>
-                </Row>
             </Box>
         </AnimatedPage>
     );
