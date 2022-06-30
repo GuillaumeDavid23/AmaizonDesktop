@@ -261,7 +261,7 @@ const ConnectForm = () => {
                             }}
                         />
                         {errors?.email && (
-                            <span className="invalid-feedback fw-bold">
+                            <span className="invalid-feedback fw-bold text-center">
                                 {errors.email.message}
                             </span>
                         )}
@@ -270,7 +270,7 @@ const ConnectForm = () => {
                     <Col
                         xs="10"
                         lg="6"
-                        className="d-flex justify-content-center align-items-center flex-column mb-4"
+                        className="d-flex justify-content-center align-items-center flex-column mt-4"
                     >
                         <Controller
                             name={"password"}
@@ -320,7 +320,7 @@ const ConnectForm = () => {
                             }}
                         />
                         {errors?.password && (
-                            <span className="invalid-feedback fw-bold">
+                            <span className="invalid-feedback fw-bold text-center">
                                 {errors.password.message}
                             </span>
                         )}
