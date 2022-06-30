@@ -74,10 +74,10 @@ const Navigation = (props) => {
                     <MenuItem icon={<FaGem />}>Statistiques</MenuItem>
                 </Menu>
             </SidebarContent>
-            <SidebarFooter className="pb-3 text-center">
+            <SidebarFooter className="text-center pb-4 pt-4">
                 <Button
                     variant="outlined"
-                    className="mt-3 logout"
+                    className="logout"
                     hidden={collapsed}
                     onClick={handleLogout}
                 >
