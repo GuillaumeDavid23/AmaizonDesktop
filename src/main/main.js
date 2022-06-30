@@ -1,22 +1,39 @@
-const dotenv = require('dotenv');
+const { app, BrowserWindow, ipcMain } = require("electron");
+const dotenv = require("dotenv");
+const path = require("path");
+const contextMenu = require("electron-context-menu");
 dotenv.config();
-const { app, BrowserWindow, ipcMain } = require('electron');
-const path = require('path')
+
+contextMenu({
+    labels: {
+        copy: "Copier",
+        paste: "Coller",
+        cut: "Couper",
+        lookUpSelection: "Rechercher sur Google",
+        saveImageAs: "Sauvegarder l'image sous...",
+        inspect: "Inspecter l'élément",
+        copyImage: "Copier l'image",
+        searchWithGoogle: "Rechercher sur Google",
+    },
+    showSaveImageAs: true,
+    paste: true,
+});
 
 function createWindow() {
     let win = new BrowserWindow({
         width: 1200,
         height: 800,
+        autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
-            preload: path.join(__dirname, 'preload.js')
-        }
+            preload: path.join(__dirname, "preload.js"),
+        }, 
     });
 
-    win.loadURL('http://localhost:3000/');
+    win.loadURL("http://localhost:3000/");
 
-    win.on('closed', () => {
+    win.on("closed", () => {
         win = null;
     });
 
@@ -25,7 +42,6 @@ function createWindow() {
 
 app.whenReady().then(createWindow);
 
-ipcMain.on('get-new-title', (evt, data) => {
-    let receiveData = Array.isArray(data) ? data[0] : data;
-    evt.sender.send('display-new-title', receiveData === 0 ? 1 : 0);
+ipcMain.on("evt_name_in", (evt) => {
+    evt.sender.send("evt_name_back", "data");
 });

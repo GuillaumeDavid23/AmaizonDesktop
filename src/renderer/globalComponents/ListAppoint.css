@@ -1,0 +1,36 @@
+.appointBox {
+    background-color: #DCD0C1;
+    border-radius: 0px 15px 15px 15px;
+    height: 90%;
+    box-shadow: 1px 3px 8px 1px rgba(75, 75, 75, 0.75);
+}
+.appointBoxTitle{
+    border-radius: 0px 15px 0 0;
+    background-color: #647F94;
+    color: white;
+    height: 8%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.appointBoxList{
+    text-align: center;
+    height: 92%;
+}
+.appointItem {
+    list-style: none;
+    display: flex;
+    border-top: 1px solid #3d4b56;
+    height: 10%;
+}
+
+.appointTime{
+    background-color: #647F94;
+    color: white;
+    width: 50px;
+}
+
+.appointDesc{
+    margin-left: 10px;
+    word-wrap: break-word;
+}
