@@ -34,7 +34,6 @@ import AmaizonLogo from "../../../assets/brand/Amaizon_logo.png";
 import Amaizon from "../../../assets/brand/Amaizon_full.png";
 
 import "./ConnectForm.css";
-import { TextField } from "@mui/material";
 
 // Component initial states
 const initialStates = {
@@ -240,14 +239,13 @@ const ConnectForm = () => {
                             name={"email"}
                             control={control}
                             render={({ field }) => (
-                                <TextField
-                                    label="Adresse mail"
-                                    variant="outlined"
+                                <OutlinedInput
                                     className={
                                         !errors.email
                                             ? "form-control"
                                             : "form-control is-invalid"
                                     }
+                                    variant="filled"
                                     placeholder="Adresse email"
                                     {...field}
                                     value={field.value || ""}
@@ -272,21 +270,21 @@ const ConnectForm = () => {
                     <Col
                         xs="10"
                         lg="6"
-                        className="d-flex justify-content-center align-items-center flex-column mb-4"
+                        className="d-flex justify-content-center align-items-center flex-column mt-4"
                     >
                         <Controller
                             name={"password"}
                             control={control}
                             render={({ field }) => (
-                                <TextField
+                                <OutlinedInput
                                     id="OutlinedConnectPassword"
-                                    label="Mot de passe"
+                                    label="a"
                                     className={
                                         !errors.password
                                             ? "form-control"
                                             : "form-control is-invalid"
                                     }
-                                    variant="outlined"
+                                    variant="filled"
                                     {...field}
                                     value={field.value || ""}
                                     placeholder="Mot de passe"
