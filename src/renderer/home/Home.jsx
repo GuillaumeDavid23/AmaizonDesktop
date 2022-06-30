@@ -1,6 +1,5 @@
-import { Button, Col, Container, Image, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { AnimatedPage } from "../globalComponents";
-import Navigation from "../globalComponents/Navigation";
 import Title from "../globalComponents/Title";
 import { Box, Typography } from "@mui/material";
 import { FaUserAlt } from "react-icons/fa";
@@ -179,65 +178,52 @@ const Home = (props) => {
 
     return (
         <AnimatedPage>
-            <Box className="w-100">
-                <Box className="w-100">
-                    <Box className="w-100">
-                        <Box
-                            className="w-100 d-flex align-items-center"
-                            style={{ height: "10%" }}
-                        >
-                            <Title text="Accueil" />
-                        </Box>
+            <Box className="w-100 h-100">
+                <Box
+                    className="w-100 d-flex align-items-center"
+                    style={{ height: "10%" }}
+                >
+                    <Title text="Accueil" />
+                </Box>
 
-                        <Row
-                            className="ps-5 pt-5 w-100"
-                            style={{ height: "90%" }}
-                        >
-                            <Col xs={3}>
-                                <ListAppoint
-                                    title="Aujourd'hui"
-                                    data={appointments}
-                                />
+                <Row className="ps-5 pt-5 w-100" style={{ height: "90%" }}>
+                    <Col xs={3} style={{ height: "90%" }}>
+                        <ListAppoint title="Aujourd'hui" data={appointments} />
+                    </Col>
+                    <Col xs={3} style={{ height: "90%" }}>
+                        <ListAppoint title="Demain" data={appointments} />
+                    </Col>
+                    <Col xs={2} style={{ height: "90%" }}></Col>
+                    <Col xs={4} style={{ height: "90%" }}>
+                        <Row className="flex-column align-items-center h-100">
+                            <Col xs={8} className="h-50">
+                                <Typography
+                                    variant="h5"
+                                    className="text-center"
+                                >
+                                    Type d'annonces en ligne
+                                </Typography>
+                                <Pie data={ChartJS} />
                             </Col>
-                            <Col xs={3}>
-                                <ListAppoint
-                                    title="Demain"
-                                    data={appointments}
-                                />
-                            </Col>
-                            <Col xs={2}></Col>
-                            <Col xs={4}>
-                                <Row className="flex-column align-items-center h-100">
-                                    <Col xs={8} className="h-50">
-                                        <Typography
-                                            variant="h5"
-                                            className="text-center"
-                                        >
-                                            Type d'annonces en ligne
-                                        </Typography>
-                                        <Pie data={ChartJS} />
-                                    </Col>
-                                    <Col xs={12} className="h-50">
-                                        <Row>
-                                            <Typography
-                                                variant="h5"
-                                                className="text-center"
-                                            >
-                                                Contact rapide
-                                            </Typography>
-                                        </Row>
-                                        <Row
-                                            className="overflow-auto"
-                                            style={{ height: "90%" }}
-                                        >
-                                            <Col>{agentList}</Col>
-                                        </Row>
-                                    </Col>
+                            <Col xs={12} className="h-50">
+                                <Row>
+                                    <Typography
+                                        variant="h5"
+                                        className="text-center"
+                                    >
+                                        Contact rapide
+                                    </Typography>
+                                </Row>
+                                <Row
+                                    className="overflow-auto"
+                                    style={{ height: "90%" }}
+                                >
+                                    <Col>{agentList}</Col>
                                 </Row>
                             </Col>
                         </Row>
-                    </Box>
-                </Box>
+                    </Col>
+                </Row>
             </Box>
         </AnimatedPage>
     );

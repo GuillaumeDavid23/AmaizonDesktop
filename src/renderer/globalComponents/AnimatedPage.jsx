@@ -22,7 +22,7 @@ const boxAnimation = {
     },
 };
 const AnimatedPage = ({ children }) => {
-    return <motion.div {...boxAnimation}>{children}</motion.div>;
+    return <motion.div className="h-100" {...boxAnimation}>{children}</motion.div>;
 };
 
 export default AnimatedPage;
