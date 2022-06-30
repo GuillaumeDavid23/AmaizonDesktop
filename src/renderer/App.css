@@ -1,7 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
+@font-face {
+  font-family: "Dosis Regular";
+  src: url("../assets/font/Dosis-Regular.ttf") format("ttf"),
+}
 
-* {
-    font-family: "Roboto Mono", monospace;
+@font-face {
+  font-family: "Dosis SemiBold";
+  src: url("../assets/font/Dosis-SemiBold.ttf") format("ttf"),
 }
 
 html,
@@ -9,4 +13,12 @@ body,
 #root {
     height: 100%;
     width: 100%;
+    /* Système d'urgence */
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+* {
+  font-size: 16px;
+  font-family: "Dosis Regular";
 }

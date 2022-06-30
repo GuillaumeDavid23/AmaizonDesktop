@@ -1,0 +1,17 @@
+/* general button for Form */
+.btn-general {
+  text-decoration: none;
+  background-color: #647f94 !important;
+  color: white;
+  border-color: #647f94 !important;
+  border-radius: 20px !important;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+  height: 60px;
+  width: 90px;
+  font-size: 1.2em !important;
+}
+
+.btn-general:hover{
+  background-color: #3d5160 !important;
+
+}
