@@ -167,6 +167,10 @@ const Home = (props) => {
                         <Button
                             style={{ fontSize: "12px" }}
                             className="contactButton"
+                            onClick={() => {
+                                window.electron.send('mailto', agent.email)
+                                
+                            }}
                         >
                             Contacter
                         </Button>
@@ -203,40 +207,20 @@ const Home = (props) => {
                                     data={appointments}
                                 />
                             </Col>
-                            <Col xs={3}>
-                                <ListAppoint
-                                    title="Demain"
-                                    data={appointments}
-                                />
-                            </Col>
-                            <Col xs={2}></Col>
-                            <Col xs={4}>
-                                <Row className="flex-column align-items-center h-100">
-                                    <Col xs={8} className="h-50">
-                                        <Typography
-                                            variant="h5"
-                                            className="text-center"
-                                        >
-                                            Type d'annonces en ligne
-                                        </Typography>
-                                        <Pie data={ChartJS} />
-                                    </Col>
-                                    <Col xs={12} className="h-50">
-                                        <Row>
-                                            <Typography
-                                                variant="h5"
-                                                className="text-center"
-                                            >
-                                                Contact rapide
-                                            </Typography>
-                                        </Row>
-                                        <Row
-                                            className="overflow-auto"
-                                            style={{ height: "90%" }}
-                                        >
-                                            <Col>{agentList}</Col>
-                                        </Row>
-                                    </Col>
+                            <Col xs={12} className="h-50">
+                                <Row>
+                                    <Typography
+                                        variant="h5"
+                                        className="text-center mt-3"
+                                    >
+                                        Contact rapide
+                                    </Typography>
+                                </Row>
+                                <Row
+                                    className="overflow-auto"
+                                    style={{ height: "90%" }}
+                                >
+                                    <Col>{agentList}</Col>
                                 </Row>
                             </Col>
                         </Row>
