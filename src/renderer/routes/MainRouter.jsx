@@ -13,6 +13,7 @@ import MenuRoute from "../routes/MenuRoute";
 import Login from "../login/Login";
 import Home from "../home/Home";
 import Customers from "../customers/Customers";
+import Announces from "../announces/Announces";
 
 const MainRouter = () => {
     return (
@@ -43,6 +44,16 @@ const MainRouter = () => {
                     element={
                         <PrivateRoute>
                             <Customers />
+                        </PrivateRoute>
+                    }
+                />
+
+                {/* Private Route Announces*/}
+                <Route
+                    path="/announces"
+                    element={
+                        <PrivateRoute>
+                            <Announces />
                         </PrivateRoute>
                     }
                 />

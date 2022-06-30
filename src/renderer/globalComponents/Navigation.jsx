@@ -37,7 +37,7 @@ const Navigation = (props) => {
                 <Box
                     className={`${
                         collapsed ? "" : "d-flex"
-                    } justify-content-center align-items-center `}
+                    } justify-content-center align-items-center`}
                 >
                     <Image src={LogoFull} className="w-75 mb-3" />
                     <IconButton
@@ -46,7 +46,7 @@ const Navigation = (props) => {
                         component="span"
                         onClick={() => isCollapsed(!collapsed)}
                     >
-                        <IoMenu />
+                        <IoMenu size={30} />
                     </IconButton>
                 </Box>
                 <TextField
@@ -71,7 +71,9 @@ const Navigation = (props) => {
                         <MenuItem>Ajouter un client</MenuItem>
                     </SubMenu>
                     <SubMenu title="Annonces" icon={<FaBuilding />}>
-                        <MenuItem>Liste des annonces</MenuItem>
+                        <MenuItem onClick={() => navigate("/announces")}>
+                            Liste des annonces
+                        </MenuItem>
                         <MenuItem>Ajouter une annonce</MenuItem>
                         <MenuItem>Faire une transaction</MenuItem>
                     </SubMenu>
