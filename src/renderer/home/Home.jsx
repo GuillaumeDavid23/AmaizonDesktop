@@ -140,10 +140,7 @@ const Home = (props) => {
                     "rgba(255, 99, 132, 0.2)",
                     "rgba(54, 162, 235, 0.2)",
                 ],
-                borderColor: [
-                    "rgba(255, 99, 132, 1)",
-                    "rgba(54, 162, 235, 1)",
-                ],
+                borderColor: ["rgba(255, 99, 132, 1)", "rgba(54, 162, 235, 1)"],
                 borderWidth: 1,
             },
         ],
@@ -179,7 +176,7 @@ const Home = (props) => {
             </Box>
         );
     });
-    
+
     return (
         <AnimatedPage>
             <Container fluid className="homePage p-0">
@@ -189,10 +186,17 @@ const Home = (props) => {
                     </Box>
 
                     <Box className="w-100">
-                        <Box className="w-100">
+                        <Box
+                            className="w-100 d-flex align-items-center"
+                            style={{ height: "10%" }}
+                        >
                             <Title text="Accueil" />
                         </Box>
-                        <Row className="ps-5 mt-5 w-100">
+
+                        <Row
+                            className="ps-5 pt-5 w-100"
+                            style={{ height: "90%" }}
+                        >
                             <Col xs={3}>
                                 <ListAppoint
                                     title="Aujourd'hui"
@@ -207,8 +211,8 @@ const Home = (props) => {
                             </Col>
                             <Col xs={2}></Col>
                             <Col xs={4}>
-                                <Row className="flex-column align-items-center">
-                                    <Col xs={8}>
+                                <Row className="flex-column align-items-center h-100">
+                                    <Col xs={8} className="h-50">
                                         <Typography
                                             variant="h5"
                                             className="text-center"
@@ -217,7 +221,7 @@ const Home = (props) => {
                                         </Typography>
                                         <Pie data={ChartJS} />
                                     </Col>
-                                    <Col xs={12}>
+                                    <Col xs={12} className="h-50">
                                         <Row>
                                             <Typography
                                                 variant="h5"
@@ -226,7 +230,10 @@ const Home = (props) => {
                                                 Contact rapide
                                             </Typography>
                                         </Row>
-                                        <Row className="overflow-auto" style={{height: '300px'}}>
+                                        <Row
+                                            className="overflow-auto"
+                                            style={{ height: "90%" }}
+                                        >
                                             <Col>{agentList}</Col>
                                         </Row>
                                     </Col>

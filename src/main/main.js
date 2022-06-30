@@ -1,7 +1,23 @@
-const dotenv = require("dotenv");
-dotenv.config();
 const { app, BrowserWindow, ipcMain } = require("electron");
+const dotenv = require("dotenv");
 const path = require("path");
+const contextMenu = require("electron-context-menu");
+dotenv.config();
+
+contextMenu({
+    labels: {
+        copy: "Copier",
+        paste: "Coller",
+        cut: "Couper",
+        lookUpSelection: "Rechercher sur Google",
+        saveImageAs: "Sauvegarder l'image sous...",
+        inspect: "Inspecter l'élément",
+        copyImage: "Copier l'image",
+        searchWithGoogle: "Rechercher sur Google",
+    },
+    showSaveImageAs: true,
+    paste: true,
+});
 
 function createWindow() {
     let win = new BrowserWindow({
