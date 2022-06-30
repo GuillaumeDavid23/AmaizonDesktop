@@ -34,6 +34,7 @@ import AmaizonLogo from "../../../assets/brand/Amaizon_logo.png";
 import Amaizon from "../../../assets/brand/Amaizon_full.png";
 
 import "./ConnectForm.css";
+import { TextField } from "@mui/material";
 
 // Component initial states
 const initialStates = {
@@ -239,13 +240,14 @@ const ConnectForm = () => {
                             name={"email"}
                             control={control}
                             render={({ field }) => (
-                                <OutlinedInput
+                                <TextField
+                                    label="Adresse mail"
+                                    variant="outlined"
                                     className={
                                         !errors.email
                                             ? "form-control"
                                             : "form-control is-invalid"
                                     }
-                                    variant="filled"
                                     placeholder="Adresse email"
                                     {...field}
                                     value={field.value || ""}
@@ -261,7 +263,7 @@ const ConnectForm = () => {
                             }}
                         />
                         {errors?.email && (
-                            <span className="invalid-feedback fw-bold">
+                            <span className="invalid-feedback fw-bold text-center">
                                 {errors.email.message}
                             </span>
                         )}
@@ -276,15 +278,15 @@ const ConnectForm = () => {
                             name={"password"}
                             control={control}
                             render={({ field }) => (
-                                <OutlinedInput
+                                <TextField
                                     id="OutlinedConnectPassword"
-                                    label="a"
+                                    label="Mot de passe"
                                     className={
                                         !errors.password
                                             ? "form-control"
                                             : "form-control is-invalid"
                                     }
-                                    variant="filled"
+                                    variant="outlined"
                                     {...field}
                                     value={field.value || ""}
                                     placeholder="Mot de passe"
@@ -320,7 +322,7 @@ const ConnectForm = () => {
                             }}
                         />
                         {errors?.password && (
-                            <span className="invalid-feedback fw-bold">
+                            <span className="invalid-feedback fw-bold text-center">
                                 {errors.password.message}
                             </span>
                         )}
