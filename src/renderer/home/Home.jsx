@@ -166,6 +166,10 @@ const Home = (props) => {
                         <Button
                             style={{ fontSize: "12px" }}
                             className="contactButton"
+                            onClick={() => {
+                                window.electron.send('mailto', agent.email)
+                                
+                            }}
                         >
                             Contacter
                         </Button>
@@ -209,7 +213,7 @@ const Home = (props) => {
                                 <Row>
                                     <Typography
                                         variant="h5"
-                                        className="text-center"
+                                        className="text-center mt-3"
                                     >
                                         Contact rapide
                                     </Typography>

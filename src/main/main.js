@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, shell } = require("electron");
 const dotenv = require("dotenv");
 const path = require("path");
 const contextMenu = require("electron-context-menu");
@@ -42,6 +42,11 @@ function createWindow() {
 
 app.whenReady().then(createWindow);
 
-ipcMain.on("evt_name_in", (evt) => {
+ipcMain.on("evt_name_in", (evt, data) => {
     evt.sender.send("evt_name_back", "data");
+});
+
+ipcMain.on("mailto", (evt, data) => {
+    let receiveData = Array.isArray(data) ? data[0] : data;
+    shell.openExternal(`mailto:${receiveData}?subject=Prise de contact&body=`);
 });
