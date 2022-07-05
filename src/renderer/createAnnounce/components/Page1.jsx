@@ -63,6 +63,7 @@ const Page1 = ({ visiblePage, control, errors, handleNavigation }) => {
 				}}
 				render={({ field }) => (
 					<Select
+						className="my-3"
 						options={propertyTypes}
 						placeholder={'Type de propriété'}
 						{...field}
@@ -90,7 +91,7 @@ const Page1 = ({ visiblePage, control, errors, handleNavigation }) => {
 						className={`my-3 ps-2 form-control ${
 							errors.description ? 'is-invalid' : ''
 						}`}
-						style={{ width: 300, height: 150 }}
+						style={{ width: '100%', height: 150 }}
 						variant="filled"
 						placeholder="Titre"
 						{...field}

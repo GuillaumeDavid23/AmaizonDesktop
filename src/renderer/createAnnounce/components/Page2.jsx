@@ -57,7 +57,7 @@ const Page2 = ({ visiblePage, control, errors, handleNavigation }) => {
 				render={({ field }) => (
 					<OutlinedInput
 						type="number"
-						className={`ps-2 form-control ${
+						className={`ps-2 my-3 form-control ${
 							errors.postalCode ? 'is-invalid' : ''
 						}`}
 						variant="filled"
@@ -88,7 +88,7 @@ const Page2 = ({ visiblePage, control, errors, handleNavigation }) => {
 				}}
 				render={({ field }) => (
 					<OutlinedInput
-						className={`w-75 ps-2 ms-1 form-control ${
+						className={`ps-2 my-3 form-control ${
 							errors.city ? 'is-invalid' : ''
 						}`}
 						variant="filled"
@@ -118,7 +118,7 @@ const Page2 = ({ visiblePage, control, errors, handleNavigation }) => {
 				}}
 				render={({ field }) => (
 					<OutlinedInput
-						className={`w-75 ps-2 ms-1 form-control ${
+						className={`ps-2 my-3 form-control ${
 							errors.country ? 'is-invalid' : ''
 						}`}
 						variant="filled"

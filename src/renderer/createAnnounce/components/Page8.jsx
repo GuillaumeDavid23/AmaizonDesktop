@@ -14,7 +14,7 @@ const Page8 = ({
 		<Box className={`form-part ${visiblePage !== 8 ? 'd-none' : ''}`}>
 			<h1>Récapitulatif:</h1>
 			{datasToDisplay && (
-				<table>
+				<table className="my-3">
 					<tbody>
 						{Object.keys(datasToDisplay).map((key) => {
 							return (
@@ -36,12 +36,14 @@ const Page8 = ({
 													)}
 												</span>
 											)}
+
 										{/* Photos prises: */}
 										{typeof datasToDisplay[key] ===
 											'object' &&
 											datasToDisplay[key].name && (
 												<span>Photo prise</span>
 											)}
+
 										{/* Strings: */}
 										{typeof datasToDisplay[key] ===
 											'string' &&
@@ -51,17 +53,14 @@ const Page8 = ({
 													{datasToDisplay[key]}
 												</span>
 											)}
-										{/* Photos non-prises: */}
-										{datasToDisplay[key] ===
-											'[object Object]' && (
-											<span>Photo non prise</span>
-										)}
+
 										{/* Booleans true: */}
 										{typeof datasToDisplay[key] ===
 											'boolean' &&
 											datasToDisplay[key] && (
 												<span>Oui</span>
 											)}
+
 										{/* Booleans false: */}
 										{typeof datasToDisplay[key] ===
 											'boolean' &&

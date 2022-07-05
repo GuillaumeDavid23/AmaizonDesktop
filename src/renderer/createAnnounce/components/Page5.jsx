@@ -33,6 +33,7 @@ const Page5 = ({ visiblePage, control, errors, handleNavigation }) => {
 				}}
 				render={({ field }) => (
 					<Select
+						className="my-3"
 						options={transactionTypes}
 						placeholder={'Type de transaction'}
 						{...field}
@@ -77,33 +78,31 @@ const Page5 = ({ visiblePage, control, errors, handleNavigation }) => {
 			)}
 
 			{/* IsToSell Form part */}
-			<span>Cette propriété est à vendre/louer dès maintenant:</span>
-			<Box
-				style={{
-					flexDirection: 'row',
-					alignItems: 'center',
-					justifyContent: 'center'
-				}}
-			>
-				<span>Non</span>
-				<Controller
-					name="isToSell"
-					control={control}
-					rules={{
-						pattern: {
-							value: REGID.value,
-							message: REGID.message
-						}
-					}}
-					render={({ field }) => <Checkbox {...field} />}
-				/>
-				<span>Oui</span>
+			<Box className="my-3">
+				<span>Cette propriété est à vendre/louer dès maintenant:</span>
+				<Box className="d-flex flex-row justify-content-center align-items-center">
+					<span>Non</span>
+					<Controller
+						name="isToSell"
+						control={control}
+						rules={{
+							pattern: {
+								value: REGID.value,
+								message: REGID.message
+							}
+						}}
+						render={({ field }) => (
+							<Checkbox className="mx-2" {...field} />
+						)}
+					/>
+					<span>Oui</span>
+				</Box>
+				{errors?.isToSell && (
+					<span className="invalid-feedback fw-bold text-center">
+						{errors.isToSell.message}
+					</span>
+				)}
 			</Box>
-			{errors?.isToSell && (
-				<span className="invalid-feedback fw-bold text-center">
-					{errors.isToSell.message}
-				</span>
-			)}
 
 			<FormNavigation
 				visiblePage={visiblePage}
