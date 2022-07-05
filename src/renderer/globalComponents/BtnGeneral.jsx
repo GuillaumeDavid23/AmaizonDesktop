@@ -3,7 +3,7 @@ import "./BtnGeneral.css"
 //This components is for create search forms
 const BtnGeneral = (props) => {
 	return (
-		<Button type={props.type} className={`btn-general ${props.className}`} variant="primary" disabled={props.disabled}>
+		<Button type={props.type} className={`btn-general ${props.className}`} variant="primary" disabled={props.disabled} style={props.style} onClick={props.onClick}>
 			{props.text}
 		</Button>
 	)
