@@ -27,10 +27,14 @@
 .appointTime{
     background-color: #647F94;
     color: white;
-    width: 50px;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .appointDesc{
+    width: 80%;
     margin-left: 10px;
     word-wrap: break-word;
 }

@@ -1,3 +1,4 @@
+import React from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import { AnimatedPage } from "../globalComponents";
 import Title from "../globalComponents/Title";
@@ -7,134 +8,80 @@ import "./Home.css";
 import ListAppoint from "../globalComponents/ListAppoint";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import AgentCard from "./components/AgentCard";
+import moment from "moment";
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 const Home = (props) => {
-    const appointments = [
-        {
-            _id: "61f937b8b3e03e6ecae9ce8f",
-            dateBegin: "2022-02-01T12:00:00.000Z",
-            dateEnd: "2022-02-01T13:00:00.000Z",
-            address: "33 Rue de l'Impasse",
-            outdoor: true,
-            id_buyer: "61f93607aee1cc92467bc5d6",
-            id_agent: "61f80338a0495a41d29c8c81",
-        },
-        {
-            _id: "61f937b8b3e03e6ecae9ce7f",
-            dateBegin: "2022-02-01T14:00:00.000Z",
-            dateEnd: "2022-02-01T15:00:00.000Z",
-            address: "23 Rue de la Foret",
-            outdoor: true,
-            id_buyer: "61f93607aee1cc92467bc5d6",
-            id_agent: "61f80338a0495a41d29c8c81",
-        },
-        {
-            _id: "61f937b8b3e03e6ecae9ce9f",
-            dateBegin: "2022-02-01T15:00:00.000Z",
-            dateEnd: "2022-02-01T16:00:00.000Z",
-            address: "13 Rue Lafayette",
-            outdoor: true,
-            id_buyer: "61f93607aee1cc92467bc5d6",
-            id_agent: "61f80338a0495a41d29c8c81",
-        },
-    ];
+    const [allAgents, setAllAgents] = React.useState([]);
+    const [charts, setCharts] = React.useState([]);
+    const [appointments, setAppointments] = React.useState([]);
 
-    const allAgents = [
-        {
-            _id: "62874e145bab2a786351b1d7",
-            firstname: "Guillaume",
-            lastname: "David",
-            email: "guigui@test.fr",
-            password:
-                "$2b$10$yLjC565CLDkpcfFkyntEDedvokoNVX/xleLWLSHJqiT81/qzUYD/2",
-            newsletter: true,
-            status: true,
-            ref: "2564FG5656",
-            agent: {
-                customers: [
-                    "620e1705906f9b1bc1adf768",
-                    "628760f35bab2a786351b746",
-                    "628762f8636d5e6641427ef3",
-                    "6287641d636d5e6641427ef7",
-                    "629877f275801b4869913062",
-                ],
-                phonePro: "0656897895",
+    React.useEffect(() => {
+        fetch(window.electron.url + "/api/user/agents", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json;charset=utf-8",
+                Authorization: `bearer ${localStorage.getItem(
+                    "REACT_TOKEN_AUTH_AMAIZON"
+                )}`,
             },
-            roles: "agent",
-        },
-        {
-            _id: "62874e145bab2a786351b2d7",
-            firstname: "Henry",
-            lastname: "jaque",
-            email: "loljaque@test.fr",
-            password:
-                "$2b$10$yLjC565CLDkpcfFkyntEDedvokoNVX/xleLWLSHJqiT81/qzUYD/2",
-            newsletter: true,
-            status: true,
-            ref: "2564FG5656",
-            agent: {
-                customers: [
-                    "620e1705906f9b1bc1adf768",
-                    "628760f35bab2a786351b746",
-                    "628762f8636d5e6641427ef3",
-                    "6287641d636d5e6641427ef7",
-                    "629877f275801b4869913062",
-                ],
-                phonePro: "0656897895",
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((response) => {
+                setAllAgents(response.datas);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        fetch(window.electron.url + "/api/property/charts", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json;charset=utf-8",
+                authorization: `bearer ${localStorage
+                    .getItem("REACT_TOKEN_AUTH_AMAIZON")
+                    .replaceAll('"', "")}`,
             },
-            roles: "agent",
-        },
-        {
-            _id: "62874e145bab2a786351b2g7",
-            firstname: "Jeanne",
-            lastname: "Pas d'arc",
-            email: "loljaque@test.fr",
-            password:
-                "$2b$10$yLjC565CLDkpcfFkyntEDedvokoNVX/xleLWLSHJqiT81/qzUYD/2",
-            newsletter: true,
-            status: true,
-            ref: "2564FG5656",
-            agent: {
-                customers: [
-                    "620e1705906f9b1bc1adf768",
-                    "628760f35bab2a786351b746",
-                    "628762f8636d5e6641427ef3",
-                    "6287641d636d5e6641427ef7",
-                    "629877f275801b4869913062",
-                ],
-                phonePro: "0656897895",
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((response) => {
+                setCharts(response.charts);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        fetch(window.electron.url + "/api/appointment/getAllForAnAgent", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json;charset=utf-8",
+                authorization: `bearer ${localStorage
+                    .getItem("REACT_TOKEN_AUTH_AMAIZON")
+                    .replaceAll('"', "")}`,
             },
-            roles: "agent",
-        },
-        {
-            _id: "62874e145bab2a786351b1f5",
-            firstname: "Guillaume",
-            lastname: "David",
-            email: "guigui@test.fr",
-            password:
-                "$2b$10$yLjC565CLDkpcfFkyntEDedvokoNVX/xleLWLSHJqiT81/qzUYD/2",
-            newsletter: true,
-            status: true,
-            ref: "2564FG5656",
-            agent: {
-                customers: [
-                    "620e1705906f9b1bc1adf768",
-                    "628760f35bab2a786351b746",
-                    "628762f8636d5e6641427ef3",
-                    "6287641d636d5e6641427ef7",
-                    "629877f275801b4869913062",
-                ],
-                phonePro: "0656897895",
-            },
-            roles: "agent",
-        },
-    ];
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((response) => {
+                setAppointments(response.datas);
+                console.log(response.datas);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
 
     const ChartJS = {
         labels: ["Appartement", "Maison"],
         datasets: [
             {
-                data: [550, 215],
+                data: charts,
                 backgroundColor: [
                     "rgba(255, 99, 132, 0.2)",
                     "rgba(54, 162, 235, 0.2)",
@@ -145,43 +92,9 @@ const Home = (props) => {
         ],
     };
 
-    const agentList = [];
-    allAgents.forEach((agent) => {
-        agentList.push(
-            <Box className="contactBox">
-                <Box className="contactThumb">
-                    <FaUserAlt
-                        style={{
-                            height: "40%",
-                            width: "40%",
-                        }}
-                    />
-                </Box>
-                <Box className="w-100">
-                    <Box>
-                        {agent.firstname} {agent.lastname}
-                    </Box>
-                    <Box className="d-flex justify-content-between w-100 pe-5">
-                        {agent.roles}
-                        <Button
-                            style={{ fontSize: "12px" }}
-                            className="contactButton"
-                            onClick={() => {
-                                window.electron.send("mailto", agent.email);
-                            }}
-                        >
-                            Contacter
-                        </Button>
-                    </Box>
-                    <Box></Box>
-                </Box>
-            </Box>
-        );
-    });
-
     return (
         <AnimatedPage>
-            <Box className="w-100 h-100">
+            <Box className="w-100" style={{ height: "90%" }}>
                 <Box
                     className="w-100 d-flex align-items-center"
                     style={{ height: "10%" }}
@@ -189,15 +102,23 @@ const Home = (props) => {
                     <Title text="Accueil" />
                 </Box>
 
-                <Row className="ps-5 pt-5 w-100" style={{ height: "90%" }}>
-                    <Col xs={3} style={{ height: "90%" }}>
-                        <ListAppoint title="Aujourd'hui" data={appointments} />
+                <Row className="ps-5 pt-5 w-100" style={{ height: "100%" }}>
+                    <Col xs={3} style={{ height: "100%" }}>
+                        <ListAppoint
+                            title="Aujourd'hui"
+                            data={appointments}
+                            date={moment()}
+                        />
                     </Col>
-                    <Col xs={3} style={{ height: "90%" }}>
-                        <ListAppoint title="Demain" data={appointments} />
+                    <Col xs={{ span: 3 }} style={{ height: "100%" }}>
+                        <ListAppoint
+                            title="Demain"
+                            data={appointments}
+                            date={moment().add(1, 'days')}
+                        />
                     </Col>
-                    <Col xs={2} style={{ height: "90%" }}></Col>
-                    <Col xs={4} style={{ height: "90%" }}>
+
+                    <Col xs={{ span: 4, offset: 2 }} style={{ height: "100%" }}>
                         <Row className="flex-column align-items-center h-100">
                             <Col xs={8} className="h-50">
                                 <Typography
@@ -219,9 +140,16 @@ const Home = (props) => {
                                 </Row>
                                 <Row
                                     className="overflow-auto"
-                                    style={{ height: "90%" }}
+                                    style={{ height: "100%" }}
                                 >
-                                    <Col>{agentList}</Col>
+                                    <Col>
+                                        {allAgents.map((agent, index) => (
+                                            <AgentCard
+                                                agent={agent}
+                                                key={index}
+                                            />
+                                        ))}
+                                    </Col>
                                 </Row>
                             </Col>
                         </Row>
