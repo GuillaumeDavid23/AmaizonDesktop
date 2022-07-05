@@ -56,7 +56,7 @@ const HomeCards = (props) => {
                         </small>
                     </Col>
                 </Row>
-                <Row>
+                <Row className="align-items-center">
                     <Col xs={12} md={8} lg={6}>
                         {isToSell ? (
                             <Box className="d-flex justify-content-center align-items-center">
