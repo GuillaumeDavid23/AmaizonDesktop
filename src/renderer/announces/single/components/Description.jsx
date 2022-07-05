@@ -1,5 +1,4 @@
 import { Box } from '@mui/material'
-import { useEffect, useState } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { BsCheckCircleFill, BsXCircleFill } from 'react-icons/bs'
 import { Link } from 'react-router-dom'

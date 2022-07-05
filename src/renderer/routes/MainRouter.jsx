@@ -7,7 +7,6 @@ import AuthProvider from "../services/AuthProvider";
 // Nav imports
 import { Routes, Route } from "react-router-dom";
 import PrivateRoute from "../routes/PrivateRoutes";
-import MenuRoute from "../routes/MenuRoute";
 
 // View imports
 import Login from "../login/Login";

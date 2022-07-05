@@ -1,5 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { BsBorderAll } from "react-icons/bs";
 import { MdLocationSearching, MdArchitecture } from "react-icons/md";
 import BtnGeneral from "../../globalComponents/BtnGeneral";
@@ -13,7 +12,6 @@ const HomeCards = (props) => {
         _id,
         imageUrl,
         title,
-        description,
         amount,
         surface,
         roomNumber,
