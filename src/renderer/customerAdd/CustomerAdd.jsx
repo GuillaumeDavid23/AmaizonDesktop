@@ -3,7 +3,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { AnimatedPage } from "../globalComponents";
-import Title from "../globalComponents/Title";
+import Title from '../globalComponents/Title/Title'
 import { useForm } from "react-hook-form";
 const CustomerAdd = () => {
     // Destructuring Hook Form
