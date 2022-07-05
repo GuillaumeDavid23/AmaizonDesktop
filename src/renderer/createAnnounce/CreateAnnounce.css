@@ -1,0 +1,14 @@
+.form-part {
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+    border: solid 1px black;
+    border-radius: 0 15px 0 15px;
+    background-color: #DCD0C1;
+    padding: 1em;
+}
+
+.form-part h1 {
+    text-align: center;
+    font-size: 1.5em;
+}
