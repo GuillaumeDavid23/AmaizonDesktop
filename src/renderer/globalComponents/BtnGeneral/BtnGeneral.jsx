@@ -8,6 +8,7 @@ const BtnGeneral = (props) => {
 			className={`btn-general ${props.className}`}
 			variant="primary"
 			disabled={props.disabled}
+			style={props.style}
 			onClick={props.onClick}
 		>
 			{props.text}
