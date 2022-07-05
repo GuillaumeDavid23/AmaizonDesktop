@@ -14,6 +14,7 @@ import Home from "../home/Home";
 import Customers from "../customers/Customers";
 import Announces from "../announces/Announces";
 import SingleAnnounce from "../announces/single/SingleAnnounce";
+import CustomerAdd from "../customerAdd/CustomerAdd";
 
 const MainRouter = () => {
     return (
@@ -44,6 +45,16 @@ const MainRouter = () => {
                     element={
                         <PrivateRoute>
                             <Customers />
+                        </PrivateRoute>
+                    }
+                />
+
+                {/* Private Route Add customer*/}
+                <Route
+                    path="/customerAdd"
+                    element={
+                        <PrivateRoute>
+                            <CustomerAdd />
                         </PrivateRoute>
                     }
                 />
