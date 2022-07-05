@@ -5,23 +5,25 @@ import { MdLocationSearching, MdArchitecture } from 'react-icons/md'
 import BtnGeneral from '../../globalComponents/BtnGeneral'
 import { Card } from 'react-bootstrap'
 import "./HomeCard.css"
+import { Box } from '@mui/material'
 
 
 const HomeCards = (props) => {
 	const {
-		_id,
-		imageUrl,
-		title,
-		description,
-		amount,
-		surface,
-		roomNumber,
-		location,
-		transactionType,
-	} = props.propertyDatas
+        _id,
+        imageUrl,
+        title,
+        description,
+        amount,
+        surface,
+        roomNumber,
+        location,
+        transactionType,
+        isToSell,
+    } = props.propertyDatas;
 
 	return (
-        <Card className="mb-5" id={_id}>
+        <Card className="mb-5 w-75" id={_id}>
             <Card.Img
                 variant="top"
                 src={window.electron.url + "/" + imageUrl?.photo1}
@@ -56,17 +58,18 @@ const HomeCards = (props) => {
                     </div>
                 </div>
 
-                <div className="d-flex justify-content-center align-items-center">
+                <div className="d-flex justify-content-between align-items-center">
                     <Link
                         to={`/home`}
                         className="d-flex justify-content-center"
-						style={{ textDecoration: 'none' }}
+                        style={{ textDecoration: "none" }}
                     >
                         <BtnGeneral
                             className="w-100 h-50"
                             text="Voir l'annonce"
                         />
                     </Link>
+                    <Box>{isToSell ? "Dispo" : "Pas dispo"}</Box>
                 </div>
             </Card.Body>
         </Card>
