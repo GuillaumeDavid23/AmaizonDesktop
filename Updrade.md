@@ -1,0 +1,28 @@
+# Size of our dependencies
+
+    - @emotion/react": "^11.9.3" => **542 kB**
+    - "@emotion/styled": "^11.9.3" => **209 kB**
+    - "@mui/icons-material": "^5.8.4" => **17.8 MB**
+    - "@mui/lab": "^5.0.0-alpha.88" => **1.87 MB**
+    - "@mui/material": "^5.8.6" => **9.41 MB**
+    - "@testing-library/jest-dom": "^5.16.4" => **126 kB**
+    - "@testing-library/react": "^12.1.5" => **4.43 MB**
+    - "@testing-library/user-event": "^13.5.0" => **252 kB**
+    - "bootstrap": "^5.1.3" => **8.65 MB**
+    - "chart.js": "^3.8.0" => **1.17 MB**
+    - "dotenv": "^16.0.1" => **34.2 kB**
+    - "electron-context-menu": "^3.3.0" => **36 kB**
+    - "framer-motion": "^6.3.15" => **2.05 MB**
+    - "react": "^17.0.2" => **316 kB**
+    - "react-bootstrap": "^2.4.0" => **1.37 MB**
+    - "react-chartjs-2": "^4.2.0" => **54.9 kB**
+    - "react-dom": "^17.0.2" => **4.5 MB**
+    - "react-hook-form": "^7.33.0" => **791 kB**
+    - "react-icons": "^4.4.0" => **46.5 MB**
+    - "react-moment": "^1.1.2" => **210 kB**
+    - "react-pro-sidebar": "^0.7.1" => **302 kB**
+    - "react-router-dom": "^6.3.0" => **169 kB**
+    - "react-scripts": "5.0.1" => **116 kB**
+    - "react-select": "^5.4.0" => **790 kB**
+    - "sass": "^1.53.0" => **4.49 MB**
+    - "web-vitals": "^2.1.4" => **145 kB**

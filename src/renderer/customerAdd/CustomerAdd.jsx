@@ -1,21 +1,10 @@
 import React from "react";
 
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { AnimatedPage } from "../globalComponents";
 import Title from '../globalComponents/Title/Title'
-import { useForm } from "react-hook-form";
+import AddForm from "./components/AddForm";
 const CustomerAdd = () => {
-    // Destructuring Hook Form
-    const {
-        handleSubmit,
-        control,
-        formState: { errors, isValid },
-    } = useForm({
-        mode: "onBlur",
-        reValidateMode: "onBlur",
-        shouldFocusError: true,
-    });
     return (
         <AnimatedPage>
             <Box
@@ -24,7 +13,9 @@ const CustomerAdd = () => {
             >
                 <Title text="Ajout d'un client" />
             </Box>
-            <Box className="w-100" style={{ height: "90%" }}></Box>
+            <Box className="w-100" style={{ height: "90%" }}>
+                <AddForm />
+            </Box>
         </AnimatedPage>
     );
 };
