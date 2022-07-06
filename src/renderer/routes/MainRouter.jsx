@@ -16,6 +16,7 @@ import Customers from '../customers/Customers'
 import Announces from '../announces/Announces'
 import CreateAnnounce from '../createAnnounce/CreateAnnounce'
 import SingleAnnounce from '../announces/single/SingleAnnounce'
+import CustomerAdd from "../customerAdd/CustomerAdd";
 
 const MainRouter = () => {
 	return (
@@ -49,6 +50,16 @@ const MainRouter = () => {
 						</PrivateRoute>
 					}
 				/>
+                
+                {/* Private Route Add customer*/}
+                <Route
+                    path="/customerAdd"
+                    element={
+                        <PrivateRoute>
+                            <CustomerAdd />
+                        </PrivateRoute>
+                    }
+                />
 
 				{/* Private Route Announces*/}
 				<Route

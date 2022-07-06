@@ -68,7 +68,9 @@ const Navigation = (props) => {
 						<MenuItem onClick={() => navigate('/customers')}>
 							Liste des clients
 						</MenuItem>
-						<MenuItem>Ajouter un client</MenuItem>
+						<MenuItem onClick={() => navigate("/customerAdd")}>
+                            Ajouter un client
+                        </MenuItem>
 					</SubMenu>
 					<SubMenu title="Annonces" icon={<FaBuilding />}>
 						<MenuItem onClick={() => navigate('/announces')}>
