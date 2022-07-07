@@ -15,10 +15,7 @@ const Page3 = ({ visiblePage, control, errors, handleNavigation }) => {
 					name="surface"
 					control={control}
 					rules={{
-						required: {
-							value: true,
-							message: 'Surface requise.'
-						},
+						required: 'Surface requise.',
 						pattern: {
 							value: REGNUM.value,
 							message: REGNUM.message
@@ -48,10 +45,7 @@ const Page3 = ({ visiblePage, control, errors, handleNavigation }) => {
 					name="roomNumber"
 					control={control}
 					rules={{
-						required: {
-							value: true,
-							message: 'Nombre de chambres requis.'
-						},
+						required: 'Nombre de chambres requis.',
 						pattern: {
 							value: REGNUM.value,
 							message: REGNUM.message

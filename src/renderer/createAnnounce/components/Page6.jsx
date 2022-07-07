@@ -54,10 +54,7 @@ const Page6 = ({
 			<Box className="mb-3">
 				{sellers.map((seller) => {
 					return (
-						<Box
-							key={seller._id}
-							className="d-flex flex-row align-items-center"
-						>
+						<Box key={seller._id} className="d-flex">
 							<span className="w-75 text-center">
 								{seller.lastname} {seller.firstname}
 							</span>

@@ -12,8 +12,6 @@ const Page1 = ({ visiblePage, control, errors, handleNavigation }) => {
 		{ value: 2, label: 'Appartement' }
 	]
 
-	console.log(errors)
-
 	return (
 		<Box className={`form-part ${visiblePage !== 1 ? 'd-none' : ''}`}>
 			<h1>Etape 1 - Infos principales:</h1>
@@ -24,10 +22,7 @@ const Page1 = ({ visiblePage, control, errors, handleNavigation }) => {
 					name="title"
 					control={control}
 					rules={{
-						required: {
-							value: true,
-							message: 'Intitulé de la propriété requis.'
-						},
+						required: 'Intitulé de la propriété requis.',
 						pattern: {
 							value: REGSTRING.value,
 							message: REGSTRING.message
@@ -57,10 +52,7 @@ const Page1 = ({ visiblePage, control, errors, handleNavigation }) => {
 					name="propertyType"
 					control={control}
 					rules={{
-						required: {
-							value: true,
-							message: 'Type de propriété requis.'
-						},
+						required: 'Type de propriété requis.',
 						pattern: {
 							value: REGSTRING.value,
 							message: REGSTRING.message
@@ -68,6 +60,7 @@ const Page1 = ({ visiblePage, control, errors, handleNavigation }) => {
 					}}
 					render={({ field }) => (
 						<Select
+							className={errors.propertyType ? 'is-invalid' : ''}
 							options={propertyTypes}
 							placeholder={'Type de propriété'}
 							{...field}

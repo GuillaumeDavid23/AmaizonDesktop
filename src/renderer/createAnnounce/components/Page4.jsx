@@ -42,6 +42,9 @@ const Page4 = ({ visiblePage, control, errors, handleNavigation }) => {
 					}}
 					render={({ field }) => (
 						<Select
+							className={
+								errors.list_equipments ? 'is-invalid' : ''
+							}
 							options={stuffs}
 							placeholder={'Liste équipements'}
 							{...field}
@@ -69,6 +72,7 @@ const Page4 = ({ visiblePage, control, errors, handleNavigation }) => {
 					}}
 					render={({ field }) => (
 						<Select
+							className={errors.heatingType ? 'is-invalid' : ''}
 							options={heatTypes}
 							placeholder={'Type de chauffage'}
 							{...field}
@@ -95,6 +99,7 @@ const Page4 = ({ visiblePage, control, errors, handleNavigation }) => {
 					}}
 					render={({ field }) => (
 						<Select
+							className={errors.hotWaterType ? 'is-invalid' : ''}
 							options={heatTypes}
 							placeholder={"Type de chauffage d'eau chaude"}
 							{...field}

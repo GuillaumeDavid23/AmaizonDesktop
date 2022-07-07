@@ -15,10 +15,7 @@ const Page2 = ({ visiblePage, control, errors, handleNavigation }) => {
 					name="location"
 					control={control}
 					rules={{
-						required: {
-							value: true,
-							message: 'Numéro et nom requis.'
-						},
+						required: 'Numéro et nom requis.',
 						pattern: {
 							value: REGSTRING.value,
 							message: REGSTRING.message
@@ -48,10 +45,7 @@ const Page2 = ({ visiblePage, control, errors, handleNavigation }) => {
 					name="postalCode"
 					control={control}
 					rules={{
-						required: {
-							value: true,
-							message: 'Code postal requis.'
-						},
+						required: 'Code postal requis.',
 						pattern: {
 							value: REGID.value,
 							message: REGID.message
@@ -82,10 +76,7 @@ const Page2 = ({ visiblePage, control, errors, handleNavigation }) => {
 					name="city"
 					control={control}
 					rules={{
-						required: {
-							value: true,
-							message: 'Ville requise.'
-						},
+						required: 'Ville requise.',
 						pattern: {
 							value: REGSTRING.value,
 							message: REGSTRING.message
@@ -114,10 +105,7 @@ const Page2 = ({ visiblePage, control, errors, handleNavigation }) => {
 				<Controller
 					control={control}
 					rules={{
-						required: {
-							value: true,
-							message: 'Pays requis.'
-						},
+						required: 'Pays requis.',
 						pattern: {
 							value: REGSTRING.value,
 							message: REGSTRING.message

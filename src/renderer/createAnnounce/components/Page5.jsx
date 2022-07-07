@@ -23,10 +23,7 @@ const Page5 = ({ visiblePage, control, errors, handleNavigation }) => {
 					name="transactionType"
 					control={control}
 					rules={{
-						required: {
-							value: true,
-							message: 'Type de transaction requis.'
-						},
+						required: 'Type de transaction requis.',
 						pattern: {
 							value: REGSTRING.value,
 							message: REGSTRING.message
@@ -34,6 +31,9 @@ const Page5 = ({ visiblePage, control, errors, handleNavigation }) => {
 					}}
 					render={({ field }) => (
 						<Select
+							className={
+								errors.transactionType ? 'is-invalid' : ''
+							}
 							options={transactionTypes}
 							placeholder={'Type de transaction'}
 							{...field}
@@ -53,10 +53,7 @@ const Page5 = ({ visiblePage, control, errors, handleNavigation }) => {
 					name="amount"
 					control={control}
 					rules={{
-						required: {
-							value: true,
-							message: 'Montant requis.'
-						},
+						required: 'Montant requis.',
 						pattern: {
 							value: REGNUM.value,
 							message: REGNUM.message
@@ -88,6 +85,7 @@ const Page5 = ({ visiblePage, control, errors, handleNavigation }) => {
 					<Controller
 						name="isToSell"
 						control={control}
+						defaultValue={false}
 						rules={{
 							pattern: {
 								value: REGID.value,
@@ -95,7 +93,7 @@ const Page5 = ({ visiblePage, control, errors, handleNavigation }) => {
 							}
 						}}
 						render={({ field }) => (
-							<Checkbox className="mx-2" {...field} />
+							<Checkbox className="mx-2" {...field} ref={null} />
 						)}
 					/>
 					<span>Oui</span>
