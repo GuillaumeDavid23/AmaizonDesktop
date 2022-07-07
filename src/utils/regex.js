@@ -29,10 +29,10 @@ export const REGNUM = {
 	message: "N'utilisez que des chiffres et un point pour la décimal."
 }
 
-// export const REGEMAIL = {
-// 	value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
-// 	message: 'Vous devez indiquer un email valide.',
-// }
+export const REGEMAIL = {
+	value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+	message: 'Vous devez indiquer un email valide.'
+}
 
 // export const REGPASSWORD = {
 // 	value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
@@ -40,10 +40,10 @@ export const REGNUM = {
 // 		'Le mot de passe renseigné ne correspond pas au format requis: Au minimum 8 caractères; au moins une lettre majuscule, une lettre minuscule et un chiffre.',
 // }
 
-// export const REGTEL = {
-// 	value: /^((\+)33|0|0033)[1-9](\d{2}){4}$/g,
-// 	message: 'Vous devez indiquer un numéro de téléphone valide.',
-// }
+export const REGTEL = {
+	value: /^((\+)33|0|0033)[1-9](\d{2}){4}$/g,
+	message: 'Vous devez indiquer un numéro de téléphone valide.'
+}
 
 // export const REGZIP = {
 // 	value: /^\d{5}$/,

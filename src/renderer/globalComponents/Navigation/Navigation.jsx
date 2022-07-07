@@ -64,13 +64,21 @@ const Navigation = (props) => {
 					>
 						Accueil
 					</MenuItem>
+					<SubMenu title="Agents" icon={<FaUserAlt />}>
+						<MenuItem onClick={() => navigate('/agents')}>
+							Liste des agents
+						</MenuItem>
+						<MenuItem onClick={() => navigate('/createAgent')}>
+							Ajouter un agent
+						</MenuItem>
+					</SubMenu>
 					<SubMenu title="Clients" icon={<FaUserAlt />}>
 						<MenuItem onClick={() => navigate('/customers')}>
 							Liste des clients
 						</MenuItem>
-						<MenuItem onClick={() => navigate("/customerAdd")}>
-                            Ajouter un client
-                        </MenuItem>
+						<MenuItem onClick={() => navigate('/customerAdd')}>
+							Ajouter un client
+						</MenuItem>
 					</SubMenu>
 					<SubMenu title="Annonces" icon={<FaBuilding />}>
 						<MenuItem onClick={() => navigate('/announces')}>

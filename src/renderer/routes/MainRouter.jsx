@@ -14,9 +14,11 @@ import Login from '../login/Login'
 import Home from '../home/Home'
 import Customers from '../customers/Customers'
 import Announces from '../announces/Announces'
+import Agents from '../agents/Agents'
+import CreateAgent from '../agents/create/CreateAgent'
 import CreateAnnounce from '../createAnnounce/CreateAnnounce'
 import SingleAnnounce from '../announces/single/SingleAnnounce'
-import CustomerAdd from "../customerAdd/CustomerAdd";
+import CustomerAdd from '../customerAdd/CustomerAdd'
 
 const MainRouter = () => {
 	return (
@@ -31,8 +33,11 @@ const MainRouter = () => {
 						</PrivateRoute>
 					}
 				/>
+
 				{/* Public Route Login  */}
 				<Route path="/login" element={<Login />} />
+
+				{/* Private Route Home*/}
 				<Route
 					path="/home"
 					element={
@@ -41,6 +46,7 @@ const MainRouter = () => {
 						</PrivateRoute>
 					}
 				/>
+
 				{/* Private Route Customers*/}
 				<Route
 					path="/customers"
@@ -50,16 +56,16 @@ const MainRouter = () => {
 						</PrivateRoute>
 					}
 				/>
-                
-                {/* Private Route Add customer*/}
-                <Route
-                    path="/customerAdd"
-                    element={
-                        <PrivateRoute>
-                            <CustomerAdd />
-                        </PrivateRoute>
-                    }
-                />
+
+				{/* Private Route Add customer*/}
+				<Route
+					path="/customerAdd"
+					element={
+						<PrivateRoute>
+							<CustomerAdd />
+						</PrivateRoute>
+					}
+				/>
 
 				{/* Private Route Announces*/}
 				<Route
@@ -70,6 +76,8 @@ const MainRouter = () => {
 						</PrivateRoute>
 					}
 				/>
+
+				{/* Private Route Create announce*/}
 				<Route
 					path="/createAnnounce"
 					element={
@@ -78,12 +86,33 @@ const MainRouter = () => {
 						</PrivateRoute>
 					}
 				/>
+
 				{/* Private Route Single announce*/}
 				<Route
 					path="/singleAnnounce"
 					element={
 						<PrivateRoute>
 							<SingleAnnounce />
+						</PrivateRoute>
+					}
+				/>
+
+				{/* Private Route Agents*/}
+				<Route
+					path="/agents"
+					element={
+						<PrivateRoute>
+							<Agents />
+						</PrivateRoute>
+					}
+				/>
+
+				{/* Private Route Create agent*/}
+				<Route
+					path="/createAgent"
+					element={
+						<PrivateRoute>
+							<CreateAgent />
 						</PrivateRoute>
 					}
 				/>
