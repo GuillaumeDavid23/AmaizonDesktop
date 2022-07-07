@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import Title from '../globalComponents/Title/Title'
 import Form from './components/Form'
 import { Row, Col } from 'react-bootstrap'
+import { AnimatedPage } from '../globalComponents'
 
 // CSS imports:
 import './CreateAnnounce.css'
@@ -350,7 +351,7 @@ const CreateAnnounce = () => {
 	}
 
 	return (
-		<>
+		<AnimatedPage>
 			<Title text="Créer" />
 			<Row className="d-flex justify-content-center">
 				<Col xs={10} md={8}>
@@ -374,7 +375,7 @@ const CreateAnnounce = () => {
 			</Row>
 			{/* Snackbar */}
 			{renderSnack}
-		</>
+		</AnimatedPage>
 	)
 }
 
