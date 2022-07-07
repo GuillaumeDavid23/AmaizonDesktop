@@ -10,120 +10,122 @@ const Page3 = ({ visiblePage, control, errors, handleNavigation }) => {
 			<h1>Etape 3 - Infos Principales 2:</h1>
 
 			{/* Surface Form part */}
-			<Controller
-				name="surface"
-				control={control}
-				rules={{
-					required: {
-						value: true,
-						message: 'Surface requise.'
-					},
-					pattern: {
-						value: REGNUM.value,
-						message: REGNUM.message
-					}
-				}}
-				render={({ field }) => (
-					<OutlinedInput
-						className={`ps-2 my-3 form-control ${
-							errors.surface ? 'is-invalid' : ''
-						}`}
-						variant="filled"
-						placeholder="Surface"
-						{...field}
-					/>
+			<Box className="my-3">
+				<Controller
+					name="surface"
+					control={control}
+					rules={{
+						required: 'Surface requise.',
+						pattern: {
+							value: REGNUM.value,
+							message: REGNUM.message
+						}
+					}}
+					render={({ field }) => (
+						<OutlinedInput
+							className={`ps-2 form-control ${
+								errors.surface ? 'is-invalid' : ''
+							}`}
+							variant="filled"
+							placeholder="Surface"
+							{...field}
+						/>
+					)}
+				/>
+				{errors?.surface && (
+					<span className="invalid-feedback fw-bold text-center">
+						{errors.surface.message}
+					</span>
 				)}
-			/>
-			{errors?.surface && (
-				<span className="invalid-feedback fw-bold text-center">
-					{errors.surface.message}
-				</span>
-			)}
+			</Box>
 
 			{/* RoomNumber Form part */}
-			<Controller
-				name="roomNumber"
-				control={control}
-				rules={{
-					required: {
-						value: true,
-						message: 'Nombre de chambres requis.'
-					},
-					pattern: {
-						value: REGNUM.value,
-						message: REGNUM.message
-					}
-				}}
-				render={({ field }) => (
-					<OutlinedInput
-						className={`ps-2 my-3 form-control ${
-							errors.roomNumber ? 'is-invalid' : ''
-						}`}
-						variant="filled"
-						placeholder="Nombre de chambres"
-						{...field}
-					/>
+			<Box className="my-3">
+				<Controller
+					name="roomNumber"
+					control={control}
+					rules={{
+						required: 'Nombre de chambres requis.',
+						pattern: {
+							value: REGNUM.value,
+							message: REGNUM.message
+						}
+					}}
+					render={({ field }) => (
+						<OutlinedInput
+							className={`ps-2 form-control ${
+								errors.roomNumber ? 'is-invalid' : ''
+							}`}
+							variant="filled"
+							placeholder="Nombre de chambres"
+							{...field}
+						/>
+					)}
+				/>
+				{errors?.roomNumber && (
+					<span className="invalid-feedback fw-bold text-center">
+						{errors.roomNumber.message}
+					</span>
 				)}
-			/>
-			{errors?.roomNumber && (
-				<span className="invalid-feedback fw-bold text-center">
-					{errors.roomNumber.message}
-				</span>
-			)}
+			</Box>
 
 			{/* ElectricMeterRef Form part */}
-			<Controller
-				name="electricMeterRef"
-				control={control}
-				rules={{
-					pattern: {
-						value: REGSTRING.value,
-						message: REGSTRING.message
-					}
-				}}
-				render={({ field }) => (
-					<OutlinedInput
-						className={`ps-2 my-3 form-control ${
-							errors.electricMeterRef ? 'is-invalid' : ''
-						}`}
-						variant="filled"
-						placeholder="Référence compteur électrique"
-						{...field}
-					/>
+			<Box className="my-3">
+				<Controller
+					name="electricMeterRef"
+					control={control}
+					rules={{
+						pattern: {
+							value: REGSTRING.value,
+							message: REGSTRING.message
+						}
+					}}
+					render={({ field }) => (
+						<OutlinedInput
+							className={`ps-2 form-control ${
+								errors.electricMeterRef ? 'is-invalid' : ''
+							}`}
+							variant="filled"
+							placeholder="Référence compteur électrique"
+							{...field}
+						/>
+					)}
+				/>
+				{errors?.electricMeterRef && (
+					<span className="invalid-feedback fw-bold text-center">
+						{errors.electricMeterRef.message}
+					</span>
 				)}
-			/>
-			{errors?.electricMeterRef && (
-				<span className="invalid-feedback fw-bold text-center">
-					{errors.electricMeterRef.message}
-				</span>
-			)}
+			</Box>
 
 			{/* GasMeterRef Form part */}
-			<Controller
-				name="gasMeterRef"
-				control={control}
-				rules={{
-					pattern: {
-						value: REGSTRING.value,
-						message: REGSTRING.message
-					}
-				}}
-				render={({ field }) => (
-					<OutlinedInput
-						className={`ps-2 my-3 form-control ${
-							errors.gasMeterRef ? 'is-invalid' : ''
-						}`}
-						variant="filled"
-						placeholder="Référence compteur de gaz"
-						{...field}
-					/>
+			<Box className="my-3">
+				<Controller
+					name="gasMeterRef"
+					control={control}
+					rules={{
+						pattern: {
+							value: REGSTRING.value,
+							message: REGSTRING.message
+						}
+					}}
+					render={({ field }) => (
+						<OutlinedInput
+							className={`ps-2 form-control ${
+								errors.gasMeterRef ? 'is-invalid' : ''
+							}`}
+							variant="filled"
+							placeholder="Référence compteur de gaz"
+							{...field}
+						/>
+					)}
+				/>
+				{errors?.gasMeterRef && (
+					<span className="invalid-feedback fw-bold text-center">
+						{errors.gasMeterRef.message}
+					</span>
 				)}
-			/>
-			{errors?.gasMeterRef && (
-				<span className="invalid-feedback fw-bold text-center">
-					{errors.gasMeterRef.message}
-				</span>
-			)}
+			</Box>
 
 			<FormNavigation
 				visiblePage={visiblePage}

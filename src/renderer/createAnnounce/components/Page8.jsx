@@ -10,22 +10,41 @@ const Page8 = ({
 	datasToValidate,
 	handleValidation
 }) => {
+	// Traduction anticipée des clés:
+	const translatingObject = {
+		title: 'Intitulé',
+		propertyType: 'Type de propriété',
+		location: 'Adresse',
+		surface: 'Surface',
+		roomNumber: 'Nombre de chambres',
+		transactionType: 'Type de transaction',
+		amount: 'Prix',
+		list_equipments: 'Liste des équipements',
+		isToSell: 'Est à vendre dès maintenant',
+		photo1: 'Photo n°1',
+		photo2: 'Photo n°2',
+		photo3: 'Photo n°3',
+		photo4: 'Photo n°4',
+		photo5: 'Photo n°5',
+		propertyRef: 'Référence de la propriété'
+	}
+
 	return (
 		<Box className={`form-part ${visiblePage !== 8 ? 'd-none' : ''}`}>
 			<h1>Récapitulatif:</h1>
 			{datasToDisplay && (
-				<table>
+				<table className="my-3">
 					<tbody>
 						{Object.keys(datasToDisplay).map((key) => {
 							return (
-								<tr key={key}>
-									<td>{key}</td>
-									<td
-										style={{
-											flex: 1,
-											justifyContent: 'center'
-										}}
-									>
+								<tr
+									className="border-bottom border-dark"
+									key={key}
+								>
+									<td className="pe-2">
+										{translatingObject[key]}:
+									</td>
+									<td className="ps-2">
 										{/* Tableaux: */}
 										{typeof datasToDisplay[key] ===
 											'object' &&
@@ -36,47 +55,44 @@ const Page8 = ({
 													)}
 												</span>
 											)}
+
 										{/* Photos prises: */}
 										{typeof datasToDisplay[key] ===
 											'object' &&
 											datasToDisplay[key].name && (
 												<span>Photo prise</span>
 											)}
+
 										{/* Strings: */}
 										{typeof datasToDisplay[key] ===
 											'string' &&
 											datasToDisplay[key] !==
-												'[object Object]' && (
+												'[object Object]' &&
+											datasToDisplay[key] !== 'true' &&
+											datasToDisplay[key] !== 'false' && (
 												<span>
 													{datasToDisplay[key]}
 												</span>
 											)}
-										{/* Photos non-prises: */}
-										{datasToDisplay[key] ===
-											'[object Object]' && (
-											<span>Photo non prise</span>
-										)}
+
 										{/* Booleans true: */}
-										{typeof datasToDisplay[key] ===
-											'boolean' &&
-											datasToDisplay[key] && (
-												<span>Oui</span>
-											)}
+										{datasToDisplay[key] === 'true' && (
+											<span>Oui</span>
+										)}
+
 										{/* Booleans false: */}
-										{typeof datasToDisplay[key] ===
-											'boolean' &&
-											!datasToDisplay[key] && (
-												<span>Non</span>
-											)}
+										{datasToDisplay[key] === 'false' && (
+											<span>Non</span>
+										)}
 									</td>
 								</tr>
 							)
 						})}
 						<tr>
-							<td>
-								<span>Client</span>
+							<td className="pe-2">
+								<span>Vendeur</span>
 							</td>
-							<td>
+							<td className="ps-2">
 								<span>
 									{seller.lastname} {seller.firstname}
 								</span>

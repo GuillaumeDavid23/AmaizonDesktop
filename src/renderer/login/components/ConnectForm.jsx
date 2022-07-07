@@ -205,7 +205,7 @@ const ConnectForm = () => {
 	return (
 		<Container fluid className="connectBlock">
 			{/* Snackbar */}
-			{renderSnack}
+			<Box className="d-flex justify-content-end">{renderSnack}</Box>
 
 			{/* Logos */}
 			<Box className="d-flex flex-column align-items-center">

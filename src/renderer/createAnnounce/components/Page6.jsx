@@ -51,29 +51,26 @@ const Page6 = ({
 				// }}
 			/>
 
-			{sellers.map((seller) => {
-				return (
-					<Box
-						key={seller._id}
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							alignItems: 'center'
-						}}
-					>
-						<span>
-							{seller.lastname} {seller.firstname}
-						</span>
-						<input
-							type="checkbox"
-							checked={checked === seller._id}
-							onChange={() =>
-								setChecked(
-									checked !== seller._id ? seller._id : null
-								)
-							}
-						/>
-						{/* <Checkbox
+			<Box className="mb-3">
+				{sellers.map((seller) => {
+					return (
+						<Box key={seller._id} className="d-flex">
+							<span className="w-75 text-center">
+								{seller.lastname} {seller.firstname}
+							</span>
+							<Box className="w-25">
+								<input
+									type="checkbox"
+									checked={checked === seller._id}
+									onChange={() =>
+										setChecked(
+											checked !== seller._id
+												? seller._id
+												: null
+										)
+									}
+								/>
+								{/* <Checkbox
 							status={
 								checked === seller._id ? 'checked' : 'unchecked'
 							}
@@ -83,9 +80,11 @@ const Page6 = ({
 								)
 							}}
 						/> */}
-					</Box>
-				)
-			})}
+							</Box>
+						</Box>
+					)
+				})}
+			</Box>
 
 			<FormNavigation
 				visiblePage={visiblePage}

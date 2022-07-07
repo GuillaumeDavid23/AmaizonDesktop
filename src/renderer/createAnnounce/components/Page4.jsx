@@ -30,80 +30,88 @@ const Page4 = ({ visiblePage, control, errors, handleNavigation }) => {
 			<h1>Etape 4 - Infos techniques:</h1>
 
 			{/* List_Equipments Form part */}
-			<Controller
-				name="list_equipments"
-				control={control}
-				rules={{
-					pattern: {
-						value: REGNUM.value,
-						message: REGNUM.message
-					}
-				}}
-				render={({ field }) => (
-					<Select
-						className="my-3"
-						options={stuffs}
-						placeholder={'Liste équipements'}
-						{...field}
-						isMulti
-					/>
+			<Box className="my-3">
+				<Controller
+					name="list_equipments"
+					control={control}
+					rules={{
+						pattern: {
+							value: REGNUM.value,
+							message: REGNUM.message
+						}
+					}}
+					render={({ field }) => (
+						<Select
+							className={
+								errors.list_equipments ? 'is-invalid' : ''
+							}
+							options={stuffs}
+							placeholder={'Liste équipements'}
+							{...field}
+							isMulti
+						/>
+					)}
+				/>
+				{errors?.list_equipments && (
+					<span className="invalid-feedback fw-bold text-center">
+						{errors.list_equipments.message}
+					</span>
 				)}
-			/>
-			{errors?.list_equipments && (
-				<span className="invalid-feedback fw-bold text-center">
-					{errors.list_equipments.message}
-				</span>
-			)}
+			</Box>
 
 			{/* HeatingType Form part */}
-			<Controller
-				name="heatingType"
-				control={control}
-				rules={{
-					pattern: {
-						value: REGID.value,
-						message: REGID.message
-					}
-				}}
-				render={({ field }) => (
-					<Select
-						className="my-3"
-						options={heatTypes}
-						placeholder={'Type de chauffage'}
-						{...field}
-					/>
+			<Box className="my-3">
+				<Controller
+					name="heatingType"
+					control={control}
+					rules={{
+						pattern: {
+							value: REGID.value,
+							message: REGID.message
+						}
+					}}
+					render={({ field }) => (
+						<Select
+							className={errors.heatingType ? 'is-invalid' : ''}
+							options={heatTypes}
+							placeholder={'Type de chauffage'}
+							{...field}
+						/>
+					)}
+				/>
+				{errors?.heatingType && (
+					<span className="invalid-feedback fw-bold text-center">
+						{errors.heatingType.message}
+					</span>
 				)}
-			/>
-			{errors?.heatingType && (
-				<span className="invalid-feedback fw-bold text-center">
-					{errors.heatingType.message}
-				</span>
-			)}
+			</Box>
 
 			{/* HotWaterType Form part */}
-			<Controller
-				name="hotWaterType"
-				control={control}
-				rules={{
-					pattern: {
-						value: REGID.value,
-						message: REGID.message
-					}
-				}}
-				render={({ field }) => (
-					<Select
-						className="my-3"
-						options={heatTypes}
-						placeholder={"Type de chauffage d'eau chaude"}
-						{...field}
-					/>
+			<Box className="my-3">
+				<Controller
+					name="hotWaterType"
+					control={control}
+					rules={{
+						pattern: {
+							value: REGID.value,
+							message: REGID.message
+						}
+					}}
+					render={({ field }) => (
+						<Select
+							className={errors.hotWaterType ? 'is-invalid' : ''}
+							options={heatTypes}
+							placeholder={"Type de chauffage d'eau chaude"}
+							{...field}
+						/>
+					)}
+				/>
+				{errors?.hotWaterType && (
+					<span className="invalid-feedback fw-bold text-center">
+						{errors.hotWaterType.message}
+					</span>
 				)}
-			/>
-			{errors?.hotWaterType && (
-				<span className="invalid-feedback fw-bold text-center">
-					{errors.hotWaterType.message}
-				</span>
-			)}
+			</Box>
 
 			<FormNavigation
 				visiblePage={visiblePage}

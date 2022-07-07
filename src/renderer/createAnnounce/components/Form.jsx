@@ -26,7 +26,7 @@ const Form = ({
 }) => {
 	return (
 		<form
-			className="d-flex justify-content-center"
+			className="d-flex justify-content-center mt-5"
 			onSubmit={handleSubmit(onSubmit)}
 		>
 			<Page1

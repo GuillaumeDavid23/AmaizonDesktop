@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom'
 // Components imports:
 import Title from '../globalComponents/Title/Title'
 import Form from './components/Form'
+import { Row, Col } from 'react-bootstrap'
+import { AnimatedPage } from '../globalComponents'
 
 // CSS imports:
 import './CreateAnnounce.css'
@@ -17,12 +19,30 @@ import { createProperty } from '../services/Property'
 // Utils imports:
 import { strRandom } from '../../utils/funcs'
 
+// Hooks imports:
+import { useSlideSnack } from '../hooks'
+
 const CreateAnnounce = () => {
 	// Récupération du token:
-	const token =
-		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImFnZW50Ijp7InBvc2l0aW9uIjoiU2VjcsOpdGFpcmUiLCJwaG9uZVBybyI6IjA2NTQzNDQzMjEiLCJjdXN0b21lcnMiOlt7Il9pZCI6IjYyODc0OTZkZmY4NGFiNWVhYjEzMzI5ZiIsImZpcnN0bmFtZSI6Ik1pY2hvdSIsImxhc3RuYW1lIjoiTWljaE1pY2giLCJlbWFpbCI6Im1pY2hvdUB5YWhvby5mciIsInBob25lIjoiMDYzMDEyNDMwMiJ9LHsiX2lkIjoiNjI4NzUwZjQyMDcwYzVmYzQ1NDg5Mjc0IiwiZmlyc3RuYW1lIjoiSm9yZGFuIiwibGFzdG5hbWUiOiJNYW5jaGVyb28iLCJlbWFpbCI6ImdvZ29nb0Bnb2dvZy5mciIsInBob25lIjoiMDYyNDI0MDMyNCJ9XX0sIl9pZCI6IjYyNGQ0Y2FhZmIwNTExOTQ0Y2NlYWFmZiIsImZpcnN0bmFtZSI6IkphY3F1ZWxpbmUiLCJsYXN0bmFtZSI6IkR1cG9udCIsImVtYWlsIjoieWF5YUB5YXlhLmZyIiwicm9sZXMiOiJhZ2VudCIsInBhc3N3b3JkIjoiJDJhJDEyJDBLLkVjaElHUzM2dXZFb3V2aDVVMi5Gc1JJVnY3cmNYbkRWNk4uTGdNWXZKcXRGSnV1R2F1IiwibmV3c2xldHRlciI6ZmFsc2UsInN0YXR1cyI6dHJ1ZSwidXBkYXRlZEF0IjoiMjAyMi0wNS0yMFQwNjoyNzozMi41MzdaIiwiY3JlYXRlZEF0IjoiMjAyMi0wNC0wNlQwODoxOToxMC45NDFaIiwiX192IjowLCJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUoxYzJWeVNXUWlPaUkyTWpSa05HTmhZV1ppTURVeE1UazBOR05qWldGaFptWWlMQ0pwWVhRaU9qRTJORGswTVRrMk16VXNJbVY0Y0NJNk1UWTBPVFF6TnpZek5YMC5rTGQ1V0J4em9yUWIzTzZSNUpzakFpTWhicjkxSE9MRWpKaTE5TThqSWFZIn0sImlhdCI6MTY1NzAxMjc2NywiZXhwIjoxNjU3MDMwNzY3fQ.YxzcosKWNZvkHCTi6QctFbPP7xOR3T-wTAyp0ZkTMrY'
+	const token = JSON.parse(localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON'))
 
-	// Destructuring HookForm hook
+	// Gestion de la snack Params:
+	const [snackParams, setSnackParams] = useState({
+		message: '',
+		severity: 'error'
+	})
+	const { handleOpen, renderSnack } = useSlideSnack({
+		message: snackParams.message,
+		time: 2000,
+		severity: snackParams.severity
+	})
+	useEffect(() => {
+		if (snackParams.message) {
+			handleOpen()
+		}
+	}, [snackParams])
+
+	// Destructuring HookForm hook:
 	const {
 		register,
 		control,
@@ -30,19 +50,19 @@ const CreateAnnounce = () => {
 		formState: { errors }
 	} = useForm({
 		mode: 'onChange',
-		shouldFocusError: true,
-		defaultValues: {
-			title: 'Chouette Maison',
-			propertyType: { value: 1, label: 'Maison' },
-			location: "441 rue d'abbeville",
-			postalCode: '80000',
-			city: 'Amiens',
-			country: 'France',
-			surface: '250',
-			roomNumber: '5',
-			transactionType: { value: 1, label: 'Achat' },
-			amount: '200000'
-		}
+		shouldFocusError: true
+		// defaultValues: {
+		// 	title: 'Chouette Maison',
+		// 	propertyType: { value: 1, label: 'Maison' },
+		// 	location: "441 rue d'abbeville",
+		// 	postalCode: '80000',
+		// 	city: 'Amiens',
+		// 	country: 'France',
+		// 	surface: '250',
+		// 	roomNumber: '5',
+		// 	transactionType: { value: 1, label: 'Achat' },
+		// 	amount: '200000'
+		// }
 	})
 
 	// Gestion de la pagination:
@@ -237,8 +257,13 @@ const CreateAnnounce = () => {
 
 		// Génération et traitement du formData (retrait des datas undefined):
 		var formData = new FormData()
-		for (const key in data) {
-			if (data[key] !== undefined) {
+		for (let key in data) {
+			if (data[key] !== undefined && key.substring(0, 5) !== 'photo') {
+				formData.append(key, data[key])
+			}
+		}
+		for (let key in data) {
+			if (data[key] !== undefined && key.substring(0, 5) === 'photo') {
 				formData.append(key, data[key])
 			}
 		}
@@ -263,10 +288,19 @@ const CreateAnnounce = () => {
 					createSeller(checked, res.datas, token)
 						.then((res2) => {
 							if (res2 !== undefined) {
-								navigate('/')
+								navigate('/home', {
+									state: {
+										snackParams: {
+											message: 'Annonce ajoutée !',
+											severity: 'success'
+										}
+									}
+								})
 							} else {
-								// setSnackText('Erreur Serveur !')
-								// setIsSnackVisible(true)
+								setSnackParams({
+									message: 'Erreur serveur !',
+									severity: 'error'
+								})
 							}
 						})
 						.catch(async (err) => {
@@ -274,8 +308,10 @@ const CreateAnnounce = () => {
 							console.log('err2:', err)
 						})
 				} else {
-					// setSnackText('Erreur Serveur !')
-					// setIsSnackVisible(true)
+					setSnackParams({
+						message: 'Erreur serveur !',
+						severity: 'error'
+					})
 				}
 			})
 			// On Promise Reject
@@ -294,39 +330,52 @@ const CreateAnnounce = () => {
 								message += '\n-' + error[key]
 							})
 						})
-						// setSnackText(message)
+						setSnackParams({
+							message,
+							severity: 'error'
+						})
 					} else {
-						// // Handling Classic error:
-						// setSnackText(message)
+						// Handling Classic error:
+						setSnackParams({
+							message,
+							severity: 'error'
+						})
 					}
 				} else {
-					// setSnackText(err)
+					setSnackParams({
+						message: err,
+						severity: 'error'
+					})
 				}
-
-				// setIsSnackVisible(true)
 			})
 	}
 
 	return (
-		<>
+		<AnimatedPage>
 			<Title text="Créer" />
-			<Form
-				handleSubmit={handleSubmit}
-				onSubmit={onSubmit}
-				visiblePage={visiblePage}
-				control={control}
-				errors={errors}
-				handleNavigation={handleNavigation}
-				token={token}
-				checked={checked}
-				setChecked={setChecked}
-				register={register}
-				datasToDisplay={datasToDisplay}
-				seller={seller}
-				datasToValidate={datasToValidate}
-				handleValidation={handleValidation}
-			/>
-		</>
+			<Row className="d-flex justify-content-center">
+				<Col xs={10} md={8}>
+					<Form
+						handleSubmit={handleSubmit}
+						onSubmit={onSubmit}
+						visiblePage={visiblePage}
+						control={control}
+						errors={errors}
+						handleNavigation={handleNavigation}
+						token={token}
+						checked={checked}
+						setChecked={setChecked}
+						register={register}
+						datasToDisplay={datasToDisplay}
+						seller={seller}
+						datasToValidate={datasToValidate}
+						handleValidation={handleValidation}
+					/>
+				</Col>
+			</Row>
+			{/* Snackbar */}
+			{renderSnack}
+		</AnimatedPage>
 	)
 }
 

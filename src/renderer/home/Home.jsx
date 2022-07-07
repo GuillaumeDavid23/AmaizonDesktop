@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import { Button, Col, Row } from 'react-bootstrap'
 import { AnimatedPage } from '../globalComponents'
 import Title from '../globalComponents/Title/Title'
@@ -10,14 +10,33 @@ import { Pie } from 'react-chartjs-2'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import AgentCard from './components/AgentCard'
 import moment from 'moment'
+import { useSlideSnack } from '../hooks'
+import { useLocation } from 'react-router-dom'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 const Home = (props) => {
-	const [allAgents, setAllAgents] = React.useState([])
-	const [charts, setCharts] = React.useState([])
-	const [appointments, setAppointments] = React.useState([])
+	const [allAgents, setAllAgents] = useState([])
+	const [charts, setCharts] = useState([])
+	const [appointments, setAppointments] = useState([])
 
-	React.useEffect(() => {
+	// Gestion de la snack Params:
+	const [snackParams, setSnackParams] = useState({
+		message: '',
+		severity: 'error'
+	})
+	const { handleOpen, renderSnack } = useSlideSnack({
+		message: snackParams.message,
+		time: 2000,
+		severity: snackParams.severity
+	})
+	useEffect(() => {
+		if (snackParams.message) {
+			handleOpen()
+		}
+	}, [snackParams])
+
+	let { state } = useLocation()
+	useEffect(() => {
 		fetch(window.electron.url + '/api/user/agents', {
 			method: 'GET',
 			headers: {
@@ -70,11 +89,16 @@ const Home = (props) => {
 			})
 			.then((response) => {
 				setAppointments(response.datas)
-				console.log(response.datas)
 			})
 			.catch((error) => {
 				console.log(error)
 			})
+
+		// Récupération d'une potentiel props SnackBar:
+		if (state && state.snackParams) {
+			let { message, severity } = state.snackParams
+			setSnackParams({ message, severity })
+		}
 	}, [])
 
 	const ChartJS = {
@@ -156,6 +180,8 @@ const Home = (props) => {
 					</Col>
 				</Row>
 			</Box>
+			{/* Snackbar */}
+			{renderSnack}
 		</AnimatedPage>
 	)
 }
