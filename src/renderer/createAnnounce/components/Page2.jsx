@@ -10,129 +10,137 @@ const Page2 = ({ visiblePage, control, errors, handleNavigation }) => {
 			<h1>Etape 2 - Infos Géographiques:</h1>
 
 			{/* Location Form part */}
-			<Controller
-				name="location"
-				control={control}
-				rules={{
-					required: {
-						value: true,
-						message: 'Numéro et nom requis.'
-					},
-					pattern: {
-						value: REGSTRING.value,
-						message: REGSTRING.message
-					}
-				}}
-				render={({ field }) => (
-					<OutlinedInput
-						className={`ps-2 my-3 form-control ${
-							errors.location ? 'is-invalid' : ''
-						}`}
-						variant="filled"
-						placeholder="Numéro et nom de rue"
-						{...field}
-					/>
+			<Box className="my-3">
+				<Controller
+					name="location"
+					control={control}
+					rules={{
+						required: {
+							value: true,
+							message: 'Numéro et nom requis.'
+						},
+						pattern: {
+							value: REGSTRING.value,
+							message: REGSTRING.message
+						}
+					}}
+					render={({ field }) => (
+						<OutlinedInput
+							className={`ps-2 form-control ${
+								errors.location ? 'is-invalid' : ''
+							}`}
+							variant="filled"
+							placeholder="Numéro et nom de rue"
+							{...field}
+						/>
+					)}
+				/>
+				{errors?.location && (
+					<span className="invalid-feedback fw-bold text-center">
+						{errors.location.message}
+					</span>
 				)}
-			/>
-			{errors?.location && (
-				<span className="invalid-feedback fw-bold text-center">
-					{errors.location.message}
-				</span>
-			)}
+			</Box>
 
 			{/* PostalCode Form part */}
-			<Controller
-				name="postalCode"
-				control={control}
-				rules={{
-					required: {
-						value: true,
-						message: 'Code postal requis.'
-					},
-					pattern: {
-						value: REGID.value,
-						message: REGID.message
-					}
-				}}
-				render={({ field }) => (
-					<OutlinedInput
-						type="number"
-						className={`ps-2 my-3 form-control ${
-							errors.postalCode ? 'is-invalid' : ''
-						}`}
-						variant="filled"
-						placeholder="Code postal"
-						{...field}
-					/>
+			<Box className="my-3">
+				<Controller
+					name="postalCode"
+					control={control}
+					rules={{
+						required: {
+							value: true,
+							message: 'Code postal requis.'
+						},
+						pattern: {
+							value: REGID.value,
+							message: REGID.message
+						}
+					}}
+					render={({ field }) => (
+						<OutlinedInput
+							type="number"
+							className={`ps-2 form-control ${
+								errors.postalCode ? 'is-invalid' : ''
+							}`}
+							variant="filled"
+							placeholder="Code postal"
+							{...field}
+						/>
+					)}
+				/>
+				{errors?.postalCode && (
+					<span className="invalid-feedback fw-bold text-center">
+						{errors.postalCode.message}
+					</span>
 				)}
-			/>
-			{errors?.postalCode && (
-				<span className="invalid-feedback fw-bold text-center">
-					{errors.postalCode.message}
-				</span>
-			)}
+			</Box>
 
 			{/* City Form part */}
-			<Controller
-				name="city"
-				control={control}
-				rules={{
-					required: {
-						value: true,
-						message: 'Ville requise.'
-					},
-					pattern: {
-						value: REGSTRING.value,
-						message: REGSTRING.message
-					}
-				}}
-				render={({ field }) => (
-					<OutlinedInput
-						className={`ps-2 my-3 form-control ${
-							errors.city ? 'is-invalid' : ''
-						}`}
-						variant="filled"
-						placeholder="Ville"
-						{...field}
-					/>
+			<Box className="my-3">
+				<Controller
+					name="city"
+					control={control}
+					rules={{
+						required: {
+							value: true,
+							message: 'Ville requise.'
+						},
+						pattern: {
+							value: REGSTRING.value,
+							message: REGSTRING.message
+						}
+					}}
+					render={({ field }) => (
+						<OutlinedInput
+							className={`ps-2 form-control ${
+								errors.city ? 'is-invalid' : ''
+							}`}
+							variant="filled"
+							placeholder="Ville"
+							{...field}
+						/>
+					)}
+				/>
+				{errors?.city && (
+					<span className="invalid-feedback fw-bold text-center">
+						{errors.city.message}
+					</span>
 				)}
-			/>
-			{errors?.city && (
-				<span className="invalid-feedback fw-bold text-center">
-					{errors.city.message}
-				</span>
-			)}
+			</Box>
 
 			{/* Country Form part */}
-			<Controller
-				control={control}
-				rules={{
-					required: {
-						value: true,
-						message: 'Pays requis.'
-					},
-					pattern: {
-						value: REGSTRING.value,
-						message: REGSTRING.message
-					}
-				}}
-				render={({ field }) => (
-					<OutlinedInput
-						className={`ps-2 my-3 form-control ${
-							errors.country ? 'is-invalid' : ''
-						}`}
-						variant="filled"
-						placeholder="Pays"
-						{...field}
-					/>
+			<Box className="my-3">
+				<Controller
+					control={control}
+					rules={{
+						required: {
+							value: true,
+							message: 'Pays requis.'
+						},
+						pattern: {
+							value: REGSTRING.value,
+							message: REGSTRING.message
+						}
+					}}
+					render={({ field }) => (
+						<OutlinedInput
+							className={`ps-2 form-control ${
+								errors.country ? 'is-invalid' : ''
+							}`}
+							variant="filled"
+							placeholder="Pays"
+							{...field}
+						/>
+					)}
+					name="country"
+				/>
+				{errors?.country && (
+					<span className="invalid-feedback fw-bold text-center">
+						{errors.country.message}
+					</span>
 				)}
-				name="country"
-			/>
-			{errors?.country && (
-				<span className="invalid-feedback fw-bold text-center">
-					{errors.country.message}
-				</span>
-			)}
+			</Box>
 
 			<FormNavigation
 				visiblePage={visiblePage}

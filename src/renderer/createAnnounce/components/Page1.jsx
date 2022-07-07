@@ -12,97 +12,104 @@ const Page1 = ({ visiblePage, control, errors, handleNavigation }) => {
 		{ value: 2, label: 'Appartement' }
 	]
 
+	console.log(errors)
+
 	return (
 		<Box className={`form-part ${visiblePage !== 1 ? 'd-none' : ''}`}>
 			<h1>Etape 1 - Infos principales:</h1>
 
 			{/* Title Form part */}
-			<Controller
-				name="title"
-				control={control}
-				rules={{
-					required: {
-						value: true,
-						message: 'Intitulé de la propriété requis.'
-					},
-					pattern: {
-						value: REGSTRING.value,
-						message: REGSTRING.message
-					}
-				}}
-				render={({ field }) => (
-					<OutlinedInput
-						className={`my-3 ps-2 form-control ${
-							errors.title ? 'is-invalid' : ''
-						}`}
-						variant="filled"
-						placeholder="Titre"
-						{...field}
-					/>
+			<Box className="my-3">
+				<Controller
+					name="title"
+					control={control}
+					rules={{
+						required: {
+							value: true,
+							message: 'Intitulé de la propriété requis.'
+						},
+						pattern: {
+							value: REGSTRING.value,
+							message: REGSTRING.message
+						}
+					}}
+					render={({ field }) => (
+						<OutlinedInput
+							className={`ps-2 form-control ${
+								errors.title ? 'is-invalid' : ''
+							}`}
+							variant="filled"
+							placeholder="Titre"
+							{...field}
+						/>
+					)}
+				/>
+				{errors?.title && (
+					<span className="invalid-feedback fw-bold text-center">
+						{errors.title.message}
+					</span>
 				)}
-			/>
-			{errors?.title && (
-				<span className="invalid-feedback fw-bold text-center">
-					{errors.title.message}
-				</span>
-			)}
+			</Box>
 
 			{/* PropertyType Form part */}
-			<Controller
-				name="propertyType"
-				control={control}
-				rules={{
-					required: {
-						value: true,
-						message: 'Type de propriété requis.'
-					},
-					pattern: {
-						value: REGSTRING.value,
-						message: REGSTRING.message
-					}
-				}}
-				render={({ field }) => (
-					<Select
-						className="my-3"
-						options={propertyTypes}
-						placeholder={'Type de propriété'}
-						{...field}
-					/>
+			<Box className="my-3">
+				<Controller
+					name="propertyType"
+					control={control}
+					rules={{
+						required: {
+							value: true,
+							message: 'Type de propriété requis.'
+						},
+						pattern: {
+							value: REGSTRING.value,
+							message: REGSTRING.message
+						}
+					}}
+					render={({ field }) => (
+						<Select
+							options={propertyTypes}
+							placeholder={'Type de propriété'}
+							{...field}
+						/>
+					)}
+				/>
+				{errors?.propertyType && (
+					<span className="invalid-feedback fw-bold text-center">
+						{errors.propertyType.message}
+					</span>
 				)}
-			/>
-			{errors?.propertyType && (
-				<span className="invalid-feedback fw-bold text-center">
-					{errors.propertyType.message}
-				</span>
-			)}
+			</Box>
 
 			{/* Description Form part */}
-			<Controller
-				name="description"
-				control={control}
-				rules={{
-					pattern: {
-						value: REGSTRING.value,
-						message: REGSTRING.message
-					}
-				}}
-				render={({ field }) => (
-					<OutlinedInput
-						className={`my-3 ps-2 form-control ${
-							errors.description ? 'is-invalid' : ''
-						}`}
-						style={{ width: '100%', height: 150 }}
-						variant="filled"
-						placeholder="Titre"
-						{...field}
-					/>
+			<Box className="my-3">
+				<Controller
+					name="description"
+					control={control}
+					rules={{
+						pattern: {
+							value: REGSTRING.value,
+							message: REGSTRING.message
+						}
+					}}
+					render={({ field }) => (
+						<OutlinedInput
+							className={`ps-2 form-control ${
+								errors.description ? 'is-invalid' : ''
+							}`}
+							style={{ width: '100%', height: 150 }}
+							variant="filled"
+							placeholder="Description"
+							{...field}
+						/>
+					)}
+				/>
+				{errors?.description && (
+					<span className="invalid-feedback fw-bold text-center">
+						{errors.description.message}
+					</span>
 				)}
-			/>
-			{errors?.description && (
-				<span className="invalid-feedback fw-bold text-center">
-					{errors.description.message}
-				</span>
-			)}
+			</Box>
 
 			<FormNavigation
 				visiblePage={visiblePage}

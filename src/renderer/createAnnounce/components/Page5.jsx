@@ -18,64 +18,67 @@ const Page5 = ({ visiblePage, control, errors, handleNavigation }) => {
 			<h1>Etape 5 - Infos financières:</h1>
 
 			{/* TransactionType Form part */}
-			<Controller
-				name="transactionType"
-				control={control}
-				rules={{
-					required: {
-						value: true,
-						message: 'Type de transaction requis.'
-					},
-					pattern: {
-						value: REGSTRING.value,
-						message: REGSTRING.message
-					}
-				}}
-				render={({ field }) => (
-					<Select
-						className="my-3"
-						options={transactionTypes}
-						placeholder={'Type de transaction'}
-						{...field}
-					/>
+			<Box className="my-3">
+				<Controller
+					name="transactionType"
+					control={control}
+					rules={{
+						required: {
+							value: true,
+							message: 'Type de transaction requis.'
+						},
+						pattern: {
+							value: REGSTRING.value,
+							message: REGSTRING.message
+						}
+					}}
+					render={({ field }) => (
+						<Select
+							options={transactionTypes}
+							placeholder={'Type de transaction'}
+							{...field}
+						/>
+					)}
+				/>
+				{errors?.transactionType && (
+					<span className="invalid-feedback fw-bold text-center">
+						{errors.transactionType.message}
+					</span>
 				)}
-			/>
-			{errors?.transactionType && (
-				<span className="invalid-feedback fw-bold text-center">
-					{errors.transactionType.message}
-				</span>
-			)}
+			</Box>
 
 			{/* Amount Form part */}
-			<Controller
-				name="amount"
-				control={control}
-				rules={{
-					required: {
-						value: true,
-						message: 'Montant requis.'
-					},
-					pattern: {
-						value: REGNUM.value,
-						message: REGNUM.message
-					}
-				}}
-				render={({ field }) => (
-					<OutlinedInput
-						className={`ps-2 my-3 form-control ${
-							errors.amount ? 'is-invalid' : ''
-						}`}
-						variant="filled"
-						placeholder="Montant"
-						{...field}
-					/>
+			<Box className="my-3">
+				<Controller
+					name="amount"
+					control={control}
+					rules={{
+						required: {
+							value: true,
+							message: 'Montant requis.'
+						},
+						pattern: {
+							value: REGNUM.value,
+							message: REGNUM.message
+						}
+					}}
+					render={({ field }) => (
+						<OutlinedInput
+							className={`ps-2 my-3 form-control ${
+								errors.amount ? 'is-invalid' : ''
+							}`}
+							variant="filled"
+							placeholder="Montant"
+							{...field}
+						/>
+					)}
+				/>
+				{errors?.amount && (
+					<span className="invalid-feedback fw-bold text-center">
+						{errors.amount.message}
+					</span>
 				)}
-			/>
-			{errors?.amount && (
-				<span className="invalid-feedback fw-bold text-center">
-					{errors.amount.message}
-				</span>
-			)}
+			</Box>
 
 			{/* IsToSell Form part */}
 			<Box className="my-3">

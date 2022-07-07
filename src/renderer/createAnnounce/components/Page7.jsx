@@ -12,7 +12,7 @@ const Page7 = ({ visiblePage, handleNavigation, register, errors }) => {
 			<Box>
 				{photosLabel.map((label) => {
 					return (
-						<>
+						<Box key={label} className="my-3">
 							<label className="d-flex justify-content-center align-items-center my-3">
 								Photo {label.substring(5, 6)}:
 								<input
@@ -26,7 +26,7 @@ const Page7 = ({ visiblePage, handleNavigation, register, errors }) => {
 									{errors[label].message}
 								</span>
 							)}
-						</>
+						</Box>
 					)
 				})}
 			</Box>

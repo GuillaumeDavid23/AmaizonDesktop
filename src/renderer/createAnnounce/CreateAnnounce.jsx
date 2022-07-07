@@ -18,9 +18,28 @@ import { createProperty } from '../services/Property'
 // Utils imports:
 import { strRandom } from '../../utils/funcs'
 
+// Hooks imports:
+import { useSlideSnack } from '../hooks'
+
 const CreateAnnounce = () => {
 	// Récupération du token:
 	const token = JSON.parse(localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON'))
+
+	// Gestion de la snack Params:
+	const [snackParams, setSnackParams] = useState({
+		message: '',
+		severity: 'error'
+	})
+	const { handleOpen, renderSnack } = useSlideSnack({
+		message: snackParams.message,
+		time: 2000,
+		severity: snackParams.severity
+	})
+	useEffect(() => {
+		if (snackParams.message) {
+			handleOpen()
+		}
+	}, [snackParams])
 
 	// Destructuring HookForm hook:
 	const {
@@ -30,19 +49,19 @@ const CreateAnnounce = () => {
 		formState: { errors }
 	} = useForm({
 		mode: 'onChange',
-		shouldFocusError: true,
-		defaultValues: {
-			title: 'Chouette Maison',
-			propertyType: { value: 1, label: 'Maison' },
-			location: "441 rue d'abbeville",
-			postalCode: '80000',
-			city: 'Amiens',
-			country: 'France',
-			surface: '250',
-			roomNumber: '5',
-			transactionType: { value: 1, label: 'Achat' },
-			amount: '200000'
-		}
+		shouldFocusError: true
+		// defaultValues: {
+		// 	title: 'Chouette Maison',
+		// 	propertyType: { value: 1, label: 'Maison' },
+		// 	location: "441 rue d'abbeville",
+		// 	postalCode: '80000',
+		// 	city: 'Amiens',
+		// 	country: 'France',
+		// 	surface: '250',
+		// 	roomNumber: '5',
+		// 	transactionType: { value: 1, label: 'Achat' },
+		// 	amount: '200000'
+		// }
 	})
 
 	// Gestion de la pagination:
@@ -237,8 +256,13 @@ const CreateAnnounce = () => {
 
 		// Génération et traitement du formData (retrait des datas undefined):
 		var formData = new FormData()
-		for (const key in data) {
-			if (data[key] !== undefined) {
+		for (let key in data) {
+			if (data[key] !== undefined && key.substring(0, 5) !== 'photo') {
+				formData.append(key, data[key])
+			}
+		}
+		for (let key in data) {
+			if (data[key] !== undefined && key.substring(0, 5) === 'photo') {
 				formData.append(key, data[key])
 			}
 		}
@@ -263,10 +287,19 @@ const CreateAnnounce = () => {
 					createSeller(checked, res.datas, token)
 						.then((res2) => {
 							if (res2 !== undefined) {
-								navigate('/')
+								navigate('/home', {
+									state: {
+										snackParams: {
+											message: 'Annonce ajoutée !',
+											severity: 'success'
+										}
+									}
+								})
 							} else {
-								// setSnackText('Erreur Serveur !')
-								// setIsSnackVisible(true)
+								setSnackParams({
+									message: 'Erreur serveur !',
+									severity: 'error'
+								})
 							}
 						})
 						.catch(async (err) => {
@@ -274,8 +307,10 @@ const CreateAnnounce = () => {
 							console.log('err2:', err)
 						})
 				} else {
-					// setSnackText('Erreur Serveur !')
-					// setIsSnackVisible(true)
+					setSnackParams({
+						message: 'Erreur serveur !',
+						severity: 'error'
+					})
 				}
 			})
 			// On Promise Reject
@@ -294,16 +329,23 @@ const CreateAnnounce = () => {
 								message += '\n-' + error[key]
 							})
 						})
-						// setSnackText(message)
+						setSnackParams({
+							message,
+							severity: 'error'
+						})
 					} else {
-						// // Handling Classic error:
-						// setSnackText(message)
+						// Handling Classic error:
+						setSnackParams({
+							message,
+							severity: 'error'
+						})
 					}
 				} else {
-					// setSnackText(err)
+					setSnackParams({
+						message: err,
+						severity: 'error'
+					})
 				}
-
-				// setIsSnackVisible(true)
 			})
 	}
 
@@ -330,6 +372,8 @@ const CreateAnnounce = () => {
 					/>
 				</Col>
 			</Row>
+			{/* Snackbar */}
+			{renderSnack}
 		</>
 	)
 }
