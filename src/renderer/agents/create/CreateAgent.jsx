@@ -1,13 +1,39 @@
+import { useState, useEffect } from 'react'
+import { useSlideSnack } from '../../hooks'
 import { AnimatedPage } from '../../globalComponents'
 import { Box } from '@mui/material'
 import { Title } from '../../globalComponents'
 import './CreateAgent.css'
 import { OutlinedInput } from '@mui/material'
 import { useForm, Controller } from 'react-hook-form'
-import { REGSTRING, REGEMAIL, REGTEL } from '../../../utils/regex'
+import { REGSTRING, REGEMAIL, REGPASSWORD, REGTEL } from '../../../utils/regex'
 import BtnGeneral from '../../globalComponents/BtnGeneral/BtnGeneral'
+import { createAgent as addAgent, pushAgentAvatar } from '../../services/Agent'
+import { useNavigate } from 'react-router-dom'
 
 const CreateAgent = () => {
+	// Déclaration navigation:
+	const navigate = useNavigate()
+
+	// Gestion de la snack Params:
+	const [snackParams, setSnackParams] = useState({
+		message: '',
+		severity: 'error'
+	})
+	const { handleOpen, renderSnack } = useSlideSnack({
+		message: snackParams.message,
+		time: 2000,
+		severity: snackParams.severity
+	})
+	useEffect(() => {
+		if (snackParams.message) {
+			handleOpen()
+		}
+	}, [snackParams])
+
+	// Récupération du token:
+	const token = JSON.parse(localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON'))
+
 	// Destructuring HookForm hook
 	const {
 		register,
@@ -16,11 +42,52 @@ const CreateAgent = () => {
 		formState: { errors }
 	} = useForm({
 		mode: 'onChange',
-		shouldFocusError: true
+		shouldFocusError: true,
+		defaultValues: {
+			lastname: 'Mancheron',
+			firstname: 'Vincent',
+			email: 'vmancheron@yahoo.fr',
+			password: 'Ve7smdpm6',
+			phonePro: '0642505142'
+		}
 	})
 
-	const onSubmit = () => {
-		alert('submit')
+	const onSubmit = async (data) => {
+		// Séparation de la photo pour le 2ème appel:
+		let photo = data.photo[0]
+		delete data.photo
+
+		// Constitution des datas Agent:
+		data.roles = 'agent'
+		data.agent = { phonePro: data.phonePro }
+		delete data.phonePro
+
+		try {
+			// Création de l'agent:
+			let response = await addAgent(token, data)
+
+			if (response) {
+				// Push de la photo:
+				let photoBody = new FormData()
+				photoBody.append('_id', response.user._id)
+				photoBody.append('photo', photo)
+				await pushAgentAvatar(token, photoBody)
+
+				// Redirection:
+				navigate('/agents', {
+					state: {
+						snackParams: {
+							message: 'Agent crée !',
+							severity: 'success'
+						}
+					}
+				})
+			} else {
+				setSnackParams({ message: 'Erreur', severity: 'error' })
+			}
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	return (
@@ -121,6 +188,36 @@ const CreateAgent = () => {
 						)}
 					</Box>
 
+					{/* Password Form part */}
+					<Box className="my-3">
+						<Controller
+							name="password"
+							control={control}
+							rules={{
+								required: 'Mot de passe requis.',
+								pattern: {
+									value: REGPASSWORD.value,
+									message: REGPASSWORD.message
+								}
+							}}
+							render={({ field }) => (
+								<OutlinedInput
+									className={`ps-2 form-control ${
+										errors.password ? 'is-invalid' : ''
+									}`}
+									variant="filled"
+									placeholder="Mot de passe"
+									{...field}
+								/>
+							)}
+						/>
+						{errors?.password && (
+							<span className="invalid-feedback fw-bold text-center">
+								{errors.password.message}
+							</span>
+						)}
+					</Box>
+
 					{/* PhonePro Form part */}
 					<Box className="my-3">
 						<Controller
@@ -155,11 +252,12 @@ const CreateAgent = () => {
 					<Box className="my-3">
 						<label
 							htmlFor="photo"
-							className="d-flex justify-content-around"
+							className={`d-flex justify-content-around${
+								errors.photo ? ' is-invalid' : ''
+							}`}
 						>
 							<span>Photo de l'agent:</span>
 							<input
-								className={errors.photo ? 'is-invalid' : ''}
 								id="photo"
 								type="file"
 								{...register('photo', {
@@ -175,10 +273,12 @@ const CreateAgent = () => {
 					</Box>
 
 					<Box className="d-flex justify-content-center my-3">
-						<BtnGeneral text={'Valider'} />
+						<BtnGeneral text={'Créer le client'} />
 					</Box>
 				</form>
 			</Box>
+			{/* Snackbar */}
+			{renderSnack}
 		</AnimatedPage>
 	)
 }

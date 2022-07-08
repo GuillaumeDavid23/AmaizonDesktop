@@ -50,19 +50,19 @@ const CreateAnnounce = () => {
 		formState: { errors }
 	} = useForm({
 		mode: 'onChange',
-		shouldFocusError: true
-		// defaultValues: {
-		// 	title: 'Chouette Maison',
-		// 	propertyType: { value: 1, label: 'Maison' },
-		// 	location: "441 rue d'abbeville",
-		// 	postalCode: '80000',
-		// 	city: 'Amiens',
-		// 	country: 'France',
-		// 	surface: '250',
-		// 	roomNumber: '5',
-		// 	transactionType: { value: 1, label: 'Achat' },
-		// 	amount: '200000'
-		// }
+		shouldFocusError: true,
+		defaultValues: {
+			title: 'Chouette Maison',
+			propertyType: { value: 1, label: 'Maison' },
+			location: "441 rue d'abbeville",
+			postalCode: '80000',
+			city: 'Amiens',
+			country: 'France',
+			surface: '250',
+			roomNumber: '5',
+			transactionType: { value: 1, label: 'Achat' },
+			amount: '200000'
+		}
 	})
 
 	// Gestion de la pagination:

@@ -34,11 +34,11 @@ export const REGEMAIL = {
 	message: 'Vous devez indiquer un email valide.'
 }
 
-// export const REGPASSWORD = {
-// 	value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
-// 	message:
-// 		'Le mot de passe renseigné ne correspond pas au format requis: Au minimum 8 caractères; au moins une lettre majuscule, une lettre minuscule et un chiffre.',
-// }
+export const REGPASSWORD = {
+	value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+	message:
+		'Le mot de passe renseigné ne correspond pas au format requis: Au minimum 8 caractères; au moins une lettre majuscule, une lettre minuscule et un chiffre.'
+}
 
 export const REGTEL = {
 	value: /^((\+)33|0|0033)[1-9](\d{2}){4}$/g,
