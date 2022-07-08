@@ -8,8 +8,13 @@ import { OutlinedInput } from '@mui/material'
 import { useForm, Controller } from 'react-hook-form'
 import { REGSTRING, REGEMAIL, REGPASSWORD, REGTEL } from '../../../utils/regex'
 import BtnGeneral from '../../globalComponents/BtnGeneral/BtnGeneral'
-import { createAgent as addAgent, pushAgentAvatar } from '../../services/Agent'
-import { useNavigate } from 'react-router-dom'
+import {
+	createAgent as addAgent,
+	pushAgentAvatar,
+	getAgent,
+	updateAgent
+} from '../../services/Agent'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 const CreateAgent = () => {
 	// Déclaration navigation:
@@ -39,6 +44,7 @@ const CreateAgent = () => {
 		register,
 		control,
 		handleSubmit,
+		setValue,
 		formState: { errors }
 	} = useForm({
 		mode: 'onChange',
@@ -52,6 +58,25 @@ const CreateAgent = () => {
 		}
 	})
 
+	// Gestion de l'update:
+	let { state } = useLocation()
+	useEffect(() => {
+		if (state) {
+			getAgent(state.id, token)
+				.then((res) => {
+					let { lastname, firstname, email, agent } = res.data
+					setValue('lastname', lastname)
+					setValue('firstname', firstname)
+					setValue('email', email)
+					setValue('phonePro', agent.phonePro)
+				})
+				.catch((error) => {
+					console.log(error)
+					setSnackParams({ message: 'Erreur', severity: 'error' })
+				})
+		}
+	}, [])
+
 	const onSubmit = async (data) => {
 		// Séparation de la photo pour le 2ème appel:
 		let photo = data.photo[0]
@@ -63,13 +88,15 @@ const CreateAgent = () => {
 		delete data.phonePro
 
 		try {
-			// Création de l'agent:
-			let response = await addAgent(token, data)
+			// Création/Modification de l'agent:
+			let response = !state
+				? await addAgent(token, data)
+				: await updateAgent(state.id, token, data)
 
 			if (response) {
 				// Push de la photo:
 				let photoBody = new FormData()
-				photoBody.append('_id', response.user._id)
+				photoBody.append('_id', !state ? response.user._id : state.id)
 				photoBody.append('photo', photo)
 				await pushAgentAvatar(token, photoBody)
 
@@ -77,7 +104,7 @@ const CreateAgent = () => {
 				navigate('/agents', {
 					state: {
 						snackParams: {
-							message: 'Agent crée !',
+							message: `Agent ${!state ? 'crée' : 'modifié'} !`,
 							severity: 'success'
 						}
 					}
@@ -189,34 +216,36 @@ const CreateAgent = () => {
 					</Box>
 
 					{/* Password Form part */}
-					<Box className="my-3">
-						<Controller
-							name="password"
-							control={control}
-							rules={{
-								required: 'Mot de passe requis.',
-								pattern: {
-									value: REGPASSWORD.value,
-									message: REGPASSWORD.message
-								}
-							}}
-							render={({ field }) => (
-								<OutlinedInput
-									className={`ps-2 form-control ${
-										errors.password ? 'is-invalid' : ''
-									}`}
-									variant="filled"
-									placeholder="Mot de passe"
-									{...field}
-								/>
+					{!state && (
+						<Box className="my-3">
+							<Controller
+								name="password"
+								control={control}
+								rules={{
+									required: 'Mot de passe requis.',
+									pattern: {
+										value: REGPASSWORD.value,
+										message: REGPASSWORD.message
+									}
+								}}
+								render={({ field }) => (
+									<OutlinedInput
+										className={`ps-2 form-control ${
+											errors.password ? 'is-invalid' : ''
+										}`}
+										variant="filled"
+										placeholder="Mot de passe"
+										{...field}
+									/>
+								)}
+							/>
+							{errors?.password && (
+								<span className="invalid-feedback fw-bold text-center">
+									{errors.password.message}
+								</span>
 							)}
-						/>
-						{errors?.password && (
-							<span className="invalid-feedback fw-bold text-center">
-								{errors.password.message}
-							</span>
-						)}
-					</Box>
+						</Box>
+					)}
 
 					{/* PhonePro Form part */}
 					<Box className="my-3">
@@ -272,8 +301,21 @@ const CreateAgent = () => {
 						)}
 					</Box>
 
+					{state && (
+						<Box className="d-flex justify-content-around mb-3">
+							<span>Photo actuelle:</span>
+							<img
+								className="w-25"
+								src={`${window.electron.url}/avatar/${state.id}.png`}
+								alt="Avatar"
+							/>
+						</Box>
+					)}
+
 					<Box className="d-flex justify-content-center my-3">
-						<BtnGeneral text={'Créer le client'} />
+						<BtnGeneral
+							text={!state ? "Créer l'agent" : "Modifier l'agent"}
+						/>
 					</Box>
 				</form>
 			</Box>

@@ -3,9 +3,12 @@ import { Box } from '@mui/material'
 import { useState, useEffect } from 'react'
 import { getAgents } from '../services/Agent'
 import { useSlideSnack } from '../hooks'
-import { useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 const Agents = () => {
+	// Déclaration useNavigate:
+	let navigate = useNavigate()
+
 	// Gestion de la snack Params:
 	const [snackParams, setSnackParams] = useState({
 		message: '',
@@ -44,8 +47,19 @@ const Agents = () => {
 				<ul>
 					{agents.map((agent) => {
 						return (
-							<li key={agent._id}>
-								{agent.lastname} {agent.firstname}
+							<li key={agent._id} className="d-flex">
+								<span>
+									{agent.lastname} {agent.firstname}
+								</span>
+								<button
+									onClick={() =>
+										navigate('/createAgent', {
+											state: { id: agent._id }
+										})
+									}
+								>
+									Modifier
+								</button>
 							</li>
 						)
 					})}
