@@ -3,7 +3,7 @@ import FormNavigation from './FormNavigation'
 import { useState, useEffect } from 'react'
 import OutlinedInput from '@mui/material/OutlinedInput'
 // import { useAuth } from '../../hooks'
-import { searchClient } from '../../services/Client'
+import { searchClient, getClient } from '../../services/Client'
 // import Checkbox from '../../globalComponents/Checkbox'
 
 const Page6 = ({
@@ -14,6 +14,15 @@ const Page6 = ({
 	checked,
 	setChecked
 }) => {
+	// Récupération du vendeur à l'update:
+	useEffect(() => {
+		if (checked && !searchSeller) {
+			getClient(checked, token).then((res) => {
+				setSearchSeller(res.data.lastname)
+			})
+		}
+	}, [checked])
+
 	// Recherche du Seller:
 	const [searchSeller, setSearchSeller] = useState('')
 	const [sellers, setSellers] = useState([])

@@ -1,23 +1,30 @@
 // React imports:
 import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 // Components imports:
-import Title from '../globalComponents/Title/Title'
 import Form from './components/Form'
 import { Row, Col } from 'react-bootstrap'
-import { AnimatedPage } from '../globalComponents'
+import { AnimatedPage, Title } from '../globalComponents'
 
 // CSS imports:
 import './CreateAnnounce.css'
 
 // Services imports:
-import { getClient, createSeller } from '../services/Client'
-import { createProperty } from '../services/Property'
+import {
+	getClient,
+	createSeller,
+	getSellerForOneProperty
+} from '../services/Client'
+import {
+	createProperty,
+	updateProperty,
+	getOneProperty
+} from '../services/Property'
 
 // Utils imports:
-import { strRandom } from '../../utils/funcs'
+import { strRandom, catchError } from '../../utils/funcs'
 
 // Hooks imports:
 import { useSlideSnack } from '../hooks'
@@ -47,10 +54,26 @@ const CreateAnnounce = () => {
 		register,
 		control,
 		handleSubmit,
+		setValue,
 		formState: { errors }
 	} = useForm({
 		mode: 'onChange',
 		shouldFocusError: true,
+		// defaultValues: {
+		// 	title: '',
+		// 	propertyType: '',
+		// 	description: '',
+		// 	location: '',
+		// 	postalCode: '',
+		// 	city: '',
+		// 	country: '',
+		// 	surface: '',
+		// 	roomNumber: '',
+		// 	electricMeterRef: '',
+		// 	gasMeterRef: '',
+		// 	transactionType: { value: '', label: '' },
+		// 	amount: ''
+		// }
 		defaultValues: {
 			title: 'Chouette Maison',
 			propertyType: { value: 1, label: 'Maison' },
@@ -64,6 +87,84 @@ const CreateAnnounce = () => {
 			amount: '200000'
 		}
 	})
+
+	// Gestion de l'update:
+	const [propertyRef, setPropertyRef] = useState()
+	let { state } = useLocation()
+	useEffect(() => {
+		if (state) {
+			// Récupération du vendeur de la propriété:
+			getSellerForOneProperty(token, state.id).then((res0) => {
+				getOneProperty(token, state.id)
+					.then((res) => {
+						let {
+							title,
+							propertyType,
+							description,
+							fullLocation,
+							surface,
+							roomNumber,
+							electricMeterRef,
+							gasMeterRef,
+							list_equipments,
+							list_heater,
+							transactionType,
+							amount,
+							isToSell,
+							propertyRef
+						} = res.property
+						setValue('title', title)
+						setValue('propertyType', {
+							value: propertyType,
+							label: propertyType
+						})
+						setValue('description', description ?? '')
+						fullLocation = fullLocation.toString().split(',')
+						setValue('location', fullLocation[0])
+						setValue('postalCode', fullLocation[1])
+						setValue('city', fullLocation[2])
+						setValue('country', fullLocation[3])
+						setValue('surface', surface)
+						setValue('roomNumber', roomNumber)
+						setValue('electricMeterRef', electricMeterRef)
+						setValue('gasMeterRef', gasMeterRef)
+						let equipmentsToSelect = []
+						list_equipments.forEach((equipement) => {
+							equipmentsToSelect.push({
+								value: equipement,
+								label: equipement
+							})
+						})
+						setValue('list_equipments', equipmentsToSelect)
+						list_heater.forEach((heater) => {
+							heater = heater.split(' ')
+							if (heater[0] === 'Chauffage') {
+								setValue('heatingType', {
+									value: heater[1],
+									label: heater[1]
+								})
+							} else if (heater[0] === 'Eau') {
+								setValue('hotWaterType', {
+									value: heater[2],
+									label: heater[2]
+								})
+							}
+						})
+						setValue('transactionType', {
+							value: transactionType,
+							label: transactionType
+						})
+						setValue('amount', amount)
+						setValue('isToSell', isToSell)
+						setChecked(res0.datas._id)
+						setPropertyRef(propertyRef)
+					})
+					.catch((error) => {
+						setSnackParams(catchError(error))
+					})
+			})
+		}
+	}, [])
 
 	// Gestion de la pagination:
 	const [visiblePage, setVisiblePage] = useState(1)
@@ -195,17 +296,20 @@ const CreateAnnounce = () => {
 	const [datasToDisplay, setDatasToDisplay] = useState()
 	const [datasToValidate, setDatasToValidate] = useState()
 	const onSubmit = (data) => {
+		console.log('before:', { ...data })
 		// Hotfix isToSell:
 		if (data.isToSell === undefined) {
 			data.isToSell = true
 		}
 
 		// Temporaire, inclusion de propertyRef dans les datas:
-		data['propertyRef'] = strRandom({
-			includeUpperCase: true,
-			includeNumbers: true,
-			length: 10
-		})
+		data['propertyRef'] = !state
+			? strRandom({
+					includeUpperCase: true,
+					includeNumbers: true,
+					length: 10
+			  })
+			: propertyRef
 
 		// Récupération des valeurs dans le select list_equipments:
 		if (data.list_equipments !== undefined) {
@@ -214,6 +318,8 @@ const CreateAnnounce = () => {
 				formattedSuffList.push(equipment.label)
 			})
 			data.list_equipments = formattedSuffList
+		} else {
+			delete data.list_equipments
 		}
 
 		// Récupération des valeurs dans les select propertyType et transactionType:
@@ -225,14 +331,14 @@ const CreateAnnounce = () => {
 			let list_heater = []
 			if (data.heatingType !== undefined) {
 				list_heater.push('Chauffage ' + data.heatingType.label)
-				delete data.heatingType
 			}
-			if (data.heatingType !== undefined) {
+			if (data.hotWaterType !== undefined) {
 				list_heater.push('Eau chaude ' + data.hotWaterType.label)
-				delete data.hotWaterType
 			}
 			data['list_heater'] = list_heater
 		}
+		delete data.heatingType
+		delete data.hotWaterType
 
 		// Formattage de l'adresse:
 		data.location = [
@@ -254,6 +360,8 @@ const CreateAnnounce = () => {
 				delete data[iteration]
 			}
 		}
+
+		console.log('after:', data)
 
 		// Génération et traitement du formData (retrait des datas undefined):
 		var formData = new FormData()
@@ -281,78 +389,89 @@ const CreateAnnounce = () => {
 	// Gestion de la validation:
 	const navigate = useNavigate()
 	const handleValidation = (data) => {
-		createProperty(data, token)
-			// On Promise Successful
-			.then((res) => {
-				if (res !== undefined) {
-					createSeller(checked, res.datas, token)
-						.then((res2) => {
-							if (res2 !== undefined) {
-								navigate('/home', {
-									state: {
-										snackParams: {
-											message: 'Annonce ajoutée !',
-											severity: 'success'
+		if (!state) {
+			createProperty(data, token)
+				// On Promise Successful
+				.then((res) => {
+					if (res !== undefined) {
+						createSeller(checked, res.datas, token)
+							.then((res2) => {
+								if (res2 !== undefined) {
+									navigate('/home', {
+										state: {
+											snackParams: {
+												message: 'Annonce ajoutée !',
+												severity: 'success'
+											}
 										}
-									}
-								})
-							} else {
-								setSnackParams({
-									message: 'Erreur serveur !',
-									severity: 'error'
-								})
-							}
-						})
-						.catch(async (err) => {
-							await err
-							console.log('err2:', err)
-						})
-				} else {
-					setSnackParams({
-						message: 'Erreur serveur !',
-						severity: 'error'
-					})
-				}
-			})
-			// On Promise Reject
-			.catch(async (err) => {
-				await err
-				if (err._W) {
-					err = err._W
-				}
-				// Handling rejected Promise
-				if (typeof err === 'object') {
-					let { message } = err
-					// Handling Validation error:
-					if (err.status_code === 422) {
-						err.errors.forEach((error) => {
-							Object.keys(error).forEach((key) => {
-								message += '\n-' + error[key]
+									})
+								} else {
+									setSnackParams({
+										message: 'Erreur serveur !',
+										severity: 'error'
+									})
+								}
 							})
-						})
-						setSnackParams({
-							message,
-							severity: 'error'
-						})
+							.catch(async (err) => {
+								await err
+								console.log('err2:', err)
+							})
 					} else {
-						// Handling Classic error:
 						setSnackParams({
-							message,
+							message: 'Erreur serveur !',
 							severity: 'error'
 						})
 					}
-				} else {
-					setSnackParams({
-						message: err,
-						severity: 'error'
-					})
-				}
-			})
+				})
+				// On Promise Reject
+				.catch(async (err) => {
+					setSnackParams(catchError(err))
+				})
+		} else {
+			updateProperty(data, token, state.id)
+				// On Promise Successful
+				.then((res) => {
+					if (res !== undefined) {
+						console.log(res)
+						createSeller(checked, res.datas, token)
+							.then((res2) => {
+								if (res2 !== undefined) {
+									navigate('/home', {
+										state: {
+											snackParams: {
+												message: 'Annonce Modifiée !',
+												severity: 'success'
+											}
+										}
+									})
+								} else {
+									setSnackParams({
+										message: 'Erreur serveur !',
+										severity: 'error'
+									})
+								}
+							})
+							.catch(async (err) => {
+								await err
+								console.log('err2:', err)
+							})
+					} else {
+						setSnackParams({
+							message: 'Erreur serveur !',
+							severity: 'error'
+						})
+					}
+				})
+				// On Promise Reject
+				.catch(async (err) => {
+					setSnackParams(catchError(err))
+				})
+		}
 	}
 
 	return (
 		<AnimatedPage>
-			<Title text="Créer" />
+			<Title text={`${!state ? 'Créer' : 'Modifier'} une annonce`} />
 			<Row className="d-flex justify-content-center">
 				<Col xs={10} md={8}>
 					<Form

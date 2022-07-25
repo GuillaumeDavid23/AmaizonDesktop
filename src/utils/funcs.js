@@ -29,4 +29,38 @@ const strRandom = (o) => {
 	return c
 }
 
-export { sleep, strRandom }
+const catchError = async (err) => {
+	await err
+	if (err._W) {
+		err = err._W
+	}
+	// Handling rejected Promise
+	if (typeof err === 'object') {
+		let { message } = err
+		// Handling Validation error:
+		if (err.status_code === 422) {
+			err.errors.forEach((error) => {
+				Object.keys(error).forEach((key) => {
+					message += '\n-' + error[key]
+				})
+			})
+			return {
+				message,
+				severity: 'error'
+			}
+		} else {
+			// Handling Classic error:
+			return {
+				message,
+				severity: 'error'
+			}
+		}
+	} else {
+		return {
+			message: err,
+			severity: 'error'
+		}
+	}
+}
+
+export { sleep, strRandom, catchError }

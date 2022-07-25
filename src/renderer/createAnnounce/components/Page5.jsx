@@ -9,8 +9,8 @@ import Checkbox from '../../globalComponents/Checkbox'
 const Page5 = ({ visiblePage, control, errors, handleNavigation }) => {
 	// Déclaration options selects transactionTypes:
 	const transactionTypes = [
-		{ value: 1, label: 'Achat' },
-		{ value: 2, label: 'Location' }
+		{ value: 'Achat', label: 'Achat' },
+		{ value: 'Location', label: 'Location' }
 	]
 
 	return (
