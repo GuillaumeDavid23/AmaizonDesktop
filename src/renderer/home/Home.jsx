@@ -18,13 +18,12 @@ const Home = (props) => {
 	const [appointments, setAppointments] = React.useState([])
 
 	React.useEffect(() => {
+		let token = JSON.parse(localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON'))
 		fetch(window.electron.url + '/api/user/agents', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json;charset=utf-8',
-				Authorization: `bearer ${localStorage.getItem(
-					'REACT_TOKEN_AUTH_AMAIZON'
-				)}`
+				Authorization: `bearer ${token}`
 			}
 		})
 			.then((response) => {
@@ -41,9 +40,7 @@ const Home = (props) => {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json;charset=utf-8',
-				authorization: `bearer ${localStorage
-					.getItem('REACT_TOKEN_AUTH_AMAIZON')
-					.replaceAll('"', '')}`
+				authorization: `bearer ${token}`
 			}
 		})
 			.then((response) => {
@@ -60,9 +57,7 @@ const Home = (props) => {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json;charset=utf-8',
-				authorization: `bearer ${localStorage
-					.getItem('REACT_TOKEN_AUTH_AMAIZON')
-					.replaceAll('"', '')}`
+				authorization: `bearer ${token}`
 			}
 		})
 			.then((response) => {
@@ -70,7 +65,6 @@ const Home = (props) => {
 			})
 			.then((response) => {
 				setAppointments(response.datas)
-				console.log(response.datas)
 			})
 			.catch((error) => {
 				console.log(error)

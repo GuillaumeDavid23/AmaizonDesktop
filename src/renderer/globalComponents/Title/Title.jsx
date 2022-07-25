@@ -1,9 +1,9 @@
 import { Box, Typography } from "@mui/material";
 import "./Title.css";
-const Title = ({text}) => {
+const Title = ({text, variant}) => {
     return (
         <Box className="boxTitle">
-            <Typography variant="h4" component="div" className="">
+            <Typography variant={variant ? variant : 'h4'} component="div" className="">
                 {text}
             </Typography>
         </Box>
