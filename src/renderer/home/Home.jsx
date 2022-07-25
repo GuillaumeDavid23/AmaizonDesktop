@@ -12,7 +12,7 @@ import AgentCard from './components/AgentCard'
 import moment from 'moment'
 import { useSlideSnack } from '../hooks'
 import { useLocation } from 'react-router-dom'
-
+import React from 'react'
 ChartJS.register(ArcElement, Tooltip, Legend)
 const Home = (props) => {
 	const [allAgents, setAllAgents] = useState([])
@@ -36,14 +36,13 @@ const Home = (props) => {
 	}, [snackParams])
 
 	let { state } = useLocation()
-	useEffect(() => {
+	React.useEffect(() => {
+		let token = JSON.parse(localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON'))
 		fetch(window.electron.url + '/api/user/agents', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json;charset=utf-8',
-				Authorization: `bearer ${localStorage.getItem(
-					'REACT_TOKEN_AUTH_AMAIZON'
-				)}`
+				Authorization: `bearer ${token}`
 			}
 		})
 			.then((response) => {
@@ -60,9 +59,7 @@ const Home = (props) => {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json;charset=utf-8',
-				authorization: `bearer ${localStorage
-					.getItem('REACT_TOKEN_AUTH_AMAIZON')
-					.replaceAll('"', '')}`
+				authorization: `bearer ${token}`
 			}
 		})
 			.then((response) => {
@@ -79,9 +76,7 @@ const Home = (props) => {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json;charset=utf-8',
-				authorization: `bearer ${localStorage
-					.getItem('REACT_TOKEN_AUTH_AMAIZON')
-					.replaceAll('"', '')}`
+				authorization: `bearer ${token}`
 			}
 		})
 			.then((response) => {
