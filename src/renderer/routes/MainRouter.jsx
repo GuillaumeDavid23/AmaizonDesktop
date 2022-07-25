@@ -19,6 +19,7 @@ import CreateAgent from '../agents/create/CreateAgent'
 import CreateAnnounce from '../createAnnounce/CreateAnnounce'
 import SingleAnnounce from '../announces/single/SingleAnnounce'
 import CustomerAdd from '../customerAdd/CustomerAdd'
+import CustomerPreference from '../customerPreference/CustomerPreference'
 
 const MainRouter = () => {
 	return (
@@ -113,6 +114,16 @@ const MainRouter = () => {
 					element={
 						<PrivateRoute>
 							<CreateAgent />
+						</PrivateRoute>
+					}
+				/>
+
+				{/* Private Route add preference client*/}
+				<Route
+					path="/customerPreference"
+					element={
+						<PrivateRoute>
+							<CustomerPreference />
 						</PrivateRoute>
 					}
 				/>
