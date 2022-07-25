@@ -1,3 +1,4 @@
+import { Box } from '@mui/material'
 import React from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { BsBorderAll } from 'react-icons/bs'
@@ -24,11 +25,13 @@ const SingleAnnounce = (props) => {
 				/>
 				<Row className="justify-content-evenly align-items-center mt-4">
 					<Col xs="12" lg="8" className="d-flex flex-column">
-						{property.imageUrl ? (
-							<Photos data={property.imageUrl} />
-						) : (
-							<Photos data={null} />
-						)}
+						<Box width="70%" style={{alignSelf: 'center'}}>
+							{property.imageUrl ? (
+								<Photos data={property.imageUrl} />
+							) : (
+								<Photos data={null} />
+							)}
+						</Box>
 						<div className="mt-5 d-flex justify-content-evenly">
 							<div className="d-flex flex-column align-items-center fw-bold">
 								<MdArchitecture size={40} />
