@@ -91,4 +91,40 @@ const createSeller = async (userId, propertyId, token) => {
 	})
 }
 
-export { getClient, updateClient, createClient, searchClient, createSeller }
+const getSellerForOneProperty = async (userId, propertyId, token) => {
+	// Returning new Promise
+	return new Promise((resolve, reject) => {
+		// Fetching API
+		fetch(
+			`${window.electron.url}/api/user/getSellerForOneProperty/${propertyId}`,
+			{
+				method: 'GET',
+				headers: { Authorization: `bearer ${token}` }
+			}
+		)
+			.then((response) => {
+				// If response 2xx
+				if (response.ok) {
+					// Returning User info
+					return resolve(response.json())
+				}
+				// Else: Returning Error info
+				return reject(response.json())
+			})
+			.catch((err) => {
+				// Handling Fetch problems
+				return reject({
+					message: "L'API ne semble pas être disponible"
+				})
+			})
+	})
+}
+
+export {
+	getClient,
+	updateClient,
+	createClient,
+	searchClient,
+	createSeller,
+	getSellerForOneProperty
+}

@@ -8,8 +8,8 @@ import { REGSTRING } from '../../../utils/regex'
 const Page1 = ({ visiblePage, control, errors, handleNavigation }) => {
 	// Déclaration options selects propertyType:
 	const propertyTypes = [
-		{ value: 1, label: 'Maison' },
-		{ value: 2, label: 'Appartement' }
+		{ value: 'Maison', label: 'Maison' },
+		{ value: 'Appartement', label: 'Appartement' }
 	]
 
 	return (
