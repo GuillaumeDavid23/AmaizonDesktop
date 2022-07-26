@@ -6,7 +6,14 @@ import { MenuItem, TextField } from '@mui/material'
 import { Col, Row } from 'react-bootstrap'
 import BtnGeneral from '../../globalComponents/BtnGeneral/BtnGeneral'
 import { updateClient } from '../../services/Client'
+import { useSlideSnack } from '../../hooks'
 const PreferenceForm = () => {
+	// Destructuring Snackbar from custom hook
+	const { handleOpen, renderSnack } = useSlideSnack({
+		message: 'PROUT',
+		time: 2000,
+		severity: 'success'
+	})
 	// Destructuring Hook Form
 	const {
 		handleSubmit,
@@ -21,7 +28,7 @@ const PreferenceForm = () => {
 			type: 'Achat'
 		}
 	})
-	
+
 	const id = '62de6307a49053b222916570'
 
 	const onSubmit = (data) => {
@@ -39,6 +46,7 @@ const PreferenceForm = () => {
 			className="m-5 p-5 boxForm"
 			onSubmit={handleSubmit(onSubmit)}
 		>
+			{renderSnack}
 			<Row className="justify-content-center align-items-center">
 				{/* budget minimum input */}
 				<Col

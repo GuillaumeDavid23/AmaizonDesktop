@@ -6,6 +6,7 @@ import { OutlinedInput, TextField } from '@mui/material'
 import { Col, Row } from 'react-bootstrap'
 import BtnGeneral from '../../globalComponents/BtnGeneral/BtnGeneral'
 import { createClient } from '../../services/Client'
+import { useSlideSnack } from '../../hooks'
 const AddForm = () => {
 	const shuffle = function (chain) {
 		var a = chain.split(''),
@@ -33,13 +34,29 @@ const AddForm = () => {
 	} = useForm({
 		mode: 'onBlur',
 		reValidateMode: 'onBlur',
-		shouldFocusError: true,
+		shouldFocusError: true
 	})
+	const [messageSnack, setMessageSnack] = React.useState('Rien')
+	const [severity, setSeverity] = React.useState('success')
 
+	// Destructuring Snackbar from custom hook
+	const { handleOpen, renderSnack } = useSlideSnack({
+		message: messageSnack,
+		time: 2000,
+		severity: severity
+	})
 	const onSubmit = (data) => {
+		handleOpen();
 		data = { ...data, password: mdp }
 		let token = JSON.parse(localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON'))
-		createClient(token, data).then((response) => console.log(response))
+		createClient(token, data).then((response) => {
+			setMessageSnack(response.message)
+			setSeverity(response.status_code === 200 ? 'success' : 'error')
+			handleOpen()
+		}).catch((error) => {
+			setMessageSnack('Une erreur est survenue ! ')
+			handleOpen()
+		})
 	}
 	return (
 		<Box
@@ -47,6 +64,7 @@ const AddForm = () => {
 			className="m-5 p-5 boxForm"
 			onSubmit={handleSubmit(onSubmit)}
 		>
+			{renderSnack}
 			<Row className="justify-content-center align-items-center">
 				{/* Lastname input */}
 				<Col

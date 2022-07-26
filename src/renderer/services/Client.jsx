@@ -42,9 +42,7 @@ const createClient = async (token, data) => {
 		body: JSON.stringify(data)
 	})
 		.then((response) => {
-			if (response.ok) {
-				return response.json()
-			}
+			return response.json()
 		})
 		.catch((errors) => console.log(errors))
 }
