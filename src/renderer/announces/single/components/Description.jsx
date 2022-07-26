@@ -1,11 +1,12 @@
 import { Box } from '@mui/material'
 import { Col, Row } from 'react-bootstrap'
 import { BsCheckCircleFill, BsXCircleFill } from 'react-icons/bs'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BtnGeneral from '../../../globalComponents/BtnGeneral/BtnGeneral'
 
 const Description = (props) => {
 	const { data } = props
+	let navigate = useNavigate()
 
 	return (
 		<div className="description mt-5 mb-5">
@@ -34,7 +35,7 @@ const Description = (props) => {
 								style={{ fontSize: '20px' }}
 							>
 								Non dispo
-							</strong>{' '}
+							</strong>
 						</Box>
 					)}
 				</Col>
@@ -44,9 +45,20 @@ const Description = (props) => {
 			<p>{data.description}</p>
 			<div className="d-flex justify-content-between align-items-center">
 				<h3>Prix : {data.amount?.toLocaleString('FR')} €</h3>
-				<Link to={`/takeAppointment/${data._id}`}>
-					<BtnGeneral text="Prendre RDV" className="btnRdv" />
-				</Link>
+				<Box>
+					<BtnGeneral
+						text="Modifier"
+						className="btnRdv me-3"
+						onClick={() =>
+							navigate('/createAnnounce', {
+								state: { id: data._id }
+							})
+						}
+					/>
+					<Link to={`/takeAppointment/${data._id}`}>
+						<BtnGeneral text="Prendre RDV" className="btnRdv" />
+					</Link>
+				</Box>
 			</div>
 		</div>
 	)

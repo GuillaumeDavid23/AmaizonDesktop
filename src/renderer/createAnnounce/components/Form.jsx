@@ -26,7 +26,9 @@ const Form = ({
 }) => {
 	return (
 		<form
-			className="d-flex justify-content-center mt-5"
+			className={`d-flex justify-content-center mt-5${
+				visiblePage !== 8 ? '' : ' h-75'
+			}`}
 			onSubmit={handleSubmit(onSubmit)}
 		>
 			<Page1

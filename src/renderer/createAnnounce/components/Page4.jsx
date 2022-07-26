@@ -1,20 +1,20 @@
 import { Box } from '@mui/material'
 import FormNavigation from './FormNavigation'
 import { Controller } from 'react-hook-form'
-import { REGNUM, REGID } from '../../../utils/regex'
+import { REGSTRING } from '../../../utils/regex'
 import Select from 'react-select'
 
 const Page4 = ({ visiblePage, control, errors, handleNavigation }) => {
 	// Déclaration options selects Stuffs:
 	const stuffs = [
-		{ value: 1, label: 'Sonnerie' },
-		{ value: 2, label: 'Interphone' },
-		{ value: 3, label: 'Alarme' },
-		{ value: 4, label: 'Cave' },
-		{ value: 5, label: 'Parking / Boxe / Garage' },
-		{ value: 6, label: 'Jardin' },
-		{ value: 7, label: 'Balcon / Terrasse' },
-		{ value: 8, label: 'Boite aux lettres' }
+		{ value: 'Sonnerie', label: 'Sonnerie' },
+		{ value: 'Interphone', label: 'Interphone' },
+		{ value: 'Alarme', label: 'Alarme' },
+		{ value: 'Cave', label: 'Cave' },
+		{ value: 'Parking / Boxe / Garage', label: 'Parking / Boxe / Garage' },
+		{ value: 'Jardin', label: 'Jardin' },
+		{ value: 'Balcon / Terrasse', label: 'Balcon / Terrasse' },
+		{ value: 'Boite aux lettres', label: 'Boite aux lettres' }
 	]
 
 	// Déclaration options selects Heat:
@@ -36,8 +36,8 @@ const Page4 = ({ visiblePage, control, errors, handleNavigation }) => {
 					control={control}
 					rules={{
 						pattern: {
-							value: REGNUM.value,
-							message: REGNUM.message
+							value: REGSTRING.value,
+							message: REGSTRING.message
 						}
 					}}
 					render={({ field }) => (
@@ -66,8 +66,8 @@ const Page4 = ({ visiblePage, control, errors, handleNavigation }) => {
 					control={control}
 					rules={{
 						pattern: {
-							value: REGID.value,
-							message: REGID.message
+							value: REGSTRING.value,
+							message: REGSTRING.message
 						}
 					}}
 					render={({ field }) => (
@@ -93,8 +93,8 @@ const Page4 = ({ visiblePage, control, errors, handleNavigation }) => {
 					control={control}
 					rules={{
 						pattern: {
-							value: REGID.value,
-							message: REGID.message
+							value: REGSTRING.value,
+							message: REGSTRING.message
 						}
 					}}
 					render={({ field }) => (
