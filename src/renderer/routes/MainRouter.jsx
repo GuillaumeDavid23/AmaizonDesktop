@@ -1,13 +1,9 @@
-// React import
-import React from 'react'
-
 // Auth import
 import AuthProvider from '../services/AuthProvider'
 
 // Nav imports
 import { Routes, Route } from 'react-router-dom'
 import PrivateRoute from '../routes/PrivateRoutes'
-import MenuRoute from '../routes/MenuRoute'
 
 // View imports
 import Login from '../login/Login'
@@ -19,6 +15,8 @@ import CreateAgent from '../agents/create/CreateAgent'
 import CreateAnnounce from '../createAnnounce/CreateAnnounce'
 import SingleAnnounce from '../announces/single/SingleAnnounce'
 import CustomerAdd from '../customerAdd/CustomerAdd'
+import Appointments from '../appointments/Appointments'
+import CreateAppointment from '../appointments/pages/CreateAppointment/CreateAppointment'
 
 const MainRouter = () => {
 	return (
@@ -113,6 +111,26 @@ const MainRouter = () => {
 					element={
 						<PrivateRoute>
 							<CreateAgent />
+						</PrivateRoute>
+					}
+				/>
+
+				{/* Private Route Appointments List */}
+				<Route
+					path="/appointments"
+					element={
+						<PrivateRoute>
+							<Appointments />
+						</PrivateRoute>
+					}
+				/>
+
+				{/* Private Route Create Appointment */}
+				<Route
+					path="/createAppointment"
+					element={
+						<PrivateRoute>
+							<CreateAppointment />
 						</PrivateRoute>
 					}
 				/>
