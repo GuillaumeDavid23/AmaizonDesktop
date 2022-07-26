@@ -1,12 +1,12 @@
-import { useState } from 'react'
+import { useState } from "react";
 import {
-	Col,
-	Container,
-	Row,
-	FormControl,
-	Button,
-	Collapse,
-} from 'react-bootstrap'
+    Col,
+    Container,
+    Row,
+    FormControl,
+    Button,
+    Collapse,
+} from "react-bootstrap";
 import {
 	BsChevronDown,
 	BsChevronUp,
@@ -16,25 +16,25 @@ import {
 import CheckBox from '../../globalComponents/Checkbox'
 
 const Filters = ({ setProperties, properties }) => {
-	const [filtersActive, setFiltersActive] = useState(false)
-	var lastSearch = JSON.parse(localStorage.getItem('LAST_SEARCH_FILTERS'))
-	if (!lastSearch) {
-		lastSearch = {}
-	} else {
-		if (isObjEmpty(lastSearch) && !filtersActive) {
-			setFiltersActive(true)
-		}
-	}
+    const [filtersActive, setFiltersActive] = useState(false);
+    var lastSearch = JSON.parse(localStorage.getItem("LAST_SEARCH_FILTERS"));
+    if (!lastSearch) {
+        lastSearch = {};
+    } else {
+        if (isObjEmpty(lastSearch) && !filtersActive) {
+            setFiltersActive(true);
+        }
+    }
 
-	function isObjEmpty(obj) {
-		let find = false
-		for (var prop in obj) {
-			if (obj[prop] !== '') {
-				find = true
-			}
-		}
-		return find
-	}
+    function isObjEmpty(obj) {
+        let find = false;
+        for (var prop in obj) {
+            if (obj[prop] !== "") {
+                find = true;
+            }
+        }
+        return find;
+    }
 
 	const [transactionType, setTransactionType] = useState(
 		lastSearch.transactionType ? lastSearch.transactionType : ''
@@ -70,45 +70,45 @@ const Filters = ({ setProperties, properties }) => {
         lastSearch.dispo ? lastSearch.dispo : "agent"
     );
 
-	const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
 
-	const handleTransactionType = (e) => {
-		setTransactionType(e.target.value)
-	}
+    const handleTransactionType = (e) => {
+        setTransactionType(e.target.value);
+    };
 
-	const handlePropertyType = (e) => {
-		setPropertyType(e.target.value)
-	}
+    const handlePropertyType = (e) => {
+        setPropertyType(e.target.value);
+    };
 
-	const handleLocation = (e) => {
-		setLocation(e.target.value)
-	}
+    const handleLocation = (e) => {
+        setLocation(e.target.value);
+    };
 
-	const handleMinPrice = (e) => {
-		setMinPrice(e.target.value)
-	}
+    const handleMinPrice = (e) => {
+        setMinPrice(e.target.value);
+    };
 
-	const handleMaxPrice = (e) => {
-		setMaxPrice(e.target.value)
-	}
+    const handleMaxPrice = (e) => {
+        setMaxPrice(e.target.value);
+    };
 
-	const handleRoomNumberMin = (e) => {
-		setRoomNumberMin(e.target.value)
-	}
-	const handleRoomNumberMax = (e) => {
-		setRoomNumberMax(e.target.value)
-	}
+    const handleRoomNumberMin = (e) => {
+        setRoomNumberMin(e.target.value);
+    };
+    const handleRoomNumberMax = (e) => {
+        setRoomNumberMax(e.target.value);
+    };
 
-	const handleSurfaceMin = (e) => {
-		setSurfaceMin(e.target.value)
-	}
-	const handleSurfaceMax = (e) => {
-		setSurfaceMax(e.target.value)
-	}
+    const handleSurfaceMin = (e) => {
+        setSurfaceMin(e.target.value);
+    };
+    const handleSurfaceMax = (e) => {
+        setSurfaceMax(e.target.value);
+    };
 
-	const handleSearch = (e) => {
-		setSearch(e.target.value)
-	}
+    const handleSearch = (e) => {
+        setSearch(e.target.value);
+    };
 
 	const handleDispo = (e) => {
 		if (!e.target.checked) {

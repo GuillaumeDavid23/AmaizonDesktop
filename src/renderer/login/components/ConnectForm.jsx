@@ -33,6 +33,7 @@ import { sleep } from '../../../utils/funcs'
 import AmaizonLogo from '../../../assets/brand/Amaizon_logo.png'
 import Amaizon from '../../../assets/brand/Amaizon_full.png'
 
+// CSS styles import
 import './ConnectForm.css'
 
 // Component initial states
@@ -130,7 +131,11 @@ const ConnectForm = () => {
 	} = useForm({
 		mode: 'onBlur',
 		reValidateMode: 'onBlur',
-		shouldFocusError: true
+		shouldFocusError: true,
+		defaultValues: {
+			email: 'mgarnier@amaizon.com',
+			password: 'Jesuispas1garnier!'
+		}
 	})
 
 	const onSubmit = async (data) => {
