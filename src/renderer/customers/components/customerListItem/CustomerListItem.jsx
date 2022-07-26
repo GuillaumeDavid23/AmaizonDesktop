@@ -17,6 +17,7 @@ import ArrowForward from '@mui/icons-material/ArrowForward'
 
 // Custom component import
 import { CustomerDetails } from '../index'
+import { Image } from 'react-bootstrap'
 
 const CustomerListItem = (props) => {
 	const { customer } = props
@@ -58,11 +59,24 @@ const CustomerListItem = (props) => {
 				<Box
 					sx={{
 						height: '100px',
-						width: '100px',
-						backgroundColor: 'blue',
-						borderRadius: '10px'
+						width: '100px'
 					}}
-				></Box>
+				>
+					<Image
+						style={{ borderRadius: '10px' }}
+						fluid
+						src={
+							window.electron.url +
+							'/avatar/' +
+							customer._id +
+							'.png'
+						}
+						onError={({ currentTarget }) => {
+							currentTarget.onerror = null // prevents looping
+							currentTarget.src = require('../../../../assets/images/blank_profile.png')
+						}}
+					/>
+				</Box>
 				{/* Customer Info + Prefs */}
 				<Box sx={{ paddingLeft: '10px' }}>
 					<Typography>
