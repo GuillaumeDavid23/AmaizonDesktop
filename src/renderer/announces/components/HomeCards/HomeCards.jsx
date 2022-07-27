@@ -59,8 +59,13 @@ const HomeCards = (props) => {
 					<Col xs={12} md={8} lg={6}>
 						{isToSell ? (
 							<Box className="d-flex justify-content-center align-items-center">
-								<BsCheckCircleFill color="green" />{' '}
-								<strong className="ms-2">Dispo</strong>{' '}
+								<BsCheckCircleFill color="#65A14B" />{' '}
+								<strong
+									className="ms-2"
+									style={{ color: '#65A14B' }}
+								>
+									Dispo
+								</strong>{' '}
 							</Box>
 						) : (
 							<Box className="d-flex justify-content-center align-items-center">

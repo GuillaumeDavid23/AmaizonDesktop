@@ -91,8 +91,9 @@ const Navigation = (props) => {
 					</SubMenu>
 					<MenuItem icon={<FaPhoneSquareAlt />}>Annuaire</MenuItem>
 					<SubMenu title="Etat des lieux" icon={<IoBook />}>
-						<MenuItem>Liste des EDL</MenuItem>
-						<MenuItem>Ajouter un EDL</MenuItem>
+						<MenuItem onClick={() => navigate('/inventory')}>
+							Liste des EDL
+						</MenuItem>
 					</SubMenu>
 					<MenuItem icon={<FaGem />}>Statistiques</MenuItem>
 				</Menu>

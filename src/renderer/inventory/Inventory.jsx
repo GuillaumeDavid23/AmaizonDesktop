@@ -12,39 +12,39 @@ import Button from '@mui/material/Button'
 import FormControl from 'react-bootstrap/FormControl'
 
 // Sub component imports
-import { CustomerListItem } from './components'
+import { InventoryListItem } from './components'
 import Title from '../globalComponents/Title/Title'
 
 // Initial component States
 const initialStates = {
-	searchCustomer: '',
-	users: [],
-	filteredUsers: []
+	searchInventory: '',
+	inventories: [],
+	filteredInventories: []
 }
 
 // Component Actions
 const actions = {
-	INIT_CUSTOMERS: 'INIT_CUSTOMERS',
-	SET_CUSTOMERS: 'SET_CUSTOMERS',
-	SET_SEARCHCUSTOMER: 'SET_SEARCHCUSTOMER',
-	SET_FILTEREDUSERS: 'SET_FILTEREDUSERS'
+	INIT_INVENTORIES: 'INIT_INVENTORIES',
+	SET_INVENTORIES: 'SET_INVENTORIES',
+	SET_SEARCHINVENTORY: 'SET_SEARCHINVENTORY',
+	SET_FILTEREDINVENTORIES: 'SET_FILTEREDINVENTORIES'
 }
 
 // Component Reducer
 const CReducer = (states, action) => {
 	switch (action.type) {
-		case actions.INIT_CUSTOMERS:
+		case actions.INIT_INVENTORIES:
 			return {
 				...states,
-				users: action.payload,
-				filteredUsers: action.payload
+				inventories: action.payload,
+				filteredInventories: action.payload
 			}
-		case actions.SET_CUSTOMERS:
-			return { ...states, users: action.payload }
-		case actions.SET_SEARCHCUSTOMER:
-			return { ...states, searchCustomer: action.payload }
-		case actions.SET_FILTEREDUSERS:
-			return { ...states, filteredUsers: action.payload }
+		case actions.SET_INVENTORIES:
+			return { ...states, inventories: action.payload }
+		case actions.SET_SEARCHINVENTORY:
+			return { ...states, searchInventory: action.payload }
+		case actions.SET_FILTEREDINVENTORIES:
+			return { ...states, filteredInventories: action.payload }
 
 		default:
 			return { ...states }
@@ -52,40 +52,40 @@ const CReducer = (states, action) => {
 }
 
 // Actual Component
-const Customers = () => {
+const Inventory = () => {
 	// Setting up component Reducer
 	const [states, dispatch] = React.useReducer(CReducer, initialStates)
-	const { searchCustomer, users, filteredUsers } = states
+	const { searchInventory, inventories, filteredInventories } = states
 
 	const handleChange = ({ target: { value } }) => {
-		dispatch({ type: actions.SET_SEARCHCUSTOMER, payload: value })
+		dispatch({ type: actions.SET_SEARCHINVENTORY, payload: value })
 
 		// By default, setting new list to original customers list
-		let newCustomerList = [...users]
+		let newInventoriesList = [...inventories]
 
 		if (value !== '') {
-			newCustomerList = []
+			newInventoriesList = []
 
 			// filtering on firstname + lastname + email
-			newCustomerList.push(
-				...users.filter((user) => user.firstname.includes(value)),
-				...users.filter((user) => user.lastname.includes(value)),
-				...users.filter((user) => user.email.includes(value))
+			newInventoriesList.push(
+				...inventories.filter((inventory) =>
+					inventory.userReference.includes(value)
+				)
 			)
 
 			// Using Set to get UNIQUE customers
-			newCustomerList = [...new Set(newCustomerList)]
+			newInventoriesList = [...new Set(newInventoriesList)]
 		}
 
 		// Setting filtered customers
 		dispatch({
-			type: actions.SET_FILTEREDUSERS,
-			payload: newCustomerList
+			type: actions.SET_FILTEREDINVENTORIES,
+			payload: newInventoriesList
 		})
 	}
 
 	React.useEffect(() => {
-		fetch(`${window.electron.url}/api/user/customers`, {
+		fetch(`${window.electron.url}/api/inventory`, {
 			headers: {
 				Authorization: `bearer ${JSON.parse(
 					localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON')
@@ -94,11 +94,11 @@ const Customers = () => {
 		}).then((res) => {
 			if (res.ok) {
 				res.json().then((data) => {
-					const { user: customers } = data
-					console.log(customers)
+					const { inventories } = data
+					console.log(inventories);
 					dispatch({
-						type: actions.INIT_CUSTOMERS,
-						payload: customers
+						type: actions.INIT_INVENTORIES,
+						payload: inventories
 					})
 				})
 			}
@@ -124,7 +124,7 @@ const Customers = () => {
 					<FormControl
 						onChange={handleChange}
 						placeholder="Rechercher..."
-						value={searchCustomer || ''}
+						value={searchInventory || ''}
 					/>
 				</Box>
 				<Box
@@ -149,14 +149,14 @@ const Customers = () => {
 				}}
 				spacing={3}
 			>
-				{filteredUsers.map((customer) => {
+				{filteredInventories.map((inventory) => {
 					return (
 						<Grid
 							item
-							xs={4}
-							key={`${customer.id}_${customer.email}`}
+							xs={3}
+							key={`${inventory._id}_${inventory.id_rental._id}`}
 						>
-							<CustomerListItem customer={customer} />
+							<InventoryListItem inventory={inventory} />
 						</Grid>
 					)
 				})}
@@ -165,4 +165,4 @@ const Customers = () => {
 	)
 }
 
-export default Customers
+export default Inventory

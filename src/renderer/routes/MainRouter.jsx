@@ -20,6 +20,7 @@ import CreateAnnounce from '../createAnnounce/CreateAnnounce'
 import SingleAnnounce from '../announces/single/SingleAnnounce'
 import CustomerAdd from '../customerAdd/CustomerAdd'
 import CustomerPreference from '../customerPreference/CustomerPreference'
+import Inventory from '../inventory/Inventory'
 
 const MainRouter = () => {
 	return (
@@ -124,6 +125,16 @@ const MainRouter = () => {
 					element={
 						<PrivateRoute>
 							<CustomerPreference />
+						</PrivateRoute>
+					}
+				/>
+
+				{/* Private Route list inventory*/}
+				<Route
+					path="/inventory"
+					element={
+						<PrivateRoute>
+							<Inventory />
 						</PrivateRoute>
 					}
 				/>
