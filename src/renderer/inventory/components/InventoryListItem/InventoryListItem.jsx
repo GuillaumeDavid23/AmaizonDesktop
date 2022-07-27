@@ -2,20 +2,20 @@
 import React from 'react'
 
 // Layout imports
-import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 
 // MUI Design import
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 
-// Bootstrap design imports
-import Modal from 'react-bootstrap/Modal'
 
 // Icon import
 import ArrowForward from '@mui/icons-material/ArrowForward'
-import { Image } from 'react-bootstrap'
+
+import { Col, Container, Image, Row } from 'react-bootstrap'
 import './InventoryListItem.css'
+import ModalInventory from '../singleInventory/ModalInventory'
+
 const InventoryListItem = (props) => {
 	const { inventory } = props
 
@@ -38,11 +38,17 @@ const InventoryListItem = (props) => {
 		5: 'high',
 		6: 'highest'
 	}
-
+	let sumCondition = 0;
+	let countCondition = 0
+	inventory.lst_roomDetails.forEach((roomDetail) => {
+		countCondition++
+		sumCondition += roomDetail.condition
+	});
+	let avgCondition = Math.round(sumCondition / countCondition)
+	console.log(avgCondition);
 	return (
-		<Grid
-			container
-			sx={{
+		<Container
+			style={{
 				display: 'flex',
 				flexDirection: 'column',
 				backgroundColor: '#ECE6DE',
@@ -51,16 +57,13 @@ const InventoryListItem = (props) => {
 				boxShadow: '3px 5px 10px #737373'
 			}}
 		>
-			{/* CustomerInfo Modal */}
-			<Modal
-				show={open}
-				onHide={handleModalClose}
-				style={{ height: '800px' }}
-			>
-				YES
-			</Modal>
+			<ModalInventory
+				inventory={inventory}
+				handleModalClose={handleModalClose}
+				open={open}
+			/>
 			{/* User Informations */}
-			<Grid item sx={{ display: 'flex', flexDirection: 'row' }}>
+			<Row>
 				{/* Customer Info + Prefs */}
 				<Box sx={{ paddingLeft: '10px', width: '100%' }}>
 					<Typography align="center">
@@ -69,39 +72,27 @@ const InventoryListItem = (props) => {
 					<Typography align="center" style={{ fontSize: '13px' }}>
 						Ref: {inventory.id_rental.id_property.propertyRef}
 					</Typography>
-
-					{inventory.lst_roomDetails.map((roomDetail, index) => {
-						if (index < 4) {
-							return (
-								<Box sx={{ width: '100%' }}>
-									<Typography
-										style={{ textTransform: 'capitalize' }}
-									>
-										{roomDetail.name}
-									</Typography>
-									<Box className="barreBox">
-										<Image
-											src={require('../../../../assets/images/barre_solo.png')}
-											fluid
-										/>
-										<Box
-											className={`pointerBarre ${
-												condtionsArray[
-													roomDetail.condition
-												]
-											}`}
-										></Box>
-									</Box>
-								</Box>
-							)
-						}
-						return false
-					})}
+					<Box sx={{ width: '100%', marginTop: '10px', marginBottom: '10px' }}>
+						<Typography
+							align="center"
+							style={{ textTransform: 'capitalize' }}
+						>
+							Condition globale
+						</Typography>
+						<Box className="barreBox">
+							<Image
+								src={require('../../../../assets/images/barre_solo.png')}
+								fluid
+							/>
+							<Box
+								className={`pointerBarre ${condtionsArray[avgCondition]}`}
+							></Box>
+						</Box>
+					</Box>
 				</Box>
-			</Grid>
+			</Row>
 			{/* User Actions */}
-			<Grid
-				item
+			<Row
 				sx={{
 					justifyContent: 'center',
 					width: '100%'
@@ -132,8 +123,8 @@ const InventoryListItem = (props) => {
 						Voir plus
 					</Button>
 				</Box>
-			</Grid>
-		</Grid>
+			</Row>
+		</Container>
 	)
 }
 

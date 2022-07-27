@@ -33,3 +33,30 @@
 .lowest{
     left: calc(100% - 92%);
 }
+
+.modalSingle .modal-content{
+    border-radius: 0px 50px 50px 50px;
+    min-height: 500px;
+    padding: 40px;
+}
+
+.content{
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+}
+
+.divider{
+    border-right: 1px solid rgb(173, 168, 168);
+}
+
+.crossClose{
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.crossClose:hover{
+    color: #496072;
+    transform: scale(0.9);
+    transition: 0.5s;
+}
