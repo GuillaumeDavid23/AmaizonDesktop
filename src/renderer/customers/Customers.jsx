@@ -14,6 +14,7 @@ import FormControl from 'react-bootstrap/FormControl'
 
 // Sub component imports
 import { CustomerListItem } from './components'
+import Title from '../globalComponents/Title/Title'
 
 // Initial component States
 const initialStates = {
@@ -107,9 +108,9 @@ const Customers = () => {
 
 	return (
 		<Grid sx={{ height: '100%' }}>
-			<Box sx={{ height: '10%' }}>
+			<Box>
 				{/* Component Header */}
-				<Typography>Client</Typography>
+				<Title text="Client" variant="h5" />
 
 				{/* Filter input */}
 				<Box
@@ -145,7 +146,7 @@ const Customers = () => {
 					marginTop: '0px',
 					paddingX: '20px',
 					overflowY: 'scroll',
-					height: '90%'
+					height: '75%'
 				}}
 				spacing={3}
 			>

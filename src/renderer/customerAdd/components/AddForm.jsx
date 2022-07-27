@@ -5,7 +5,10 @@ import { useForm, Controller } from 'react-hook-form'
 import { OutlinedInput, TextField } from '@mui/material'
 import { Col, Row } from 'react-bootstrap'
 import BtnGeneral from '../../globalComponents/BtnGeneral/BtnGeneral'
-import { createClient } from '../../services/Client'
+import { createClient, pushUserAvatar } from '../../services/Client'
+import { useSlideSnack } from '../../hooks'
+import PhotoPart from './PhotoPart'
+import { useLocation, useNavigate } from 'react-router-dom'
 const AddForm = () => {
 	const shuffle = function (chain) {
 		var a = chain.split(''),
@@ -24,22 +27,72 @@ const AddForm = () => {
 	let mdp = shuffle(
 		'AZERTYUIOPQSDFGHJKLMWXCVBNazertyuiopqsdfghjklmwxcvbn0123456789!$&@#?'
 	)
+	const navigate = useNavigate()
 
 	// Destructuring Hook Form
 	const {
+		register,
 		handleSubmit,
 		control,
+		setValue,
 		formState: { errors, isValid }
 	} = useForm({
 		mode: 'onBlur',
 		reValidateMode: 'onBlur',
-		shouldFocusError: true,
+		shouldFocusError: true
 	})
+	let { state } = useLocation()
+	const [messageSnack, setMessageSnack] = React.useState('Rien')
+	const [severity, setSeverity] = React.useState('success')
 
+	// Destructuring Snackbar from custom hook
+	const { handleOpen, renderSnack } = useSlideSnack({
+		message: messageSnack,
+		time: 2000,
+		severity: severity
+	})
 	const onSubmit = (data) => {
+		// Séparation de la photo pour le 2ème appel:
+		let photo = data.photo[0]
+		delete data.photo
+		handleOpen()
 		data = { ...data, password: mdp }
 		let token = JSON.parse(localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON'))
-		createClient(token, data).then((response) => console.log(response))
+		createClient(token, data)
+			.then((response) => {
+				setMessageSnack(response.message)
+				setSeverity(response.status_code === 201 ? 'success' : 'error')
+				handleOpen()
+				if (response.status_code === 201) {
+				// Push de la photo:
+				let photoBody = new FormData()
+				photoBody.append('_id', !state ? response.user._id : state.id)
+				photoBody.append('photo', photo)
+				pushUserAvatar(token, photoBody).then((response) => {
+
+					// Redirection:
+					navigate('/customers', {
+						state: {
+							snackParams: {
+								message: `Agent ${
+									!state ? 'crée' : 'modifié'
+								} !`,
+								severity: 'success'
+							}
+						}
+					})
+				})
+
+			} else {
+				setMessageSnack('ERREUR')
+			}
+			})
+			.catch((error) => {
+				setMessageSnack('Une erreur est survenue ! ')
+				handleOpen()
+			})
+
+		
 	}
 	return (
 		<Box
@@ -47,6 +100,7 @@ const AddForm = () => {
 			className="m-5 p-5 boxForm"
 			onSubmit={handleSubmit(onSubmit)}
 		>
+			{renderSnack}
 			<Row className="justify-content-center align-items-center">
 				{/* Lastname input */}
 				<Col
@@ -183,6 +237,9 @@ const AddForm = () => {
 						</span>
 					)}
 				</Col>
+
+				{/* Photo Form part */}
+				<PhotoPart state={state} register={register} errors={errors} />
 			</Row>
 			<Row className="mt-5">
 				<Col className="justify-content-center d-flex">
