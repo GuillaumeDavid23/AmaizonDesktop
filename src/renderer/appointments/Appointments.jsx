@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { getAppointments } from '../services/Appointment'
 import { Box } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import './Appointments.css'
 
 const Appointments = () => {
 	// Récupération du token:

@@ -1,0 +1,17 @@
+#appointmentForm {
+    border: solid 1px black;
+    border-radius: 0 15px 0 15px;
+    background-color: #DCD0C1;
+    padding: 1em;
+    width: 75%;
+}
+
+.appointmentFormPart {
+    width: 33%;
+    margin: 0 1em;
+}
+
+.appointmentFormPart h2 {
+    text-align: center;
+    font-size: 1.2em;
+}
