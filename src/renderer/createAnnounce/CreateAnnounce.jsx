@@ -160,7 +160,10 @@ const CreateAnnounce = () => {
 						setPropertyRef(propertyRef)
 					})
 					.catch((error) => {
-						setSnackParams(catchError(error))
+						setSnackParams({
+							message: catchError(error),
+							severity: 'error'
+						})
 					})
 			})
 		}
@@ -425,7 +428,10 @@ const CreateAnnounce = () => {
 				})
 				// On Promise Reject
 				.catch(async (err) => {
-					setSnackParams(catchError(err))
+					setSnackParams({
+						message: catchError(err),
+						severity: 'error'
+					})
 				})
 		} else {
 			updateProperty(data, token, state.id)
@@ -464,7 +470,10 @@ const CreateAnnounce = () => {
 				})
 				// On Promise Reject
 				.catch(async (err) => {
-					setSnackParams(catchError(err))
+					setSnackParams({
+						message: catchError(err),
+						severity: 'error'
+					})
 				})
 		}
 	}

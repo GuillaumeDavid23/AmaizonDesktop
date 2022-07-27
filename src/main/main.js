@@ -19,7 +19,9 @@ contextMenu({
 	paste: true
 })
 
-function createWindow() {
+let listWindows = []
+
+function createWindow(url = '/') {
 	let win = new BrowserWindow({
 		width: 1200,
 		height: 800,
@@ -31,13 +33,17 @@ function createWindow() {
 		}
 	})
 
-	win.loadURL('http://localhost:3000/')
-
-	win.webContents.openDevTools({ mode: 'detach' })
+	win.loadURL(`http://localhost:3000${url}`)
 
 	win.on('closed', () => {
+		if (listWindows.indexOf(win) == 0) {
+			app.quit()
+		}
+
 		win = null
 	})
+
+	listWindows.push(win)
 
 	return win
 }
@@ -51,4 +57,18 @@ ipcMain.on('evt_name_in', (evt, data) => {
 ipcMain.on('mailto', (evt, data) => {
 	let receiveData = Array.isArray(data) ? data[0] : data
 	shell.openExternal(`mailto:${receiveData}?subject=Prise de contact&body=`)
+})
+
+ipcMain.on('showCustomerDetailWindow', (event, data) => {
+	let customerId
+	customerId = Array.isArray(data) ? data[0] : data
+
+	createWindow(`/customers/${customerId}`)
+})
+
+ipcMain.on('mainShowAppointmentPage', (event, data) => {
+	let customerId
+	customerId = Array.isArray(data) ? data[0] : data
+
+	listWindows[0].loadURL(`http://localhost:3000/home`)
 })
