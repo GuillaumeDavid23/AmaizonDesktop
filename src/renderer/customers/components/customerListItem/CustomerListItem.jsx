@@ -9,28 +9,15 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 
-// Bootstrap design imports
-import Modal from 'react-bootstrap/Modal'
-
 // Icon import
 import ArrowForward from '@mui/icons-material/ArrowForward'
-
-// Custom component import
-import { CustomerDetails } from '../index'
 
 const CustomerListItem = (props) => {
 	const { customer } = props
 
-	// Modal state
-	const [open, setOpen] = React.useState(false)
-
-	const handleModalClose = () => {
-		setOpen(false)
-	}
-
-	const handleModalOpen = () => {
-		setOpen(true)
-	}
+	const callNewWindowForUser = React.useCallback(() => {
+		window.electron.send('showCustomerDetailWindow', customer._id)
+	}, [])
 
 	return (
 		<Grid
@@ -44,14 +31,6 @@ const CustomerListItem = (props) => {
 				boxShadow: '3px 5px 10px #737373'
 			}}
 		>
-			{/* CustomerInfo Modal */}
-			<Modal
-				show={open}
-				onHide={handleModalClose}
-				style={{ height: '800px' }}
-			>
-				<CustomerDetails user={customer} />
-			</Modal>
 			{/* User Informations */}
 			<Grid item sx={{ display: 'flex', flexDirection: 'row' }}>
 				{/* Profil Pic */}
@@ -130,7 +109,7 @@ const CustomerListItem = (props) => {
 							}
 						}}
 						endIcon={<ArrowForward />}
-						onClick={handleModalOpen}
+						onClick={callNewWindowForUser}
 					>
 						Voir plus
 					</Button>

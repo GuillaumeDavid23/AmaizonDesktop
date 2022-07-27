@@ -7,7 +7,7 @@ import AuthProvider from '../services/AuthProvider'
 // Nav imports
 import { Routes, Route } from 'react-router-dom'
 import PrivateRoute from '../routes/PrivateRoutes'
-import MenuRoute from '../routes/MenuRoute'
+import PrivateMultiWindowRoutes from '../routes/PrivateMultiWindowRoutes'
 
 // View imports
 import Login from '../login/Login'
@@ -19,6 +19,7 @@ import CreateAgent from '../agents/create/CreateAgent'
 import CreateAnnounce from '../createAnnounce/CreateAnnounce'
 import SingleAnnounce from '../announces/single/SingleAnnounce'
 import CustomerAdd from '../customerAdd/CustomerAdd'
+import { CustomerDetails } from '../customers/components'
 
 const MainRouter = () => {
 	return (
@@ -54,6 +55,16 @@ const MainRouter = () => {
 						<PrivateRoute>
 							<Customers />
 						</PrivateRoute>
+					}
+				/>
+
+				{/* Private Route Customers Single*/}
+				<Route
+					path="/customers/:id"
+					element={
+						<PrivateMultiWindowRoutes>
+							<CustomerDetails />
+						</PrivateMultiWindowRoutes>
 					}
 				/>
 
