@@ -1,5 +1,6 @@
 {
-	"name": "lm-electron-react-starter",
+	"name": "amaizon_desktop",
+	"appName": "Amaizon - Application Desktop",
 	"version": "0.1.0",
 	"private": true,
 	"main": "src/main/main.js",
