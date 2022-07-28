@@ -1,6 +1,9 @@
 // React import
 import React from 'react'
 
+// React Router import
+import { useNavigate } from 'react-router-dom'
+
 // Layout imports
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
@@ -84,6 +87,9 @@ const Customers = () => {
 		})
 	}
 
+	// Get navigation
+	const navigate = useNavigate()
+
 	React.useEffect(() => {
 		fetch(`${window.electron.url}/api/user/customers`, {
 			headers: {
@@ -104,6 +110,40 @@ const Customers = () => {
 			}
 		})
 	}, [])
+
+	// React KeyHandling Callback
+	const handleKeyPress = React.useCallback((event) => {
+		const { key, ctrlKey, altKey } = event
+		console.log(`Got key, ctrl, alt: ${key} ${ctrlKey} ${altKey}`)
+
+		if (ctrlKey && key === 'n') {
+			console.log('Key combination: New User called')
+			navigate('/customerAdd')
+		}
+
+		return
+	}, [])
+
+	// Electron KeyHandling Callback
+	const handleElectronKeyPress = React.useCallback((event) => {
+		const { key, ctrlKey, altKey } = event
+		console.log(`Got key, ctrl, alt: ${key} ${ctrlKey} ${altKey}`)
+
+		if (ctrlKey && key === 'n') {
+			window.electron.send('mainGoToPage', '/customerAdd')
+		}
+
+		return
+	}, [])
+
+	// ReactJS Key handling
+	React.useEffect(() => {
+		window.addEventListener('keyup', handleElectronKeyPress, true)
+
+		return () => {
+			window.removeEventListener('keyup', handleElectronKeyPress, true)
+		}
+	}, [handleElectronKeyPress])
 
 	return (
 		<Grid sx={{ height: '100%' }}>
