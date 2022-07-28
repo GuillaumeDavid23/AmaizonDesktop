@@ -117,19 +117,6 @@ const Customers = () => {
 		})
 	}, [])
 
-	// React KeyHandling Callback
-	const handleKeyPress = React.useCallback((event) => {
-		const { key, ctrlKey, altKey } = event
-		console.log(`Got key, ctrl, alt: ${key} ${ctrlKey} ${altKey}`)
-
-		if (ctrlKey && key === 'n') {
-			console.log('Key combination: New User called')
-			navigate('/customerAdd')
-		}
-
-		return
-	}, [])
-
 	// Electron KeyHandling Callback
 	const handleElectronKeyPress = React.useCallback((event) => {
 		const { key, ctrlKey, altKey } = event
@@ -144,10 +131,10 @@ const Customers = () => {
 
 	// ReactJS Key handling
 	React.useEffect(() => {
-		window.addEventListener('keyup', handleElectronKeyPress, true)
+		window.addEventListener('keydown', handleElectronKeyPress, true)
 
 		return () => {
-			window.removeEventListener('keyup', handleElectronKeyPress, true)
+			window.removeEventListener('keydown', handleElectronKeyPress, true)
 		}
 	}, [handleElectronKeyPress])
 
@@ -157,7 +144,7 @@ const Customers = () => {
 				{/* Component Header */}
 				<Title text="Client" variant="h5" />
 
-				{/* Filter input */}
+				{/* Filter Input */}
 				<Box
 					sx={{
 						display: 'flex',
@@ -173,6 +160,7 @@ const Customers = () => {
 						value={searchCustomer || ''}
 					/>
 				</Box>
+				{/* Add user Button */}
 				<Box
 					sx={{
 						display: 'flex',
@@ -184,6 +172,9 @@ const Customers = () => {
 						style={{
 							backgroundColor: '#647F94',
 							borderColor: '#647F94'
+						}}
+						onClick={() => {
+							navigate('/customerAdd')
 						}}
 					>
 						Ajouter un client
