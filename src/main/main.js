@@ -4,6 +4,8 @@ const path = require('path')
 const contextMenu = require('electron-context-menu')
 dotenv.config()
 
+const BASE_URL = 'http://localhost:3000'
+
 contextMenu({
 	labels: {
 		copy: 'Copier',
@@ -48,6 +50,15 @@ function createWindow(url = '/') {
 	return win
 }
 
+const parseData = (data) => {
+	return Array.isArray(data) ? data[0] : data
+}
+
+const mainGoToPage = (uri = '/') => {
+	console.log(`main::mainGoToPage> Try accessing page: ${BASE_URL}${uri}`)
+	listWindows[0].loadURL(`${BASE_URL}${uri}`)
+}
+
 app.whenReady().then(createWindow)
 
 ipcMain.on('evt_name_in', (evt, data) => {
@@ -71,4 +82,12 @@ ipcMain.on('mainShowAppointmentPage', (event, data) => {
 	customerId = Array.isArray(data) ? data[0] : data
 
 	listWindows[0].loadURL(`http://localhost:3000/home`)
+})
+
+ipcMain.on('mainGoToPage', (event, data) => {
+	console.log('mainGoToPage function called in main')
+	uri = parseData(data)
+	console.log(`Got URI: ${uri}`)
+
+	mainGoToPage(uri)
 })

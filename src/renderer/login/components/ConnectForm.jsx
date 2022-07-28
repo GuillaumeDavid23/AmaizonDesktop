@@ -133,8 +133,8 @@ const ConnectForm = () => {
 		reValidateMode: 'onBlur',
 		shouldFocusError: true,
 		defaultValues: {
-			email: 'guigui@test.fr',
-			password: 'Guillaume5'
+			email: '',
+			password: ''
 		}
 	})
 
