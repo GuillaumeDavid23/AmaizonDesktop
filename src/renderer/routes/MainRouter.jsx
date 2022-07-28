@@ -1,6 +1,3 @@
-// React import
-import React from 'react'
-
 // Auth import
 import AuthProvider from '../services/AuthProvider'
 
@@ -22,6 +19,8 @@ import CustomerAdd from '../customerAdd/CustomerAdd'
 import { CustomerDetails } from '../customers/components'
 import CustomerPreference from '../customerPreference/CustomerPreference'
 import Inventory from '../inventory/Inventory'
+import Appointments from '../appointments/Appointments'
+import CreateAppointment from '../appointments/pages/CreateAppointment/CreateAppointment'
 
 const MainRouter = () => {
 	return (
@@ -139,6 +138,14 @@ const MainRouter = () => {
 						</PrivateRoute>
 					}
 				/>
+				<Route
+					path="/appointments"
+					element={
+						<PrivateRoute>
+							<Appointments />
+						</PrivateRoute>
+					}
+				/>
 
 				{/* Private Route list inventory*/}
 				<Route
@@ -146,6 +153,14 @@ const MainRouter = () => {
 					element={
 						<PrivateRoute>
 							<Inventory />
+						</PrivateRoute>
+					}
+				/>
+				<Route
+					path="/createAppointment"
+					element={
+						<PrivateRoute>
+							<CreateAppointment />
 						</PrivateRoute>
 					}
 				/>

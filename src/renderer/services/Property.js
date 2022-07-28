@@ -3,13 +3,13 @@
  * @param {String} userToken User API Access Token
  * @returns {Promise}
  */
-const getAllProperties = async (userToken) => {
+const getAllProperties = async (token) => {
 	return fetch(`${window.electron.url}/api/property`, {
 		method: 'GET',
 		headers: {
-			Authorization: `Bearer ${userToken}`,
 			Accept: 'application/json',
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			Authorization: 'bearer ' + token
 		}
 	})
 		.then((response) => {
@@ -132,4 +132,39 @@ const updateProperty = async (data, userToken, propertyId) => {
 	})
 }
 
-export { getAllProperties, getOneProperty, createProperty, updateProperty }
+const searchProperties = async (data) => {
+	// Returning new Promise
+	return new Promise((resolve, reject) => {
+		// Fetching API
+		fetch(`${window.electron.url}/api/property/searchProperties`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json;charset=utf-8'
+			},
+			body: JSON.stringify(data)
+		})
+			.then((response) => {
+				// If response 2xx
+				if (response.ok) {
+					// Returning User info
+					return resolve(response.json())
+				}
+				// Else: Returning Error info
+				return reject(response.json())
+			})
+			.catch((err) => {
+				// Handling Fetch problems
+				return reject({
+					message: "L'API ne semble pas être disponible"
+				})
+			})
+	})
+}
+
+export {
+	getAllProperties,
+	getOneProperty,
+	createProperty,
+	updateProperty,
+	searchProperties
+}

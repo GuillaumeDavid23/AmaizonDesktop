@@ -13,13 +13,12 @@ const getAgent = async (id, token) => {
 		.catch((errors) => console.log(errors))
 }
 
-const getAgents = async (id, token) => {
+const getAgents = async () => {
 	return fetch(`${window.electron.url}/api/user/agents`, {
 		method: 'GET',
 		headers: {
 			Accept: 'application/json',
-			'Content-Type': 'application/json',
-			Authorization: `bearer ${token}`
+			'Content-Type': 'application/json'
 		}
 	})
 		.then((response) => {

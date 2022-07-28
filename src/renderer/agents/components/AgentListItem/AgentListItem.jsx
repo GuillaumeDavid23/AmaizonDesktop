@@ -1,26 +1,24 @@
-// React import
-import React from 'react'
+import { useState } from 'react'
+import { Box, Button, Grid, Typography } from '@mui/material'
+import Modal from 'react-bootstrap/Modal'
+import { ArrowForward } from '@mui/icons-material'
+import { AgentDetails } from './components'
+import { useNavigate } from 'react-router-dom'
 
-// Layout imports
-import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
+const AgentListItem = ({ agent }) => {
+	// Déclaration useNavigate:
+	let navigate = useNavigate()
 
-// MUI Design import
-import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
+	// Modal state
+	const [open, setOpen] = useState(false)
 
-// Bootstrap Design import
-import { Image } from 'react-bootstrap'
+	const handleModalClose = () => {
+		setOpen(false)
+	}
 
-// Icon import
-import ArrowForward from '@mui/icons-material/ArrowForward'
-
-const CustomerListItem = (props) => {
-	const { customer } = props
-
-	const callNewWindowForUser = React.useCallback(() => {
-		window.electron.send('showCustomerDetailWindow', customer._id)
-	}, [])
+	const handleModalOpen = () => {
+		setOpen(true)
+	}
 
 	return (
 		<Grid
@@ -34,45 +32,32 @@ const CustomerListItem = (props) => {
 				boxShadow: '3px 5px 10px #737373'
 			}}
 		>
+			{/* CustomerInfo Modal */}
+			<Modal
+				show={open}
+				onHide={handleModalClose}
+				style={{ height: '800px' }}
+			>
+				<AgentDetails user={agent} />
+			</Modal>
 			{/* User Informations */}
 			<Grid item sx={{ display: 'flex', flexDirection: 'row' }}>
 				{/* Profil Pic */}
 				<Box
 					sx={{
 						height: '100px',
-						width: '100px'
+						width: '100px',
+						backgroundColor: 'blue',
+						borderRadius: '10px'
 					}}
-				>
-					<Image
-						style={{ borderRadius: '10px' }}
-						fluid
-						src={
-							window.electron.url +
-							'/avatar/' +
-							customer._id +
-							'.png'
-						}
-						onError={({ currentTarget }) => {
-							currentTarget.onerror = null // prevents looping
-							currentTarget.src = require('../../../../assets/images/blank_profile.png')
-						}}
-					/>
-				</Box>
-				{/* Customer Info + Prefs */}
+				></Box>
+				{/* Agent Info + Prefs */}
 				<Box sx={{ paddingLeft: '10px' }}>
 					<Typography>
-						{customer.firstname} {customer.lastname} (
-						<i>{customer.email}</i>)
-					</Typography>
-
-					<Typography>
-						Tel:
-						{customer?.phone === ''
-							? ' Non renseigné'
-							: customer?.phone}
+						{agent.firstname} {agent.lastname}
 					</Typography>
 					<Typography>
-						<p>Mail: {customer?.email}</p>
+						(<i>{agent.email}</i>)
 					</Typography>
 				</Box>
 			</Grid>
@@ -97,44 +82,60 @@ const CustomerListItem = (props) => {
 					<Button
 						variant="contained"
 						sx={{
+							fontSize: '0.8em',
 							width: { sm: '70%', md: '33%' },
 							backgroundColor: '#647F94',
 							borderRadius: '10px 0px 0px 10px',
 							'&:hover': {
 								backgroundColor: '#647F94'
-							},
-							fontSize: '75%'
+							}
 						}}
+						onClick={() =>
+							navigate('/createAgent', {
+								state: { id: agent.id }
+							})
+						}
 					>
 						Modifier
 					</Button>
 					<Button
 						variant="contained"
 						sx={{
+							fontSize: '0.8em',
 							width: { sm: '70%', md: '33%' },
 							backgroundColor: '#647F94',
 							borderRadius: '0px',
 							'&:hover': {
 								backgroundColor: '#647F94'
-							},
-							fontSize: '75%'
+							}
 						}}
+						onClick={() =>
+							navigate('/', {
+								state: {
+									snackParams: {
+										message:
+											'Fonctionnalité pas encore développée !',
+										severity: 'warning'
+									}
+								}
+							})
+						}
 					>
 						Rendez-vous
 					</Button>
 					<Button
 						variant="contained"
 						sx={{
+							fontSize: '0.8em',
 							width: { sm: '70%', md: '33%' },
 							backgroundColor: '#647F94',
 							borderRadius: '0px 10px 10px 0px',
 							'&:hover': {
 								backgroundColor: '#647F94'
-							},
-							fontSize: '75%'
+							}
 						}}
 						endIcon={<ArrowForward />}
-						onClick={callNewWindowForUser}
+						onClick={handleModalOpen}
 					>
 						Voir plus
 					</Button>
@@ -144,4 +145,4 @@ const CustomerListItem = (props) => {
 	)
 }
 
-export default CustomerListItem
+export default AgentListItem
