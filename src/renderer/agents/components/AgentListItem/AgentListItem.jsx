@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal'
 import { ArrowForward } from '@mui/icons-material'
 import { AgentDetails } from './components'
 import { useNavigate } from 'react-router-dom'
+import { Image } from 'react-bootstrap'
 
 const AgentListItem = ({ agent }) => {
 	// Déclaration useNavigate:
@@ -47,10 +48,24 @@ const AgentListItem = ({ agent }) => {
 					sx={{
 						height: '100px',
 						width: '100px',
-						backgroundColor: 'blue',
 						borderRadius: '10px'
 					}}
-				></Box>
+				>
+					<Image
+						style={{ borderRadius: '10px' }}
+						fluid
+						src={
+							window.electron.url +
+							'/avatar/' +
+							agent._id +
+							'.png'
+						}
+						onError={({ currentTarget }) => {
+							currentTarget.onerror = null // prevents looping
+							currentTarget.src = require('../../../../assets/images/blank_profile.png')
+						}}
+					/>
+				</Box>
 				{/* Agent Info + Prefs */}
 				<Box sx={{ paddingLeft: '10px' }}>
 					<Typography>
