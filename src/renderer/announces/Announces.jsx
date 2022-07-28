@@ -17,7 +17,6 @@ const Announces = () => {
 				/>
 				<Row
 					className="justify-content-center justify-content-lg-center overflow-auto"
-					style={{ height: '75%' }}
 				>
 					{properties.map((property) => {
 						return (
@@ -26,7 +25,7 @@ const Announces = () => {
 								md="7"
 								lg="3"
 								key={property._id}
-								className="d-flex justify-content-center"
+								className="d-flex justify-content-center mb-4"
 							>
 								<HomeCards propertyDatas={property} />
 							</Col>
