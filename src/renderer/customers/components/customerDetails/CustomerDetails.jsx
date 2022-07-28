@@ -13,7 +13,7 @@ import Button from 'react-bootstrap/Button'
 import { Container, Row, Col } from 'react-bootstrap'
 
 // React Router import
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 // CSS import
 import './CustomerDetails.css'
@@ -24,7 +24,7 @@ const CustomerDetails = (props) => {
 
 	const [user, setUser] = React.useState()
 	const [isLoading, setIsLoading] = React.useState(true)
-
+	const navigate = useNavigate()
 	const goToAppointmentPage = React.useCallback(() => {
 		window.electron.send('mainShowAppointmentPage', '')
 	}, [])
@@ -114,6 +114,19 @@ const CustomerDetails = (props) => {
 											onClick={goToAppointmentPage}
 										>
 											Prendre Rdv
+										</Button>
+									</Col>
+									<Col>
+										<Button
+											variant="primary"
+											onClick={() =>
+												navigate(
+													'/customerPreference',
+													{ user: user }
+												)
+											}
+										>
+											Modifier
 										</Button>
 									</Col>
 								</Row>
