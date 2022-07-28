@@ -66,7 +66,13 @@ const CustomerListItem = (props) => {
 					</Typography>
 
 					<Typography>
-						<i>Préférences W.I.P</i>
+						Tel:
+						{customer?.phone === ''
+							? ' Non renseigné'
+							: customer?.phone}
+					</Typography>
+					<Typography>
+						<p>Mail: {customer?.email}</p>
 					</Typography>
 				</Box>
 			</Grid>

@@ -8,11 +8,9 @@ import { useNavigate } from 'react-router-dom'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 
-// MUI Design imports
-import Button from '@mui/material/Button'
-
 // Bootstrap Design imports
 import FormControl from 'react-bootstrap/FormControl'
+import Button from 'react-bootstrap/Button'
 
 // Sub component imports
 import { CustomerListItem } from './components'
@@ -174,7 +172,14 @@ const Customers = () => {
 						paddingRight: '50px'
 					}}
 				>
-					<Button variant="contained">Ajouter un client</Button>
+					<Button
+						style={{
+							backgroundColor: '#647F94',
+							borderColor: '#647F94'
+						}}
+					>
+						Ajouter un client
+					</Button>
 				</Box>
 			</Box>
 

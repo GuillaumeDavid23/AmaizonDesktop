@@ -10,7 +10,7 @@ import Box from '@mui/material/Box'
 // Bootstrap Design imports
 import Spinner from 'react-bootstrap/Spinner'
 import Button from 'react-bootstrap/Button'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Image } from 'react-bootstrap'
 
 // React Router import
 import { useNavigate, useParams } from 'react-router-dom'
@@ -58,7 +58,15 @@ const CustomerDetails = (props) => {
 					<span className="visually-hidden">Loading...</span>
 				</Spinner>
 			) : (
-				<Container style={{ height: '100%' }}>
+				<Container
+					style={{
+						height: '100%',
+						backgroundColor: '#DCD0C1',
+						margin: 0,
+						maxWidth: '100%',
+						padding: '50px'
+					}}
+				>
 					<Row style={{ height: '100%' }}>
 						{/* Espace 1: PP + ActionButton "Modifier"/"RDV" */}
 						<Col
@@ -85,10 +93,26 @@ const CustomerDetails = (props) => {
 										<Box
 											style={{
 												height: '300px',
-												width: '300px',
-												backgroundColor: 'blue'
+												width: '300px'
 											}}
-										></Box>
+										>
+											<Image
+												style={{ borderRadius: '10px' }}
+												fluid
+												src={
+													window.electron.url +
+													'/avatar/' +
+													userID +
+													'.png'
+												}
+												onError={({
+													currentTarget
+												}) => {
+													currentTarget.onerror = null // prevents looping
+													currentTarget.src = require('../../../../assets/images/blank_profile.png')
+												}}
+											/>
+										</Box>
 									</Col>
 								</Row>
 								{/* ActionsButtons */}
@@ -112,21 +136,12 @@ const CustomerDetails = (props) => {
 										<Button
 											variant="primary"
 											onClick={goToAppointmentPage}
+											style={{
+												backgroundColor: '#647F94',
+												borderColor: '#647F94'
+											}}
 										>
 											Prendre Rdv
-										</Button>
-									</Col>
-									<Col>
-										<Button
-											variant="primary"
-											onClick={() =>
-												navigate(
-													'/customerPreference',
-													{ state: {user: user} }
-												)
-											}
-										>
-											Modifier
 										</Button>
 									</Col>
 								</Row>
@@ -153,10 +168,43 @@ const CustomerDetails = (props) => {
 						<Col
 							style={{
 								display: 'flex',
-								justifyContent: 'center'
+								flexDirection: 'column',
+								justifyContent: 'flex-start'
 							}}
 						>
-							<Box></Box>
+							<Row>
+								<Box>
+									<p>Budget mini: {user?.buyer?.budgetMin}</p>
+									<p>Budget max: {user?.buyer?.budgetMax}</p>
+									<p>
+										Surface mini: {user?.buyer?.surfaceMin}
+									</p>
+									<p>
+										Surface max: {user?.buyer?.surfaceMax}
+									</p>
+									<p>Localisation: {user?.buyer?.city}</p>
+									<p>
+										Nombre de pièces: {user?.buyer?.rooms}
+									</p>
+									<p>Transaction: {user?.buyer?.type}</p>
+								</Box>
+							</Row>
+							<Row>
+								<Button
+									variant="primary"
+									onClick={() =>
+										navigate('/customerPreference', {
+											state: { user: user }
+										})
+									}
+									style={{
+										backgroundColor: '#647F94',
+										borderColor: '#647F94'
+									}}
+								>
+									Modifier
+								</Button>
+							</Row>
 						</Col>
 					</Row>
 				</Container>
