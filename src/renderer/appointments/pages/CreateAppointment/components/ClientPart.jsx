@@ -4,7 +4,7 @@ import { BtnGeneral } from '../../../../globalComponents'
 import { useState } from 'react'
 import { searchClient } from '../../../../services/Client'
 
-const ClientPart = ({ token, register, errors }) => {
+const ClientPart = ({ token, register, errors, setValue }) => {
 	const [clientsShown, setClientsShown] = useState([])
 	const [clientSelected, setClientSelected] = useState()
 
@@ -27,6 +27,11 @@ const ClientPart = ({ token, register, errors }) => {
 			})
 	}
 
+	const handleClientPick = (clientId) => {
+		setClientSelected(clientId)
+		setValue('client', clientId)
+	}
+
 	return (
 		<>
 			<Box className="appointmentFormPart">
@@ -44,10 +49,10 @@ const ClientPart = ({ token, register, errors }) => {
 					return (
 						<Box
 							key={client._id}
-							className={`d-flex border border-dark p-3 my-2${
-								clientSelected === client._id && ' bg-light'
+							className={`appointmentFormBox${
+								clientSelected === client._id ? ' bg-light' : ''
 							}`}
-							onClick={() => setClientSelected(client._id)}
+							onClick={() => handleClientPick(client._id)}
 						>
 							<img
 								alt={`Avatar de ${client.lastname} ${client.firstname}`}
@@ -58,19 +63,19 @@ const ClientPart = ({ token, register, errors }) => {
 						</Box>
 					)
 				})}
+				<input
+					defaultValue={''}
+					className={`d-none${errors.client ? ' is-invalid' : ''}`}
+					{...register('client', {
+						required: 'Vous devez indiquer un Client..'
+					})}
+				/>
 				{errors?.client && (
 					<span className="invalid-feedback fw-bold text-center">
 						{errors.client.message}
 					</span>
 				)}
 			</Box>
-			<input
-				value={clientSelected ?? ''}
-				className="d-none"
-				{...register('client', {
-					required: 'Vous devez indiquer un Client..'
-				})}
-			/>
 		</>
 	)
 }
