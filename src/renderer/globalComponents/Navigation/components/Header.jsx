@@ -22,12 +22,12 @@ const Header = ({ collapsed, isCollapsed }) => {
 					<IoMenu size={30} />
 				</IconButton>
 			</Box>
-			<TextField
+			{/* <TextField
 				label="Rechercher une annonce"
 				variant="outlined"
 				className="w-75 mt-3 mb-2 bg-white"
 				hidden={collapsed}
-			/>
+			/> */}
 		</SidebarHeader>
 	)
 }

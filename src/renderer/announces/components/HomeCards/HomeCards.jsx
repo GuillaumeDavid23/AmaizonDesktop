@@ -16,46 +16,24 @@ const HomeCards = (props) => {
 		roomNumber,
 		location,
 		transactionType,
+		propertyRef,
 		isToSell
 	} = props.propertyDatas
 	const navigate = useNavigate()
 
 	return (
-		<Card className="mb-5 w-75" id={_id}>
-			<Card.Img
-				variant="top"
-				src={window.electron.url + '/' + imageUrl?.photo1}
-				alt={'Super photo 1'}
-				className="h-100"
-			/>
+		<Card className="w-100" id={_id} style={{height: 'fit-content'}}>
 			<Card.Body className="d-flex flex-column">
-				<Card.Title>{title}</Card.Title>
-				<Row className="d-flex justify-content-evenly mt-2">
-					<Col className="d-flex flex-column align-items-center fw-bold">
-						<BsBorderAll size={20} />
-						{roomNumber} pièce(s)
-					</Col>
-					<Col className="d-flex flex-column align-items-center fw-bold">
-						<MdLocationSearching size={20} />
-						{location}
-					</Col>
-					<Col className="d-flex flex-column align-items-center fw-bold">
-						<MdArchitecture size={20} />
-						{surface} m²
-					</Col>
-				</Row>
+				<Card.Title style={{textAlign: 'center'}}>{title}</Card.Title>
 				<Row>
 					<Col
 						xs={12}
-						className="price d-flex justify-content-center"
+						className="d-flex justify-content-center"
 					>
-						{amount?.toLocaleString('FR')} €{' '}
-						<small className="location text-secondary ms-1 align-self-end">
-							{transactionType === 'Location' ? '/ Mois' : ''}
-						</small>
+						Ref: {propertyRef}
 					</Col>
 				</Row>
-				<Row className="align-items-center">
+				<Row className="align-items-center mt-3">
 					<Col xs={12} md={8} lg={6}>
 						{isToSell ? (
 							<Box className="d-flex justify-content-center align-items-center">
@@ -81,6 +59,7 @@ const HomeCards = (props) => {
 									state: { property: props.propertyDatas }
 								})
 							}
+							style={{padding: '10px'}}
 							className="w-100"
 							text="Voir l'annonce"
 						/>
