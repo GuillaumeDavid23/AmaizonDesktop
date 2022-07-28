@@ -7,13 +7,7 @@ import { Col, Row } from 'react-bootstrap'
 import BtnGeneral from '../../globalComponents/BtnGeneral/BtnGeneral'
 import { updateClient } from '../../services/Client'
 import { useSlideSnack } from '../../hooks'
-const PreferenceForm = () => {
-	// Destructuring Snackbar from custom hook
-	const { handleOpen, renderSnack } = useSlideSnack({
-		message: 'PROUT',
-		time: 2000,
-		severity: 'success'
-	})
+const PreferenceForm = ({ user }) => {
 	// Destructuring Hook Form
 	const {
 		handleSubmit,
@@ -24,21 +18,45 @@ const PreferenceForm = () => {
 		reValidateMode: 'onBlur',
 		shouldFocusError: true,
 		defaultValues: {
-			propertyType: 'Maison',
-			type: 'Achat'
+			budgetMin: user.buyer.budgetMin
+				? user.buyer.budgetMin.toString()
+				: '',
+			budgetMax: user.buyer.budgetMax
+				? user.buyer.budgetMax.toString()
+				: '',
+			city: user.buyer.city ? user.buyer.city : '',
+			surfaceMin: user.buyer.surfaceMin ? user.buyer.surfaceMin : '',
+			surfaceMax: user.buyer.surfaceMax ? user.buyer.surfaceMax : '',
+			rooms: user.buyer.rooms ? user.buyer.rooms : '',
+			propertyType: user.buyer.propertyType
+				? user.buyer.propertyType
+				: 'Maison',
+			type: user.buyer.type ? user.buyer.type : 'Achat'
 		}
 	})
+	const [messageSnack, setMessageSnack] = React.useState('Rien')
+	const [severity, setSeverity] = React.useState('success')
 
-	const id = '62de6307a49053b222916570'
-
+	// Destructuring Snackbar from custom hook
+	const { handleOpen, renderSnack } = useSlideSnack({
+		message: messageSnack,
+		time: 2000,
+		severity: severity
+	})
 	const onSubmit = (data) => {
 		let token = JSON.parse(localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON'))
-		data = {
-			buyer: {
-				...data
-			}
+		user.buyer = {
+			...data
 		}
-		updateClient(id, token, data).then((response) => console.log(response))
+		updateClient(user._id, token, user).then((response) => {
+			if (response.status_code === 201) {
+				setMessageSnack(response.message)
+			} else {
+				setMessageSnack(response.message)
+				setSeverity('error')
+			}
+			handleOpen()
+		})
 	}
 	return (
 		<Box

@@ -122,7 +122,7 @@ const CustomerDetails = (props) => {
 											onClick={() =>
 												navigate(
 													'/customerPreference',
-													{ user: user }
+													{ state: {user: user} }
 												)
 											}
 										>
