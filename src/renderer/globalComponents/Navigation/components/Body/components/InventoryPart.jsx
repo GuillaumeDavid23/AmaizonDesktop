@@ -4,8 +4,7 @@ import { IoBook } from 'react-icons/io5'
 const InventoryPart = ({ navigate }) => {
 	return (
 		<SubMenu title="Etat des lieux" icon={<IoBook />}>
-			<MenuItem>Liste des EDL</MenuItem>
-			<MenuItem>Ajouter un EDL</MenuItem>
+			<MenuItem onClick={() => navigate('/inventory')}>Liste des EDL</MenuItem>
 		</SubMenu>
 	)
 }
