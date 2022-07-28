@@ -96,7 +96,8 @@ const CustomerListItem = (props) => {
 							borderRadius: '10px 0px 0px 10px',
 							'&:hover': {
 								backgroundColor: '#647F94'
-							}
+							},
+							fontSize: '75%'
 						}}
 					>
 						Modifier
@@ -109,7 +110,8 @@ const CustomerListItem = (props) => {
 							borderRadius: '0px',
 							'&:hover': {
 								backgroundColor: '#647F94'
-							}
+							},
+							fontSize: '75%'
 						}}
 					>
 						Rendez-vous
@@ -122,7 +124,8 @@ const CustomerListItem = (props) => {
 							borderRadius: '0px 10px 10px 0px',
 							'&:hover': {
 								backgroundColor: '#647F94'
-							}
+							},
+							fontSize: '75%'
 						}}
 						endIcon={<ArrowForward />}
 						onClick={callNewWindowForUser}
