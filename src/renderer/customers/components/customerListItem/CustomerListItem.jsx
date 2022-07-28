@@ -72,7 +72,7 @@ const CustomerListItem = (props) => {
 							: customer?.phone}
 					</Typography>
 					<Typography>
-						<p>Mail: {customer?.email}</p>
+						Mail: {customer?.email}
 					</Typography>
 				</Box>
 			</Grid>
