@@ -58,6 +58,7 @@ const Customers = () => {
 	const [states, dispatch] = React.useReducer(CReducer, initialStates)
 	const { searchCustomer, users, filteredUsers } = states
 
+	// Filter change Handler
 	const handleChange = ({ target: { value } }) => {
 		dispatch({ type: actions.SET_SEARCHCUSTOMER, payload: value })
 
@@ -69,9 +70,15 @@ const Customers = () => {
 
 			// filtering on firstname + lastname + email
 			newCustomerList.push(
-				...users.filter((user) => user.firstname.includes(value)),
-				...users.filter((user) => user.lastname.includes(value)),
-				...users.filter((user) => user.email.includes(value))
+				...users.filter((user) =>
+					user.firstname.toLowerCase().includes(value)
+				),
+				...users.filter((user) =>
+					user.lastname.toLowerCase().includes(value)
+				),
+				...users.filter((user) =>
+					user.email.toLowerCase().includes(value)
+				)
 			)
 
 			// Using Set to get UNIQUE customers
@@ -88,6 +95,7 @@ const Customers = () => {
 	// Get navigation
 	const navigate = useNavigate()
 
+	// Fetch customer withhis id
 	React.useEffect(() => {
 		fetch(`${window.electron.url}/api/user/customers`, {
 			headers: {
