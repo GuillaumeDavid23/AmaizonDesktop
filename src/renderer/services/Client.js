@@ -135,6 +135,37 @@ const pushUserAvatar = async (token, data) => {
 		.catch((errors) => console.log(errors))
 }
 
+const checkBearer = async (token) => {
+	return fetch(`${window.electron.url}/api/user/checkBearer`, {
+		method: 'POST',
+		headers: {
+			Authorization: `bearer ${token}`
+		}
+	})
+		.then((response) => {
+			return response.json()
+		})
+		.catch((errors) => console.log(errors))
+}
+
+const checkRefreshToken = async (refreshToken) => {
+	return fetch(
+		`${window.electron.url}/api/user/checkResetToken/${refreshToken}`,
+		{
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json;charset=utf-8'
+			},
+		}
+	)
+		.then((response) => {
+			if (response.ok) {
+				return response.json()
+			}
+		})
+		.catch((errors) => console.log(errors))
+}
+
 export {
 	getClient,
 	updateClient,
@@ -142,5 +173,7 @@ export {
 	searchClient,
 	createSeller,
 	getSellerForOneProperty,
-	pushUserAvatar
+	pushUserAvatar,
+	checkBearer,
+	checkRefreshToken
 }

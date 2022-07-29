@@ -17,7 +17,9 @@ import {
 	createClient,
 	searchClient,
 	createSeller,
-	getSellerForOneProperty
+	getSellerForOneProperty,
+	checkBearer,
+	checkRefreshToken
 } from './Client'
 
 // Property:
@@ -44,5 +46,7 @@ export {
 	getAllProperties,
 	getOneProperty,
 	createProperty,
-	updateProperty
+	updateProperty,
+	checkBearer,
+	checkRefreshToken
 }

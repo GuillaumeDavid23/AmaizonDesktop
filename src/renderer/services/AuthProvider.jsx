@@ -1,10 +1,17 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import AuthContext from '../contexts/AuthContext'
 import { sleep } from '../../utils/funcs'
+import React from 'react'
+import { checkBearer, checkRefreshToken } from './Client'
 
 const AuthProvider = ({ children }) => {
 	const navigate = useNavigate()
 	const location = useLocation()
+	const [authToken, setAuthToken] = React.useState(
+		localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON')
+			? JSON.parse(localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON'))
+			: null
+	)
 
 	const handleLogin = async (body) => {
 		try {
@@ -15,7 +22,7 @@ const AuthProvider = ({ children }) => {
 			await sleep(1000)
 
 			// Do Fetch
-			fetch(`${window.electron.url}/api/user/login`, {
+			fetch(`${window.electron.url}/api/user/loginAgent`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json;charset=utf-8'
@@ -31,12 +38,11 @@ const AuthProvider = ({ children }) => {
 							'REACT_TOKEN_AUTH_AMAIZON',
 							JSON.stringify(response.token)
 						)
-						if (response.refreshToken) {
-							localStorage.setItem(
-								'REACT_REFRESH_TOKEN_AUTH_AMAIZON',
-								JSON.stringify(response.refreshToken)
-							)
-						}
+						setAuthToken(response.token)
+						localStorage.setItem(
+							'REMEMBER_ME',
+							JSON.stringify(response.data.email)
+						)
 
 						if (response.message === 'Utilisateur connecté !') {
 							const to = location.state?.from?.pathname || '/home'
@@ -52,14 +58,30 @@ const AuthProvider = ({ children }) => {
 	}
 
 	const handleLogout = () => {
-		localStorage.clear()
+		localStorage.removeItem('REACT_TOKEN_AUTH_AMAIZON')
 		navigate('/login')
 		console.log('Vous avez été déconnecté.')
 	}
 
+	const verifyToken = async () => {
+		try {
+			const responseCheckAuth = await checkBearer(authToken)
+			
+			if (responseCheckAuth.status_code !== 200 ) {
+				localStorage.removeItem('REACT_TOKEN_AUTH_AMAIZON')
+				setAuthToken(null)
+			} 
+		} catch (error) {
+			localStorage.removeItem('REACT_TOKEN_AUTH_AMAIZON')
+			setAuthToken(null)
+		}
+	}
+
 	const value = {
 		handleLogin,
-		handleLogout
+		handleLogout,
+		authToken,
+		verifyToken
 	}
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

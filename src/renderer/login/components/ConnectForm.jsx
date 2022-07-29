@@ -15,7 +15,6 @@ import { Container, Image, Row, Col } from 'react-bootstrap'
 import LoadingButton from '@mui/lab/LoadingButton'
 
 // Input imports
-import OutlinedInput from '@mui/material/OutlinedInput'
 import InputAdornment from '@mui/material/InputAdornment'
 import IconButton from '@mui/material/IconButton'
 
@@ -35,7 +34,7 @@ import Amaizon from '../../../assets/brand/Amaizon_full.png'
 
 // CSS styles import
 import './ConnectForm.css'
-import { FormControl, InputLabel, TextField } from '@mui/material'
+import { TextField } from '@mui/material'
 
 // Component initial states
 const initialStates = {
@@ -92,8 +91,7 @@ const CFReducer = (states, action) => {
 }
 
 const ConnectForm = () => {
-	const auth = useAuth()
-
+	const { handleLogin } = useAuth()
 	// setting up component reducer
 	const [states, dispatch] = React.useReducer(CFReducer, initialStates)
 
@@ -134,8 +132,8 @@ const ConnectForm = () => {
 		reValidateMode: 'onBlur',
 		shouldFocusError: true,
 		defaultValues: {
-			email: '',
-			password: ''
+			email: localStorage.getItem('REMEMBER_ME') ? JSON.parse(localStorage.getItem('REMEMBER_ME')) : '',
+			password: 'Guillaume5'
 		}
 	})
 
@@ -146,60 +144,7 @@ const ConnectForm = () => {
 		try {
 			// Set fetching to true
 			dispatch({ type: actions.SET_FETCHING, payload: true })
-
-			// Wait a little second
-			await sleep(1000)
-
-			// Do Fetch
-			fetch(`${window.electron.url}/api/user/login`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json;charset=utf-8'
-				},
-				body
-			})
-				.then((response) => {
-					return response.json()
-				})
-				.then((response) => {
-					if (response.status_code === 200) {
-						localStorage.setItem(
-							'REACT_TOKEN_AUTH_AMAIZON',
-							JSON.stringify(response.token)
-						)
-						if (response.refreshToken) {
-							localStorage.setItem(
-								'REACT_REFRESH_TOKEN_AUTH_AMAIZON',
-								JSON.stringify(response.refreshToken)
-							)
-						}
-						// Set success snackParams
-						dispatch({
-							type: actions.SET_SNACKMESSAGE,
-							payload: response.message
-						})
-						dispatch({
-							type: actions.SET_SNACKSEVERITY,
-							payload: 'success'
-						})
-
-						if (response.message === 'Utilisateur connecté !') {
-							navigate('/home', { state: { oui: 4 } })
-						}
-					} else {
-						// Set error snackParams
-						dispatch({
-							type: actions.SET_SNACKMESSAGE,
-							payload: response.error
-						})
-						dispatch({
-							type: actions.SET_SNACKSEVERITY,
-							payload: 'error'
-						})
-					}
-					// Show Snackbar
-					handleOpen()
-				})
+			await handleLogin(body)
 		} catch (error) {
 			console.log(error)
 		} finally {
@@ -282,45 +227,45 @@ const ConnectForm = () => {
 									name={'password'}
 									control={control}
 									render={({ field }) => (
-											<TextField
-												id="OutlinedConnectPassword"
-												variant='outlined'
-												label='Mot de passe'
-												className={
-													!errors.password
-														? 'form-control'
-														: 'form-control is-invalid'
-												}
-												{...field}
-												value={field.value || ''}
-												type={
-													states.isPasswordVisible
-														? 'text'
-														: 'password'
-												}
-												InputProps={{
-													endAdornment: (
-														<InputAdornment position="end">
-															<IconButton
-																aria-label="toggle password visibility"
-																onClick={
-																	handlePasswordChange
-																}
-																onMouseDown={
-																	handleMouseDownPassword
-																}
-																edge="end"
-															>
-																{states.isPasswordVisible ? (
-																	<VisibilityOff />
-																) : (
-																	<Visibility />
-																)}
-															</IconButton>
-														</InputAdornment>
-													)
-												}}
-											/>
+										<TextField
+											id="OutlinedConnectPassword"
+											variant="outlined"
+											label="Mot de passe"
+											className={
+												!errors.password
+													? 'form-control'
+													: 'form-control is-invalid'
+											}
+											{...field}
+											value={field.value || ''}
+											type={
+												states.isPasswordVisible
+													? 'text'
+													: 'password'
+											}
+											InputProps={{
+												endAdornment: (
+													<InputAdornment position="end">
+														<IconButton
+															aria-label="toggle password visibility"
+															onClick={
+																handlePasswordChange
+															}
+															onMouseDown={
+																handleMouseDownPassword
+															}
+															edge="end"
+														>
+															{states.isPasswordVisible ? (
+																<VisibilityOff />
+															) : (
+																<Visibility />
+															)}
+														</IconButton>
+													</InputAdornment>
+												)
+											}}
+										/>
 									)}
 									rules={{
 										required:
