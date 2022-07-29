@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 
-const DateTimePart = ({ register }) => {
+const DateTimePart = ({ register, setValue, getAgentSchedule }) => {
 	return (
 		<Box className="mt-3">
 			<Box className="mb-2">
@@ -9,18 +9,30 @@ const DateTimePart = ({ register }) => {
 					type="number"
 					className="dateTimeAppointmentInput text-center"
 					{...register('day')}
+					onChange={(e) => {
+						setValue('day', e.target.value)
+						getAgentSchedule()
+					}}
 				/>
 				<span className="mx-2">/</span>
 				<input
 					type="number"
 					className="dateTimeAppointmentInput text-center"
 					{...register('month')}
+					onChange={(e) => {
+						setValue('month', e.target.value)
+						getAgentSchedule()
+					}}
 				/>
 				<span className="mx-2">/</span>
 				<input
 					type="number"
 					className="dateTimeAppointmentInput text-center"
 					{...register('year')}
+					onChange={(e) => {
+						setValue('year', e.target.value)
+						getAgentSchedule()
+					}}
 				/>
 			</Box>
 			<Box>

@@ -1,5 +1,5 @@
 import { Box } from '@mui/material'
-import { Title } from '../../../globalComponents'
+import { BtnGeneral, Title } from '../../../globalComponents'
 import {
 	AddressPart,
 	AgentPart,
@@ -8,9 +8,9 @@ import {
 	PropertyPart
 } from './components'
 import { useForm } from 'react-hook-form'
-import { BtnGeneral } from '../../../globalComponents'
-import { createAppointment } from '../../../services/Appointment'
+import { createAppointment, getAgentAvailabilities } from '../../../services'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 const CreateAppointment = ({ state }) => {
 	// Récupération du token:
@@ -25,12 +25,38 @@ const CreateAppointment = ({ state }) => {
 		// control,
 		handleSubmit,
 		setValue,
+		getValues,
 		formState: { errors }
 	} = useForm({
 		mode: 'onChange',
 		shouldFocusError: true
 		// defaultValues: {}
 	})
+
+	// Récupération de l'agenda de l'agent concerné pour checker si plage libre:
+	const [schedule, setSchedule] = useState()
+	const getAgentSchedule = () => {
+		let { day, month, year, agent } = getValues()
+		if (day === '' || month === '' || year === '' || agent === '') {
+			setSchedule()
+		} else {
+			year = year.length === 2 ? '20' + year : year
+			month = month.length === 2 ? month : '0' + month
+			day = day.length === 2 ? day : '0' + day
+
+			getAgentAvailabilities(token, {
+				date: `${year}-${month}-${day}`,
+				id_agent: agent
+			})
+				.then((res) => {
+					console.log(res)
+					setSchedule(res.Availabilities)
+				})
+				.catch((err) => {
+					console.log(err)
+				})
+		}
+	}
 
 	const onSubmit = (data) => {
 		// Reformattage préventif des datas date:
@@ -59,11 +85,12 @@ const CreateAppointment = ({ state }) => {
 		createAppointment(token, {
 			dateBegin,
 			dateEnd,
-			address: data.address ?? null,
+			address: data.address ?? 'En agence',
 			outdoor: data.address ? true : false,
 			id_buyer: data.client,
 			id_agent: data.agent,
-			id_property: data.property
+			id_property: data.property,
+			fromDesktop: true
 		})
 			.then((res) => {
 				navigate('/appointments', {
@@ -92,7 +119,13 @@ const CreateAppointment = ({ state }) => {
 							errors={errors}
 							setValue={setValue}
 						/>
-						<AgentPart register={register} errors={errors} />
+						<AgentPart
+							register={register}
+							errors={errors}
+							setValue={setValue}
+							schedule={schedule}
+							getAgentSchedule={getAgentSchedule}
+						/>
 						<PropertyPart
 							register={register}
 							errors={errors}
@@ -100,7 +133,11 @@ const CreateAppointment = ({ state }) => {
 						/>
 					</Box>
 					<Box className="d-flex justify-content-around mt-3">
-						<DateTimePart register={register} />
+						<DateTimePart
+							register={register}
+							setValue={setValue}
+							getAgentSchedule={getAgentSchedule}
+						/>
 						<AddressPart register={register} />
 					</Box>
 					<Box className="d-flex justify-content-center">

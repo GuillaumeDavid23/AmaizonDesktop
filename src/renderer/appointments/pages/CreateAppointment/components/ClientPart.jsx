@@ -3,6 +3,7 @@ import { FormControl } from 'react-bootstrap'
 import { BtnGeneral } from '../../../../globalComponents'
 import { useState } from 'react'
 import { searchClient } from '../../../../services/Client'
+import defaultAvatar from '../../../../../assets/images/blank_profile.png'
 
 const ClientPart = ({ token, register, errors, setValue }) => {
 	const [clientsShown, setClientsShown] = useState([])
@@ -41,28 +42,34 @@ const ClientPart = ({ token, register, errors, setValue }) => {
 					<BtnGeneral
 						type="button"
 						text="RECHERCHER"
-						className="w-auto"
+						className="w-auto ms-1"
 						onClick={handleClientSearch}
 					/>
 				</Box>
-				{clientsShown.map((client) => {
-					return (
-						<Box
-							key={client._id}
-							className={`appointmentFormBox${
-								clientSelected === client._id ? ' bg-light' : ''
-							}`}
-							onClick={() => handleClientPick(client._id)}
-						>
-							<img
-								alt={`Avatar de ${client.lastname} ${client.firstname}`}
-							/>
-							<span className="fw-bold">
-								{client.lastname} {client.firstname}
-							</span>
-						</Box>
-					)
-				})}
+				<Box className="mt-4 pe-3" style={{ overflowY: 'scroll' }}>
+					{clientsShown.map((client) => {
+						return (
+							<Box
+								key={client._id}
+								className={`appointmentFormBox${
+									clientSelected === client._id
+										? ' bg-light'
+										: ''
+								}`}
+								onClick={() => handleClientPick(client._id)}
+							>
+								<img
+									src={defaultAvatar}
+									alt={`Avatar de ${client.lastname} ${client.firstname}`}
+									className="w-25 me-3"
+								/>
+								<span className="fw-bold">
+									{client.lastname} {client.firstname}
+								</span>
+							</Box>
+						)
+					})}
+				</Box>
 				<input
 					defaultValue={''}
 					className={`d-none${errors.client ? ' is-invalid' : ''}`}

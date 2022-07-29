@@ -37,6 +37,8 @@ function createWindow(url = '/') {
 
 	win.loadURL(`http://localhost:3000${url}`)
 
+	win.webContents.openDevTools({ mode: 'detach' })
+
 	win.on('closed', () => {
 		if (listWindows.indexOf(win) == 0) {
 			app.quit()

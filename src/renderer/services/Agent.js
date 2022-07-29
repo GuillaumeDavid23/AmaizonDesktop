@@ -82,4 +82,28 @@ const pushAgentAvatar = async (token, data) => {
 		.catch((errors) => console.log(errors))
 }
 
-export { getAgent, getAgents, updateAgent, createAgent, pushAgentAvatar }
+const getAgentAvailabilities = async (token, data) => {
+	return fetch(`${window.electron.url}/api/user/agentAvailabilities`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `bearer ${token}`
+		},
+		body: JSON.stringify(data)
+	})
+		.then((response) => {
+			if (response.ok) {
+				return response.json()
+			}
+		})
+		.catch((errors) => console.log(errors))
+}
+
+export {
+	getAgent,
+	getAgents,
+	updateAgent,
+	createAgent,
+	pushAgentAvatar,
+	getAgentAvailabilities
+}
