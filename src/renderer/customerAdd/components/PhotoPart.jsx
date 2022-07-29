@@ -1,6 +1,9 @@
 import { Box } from '@mui/material'
+import React from 'react'
+import { Image } from 'react-bootstrap'
 import { strRandom } from '../../../utils/funcs'
-
+import InputFile from '../../globalComponents/inputFile/InputFile'
+import '../CustomerAdd.css'
 const PhotoPart = ({ state, register, errors }) => {
 	return (
 		<>
@@ -11,16 +14,7 @@ const PhotoPart = ({ state, register, errors }) => {
 						errors.photo ? ' is-invalid' : ''
 					}`}
 				>
-					<span>Photo de l'utilisateur:</span>
-					<input
-						id="photo"
-						type="file"
-						{...register('photo', {
-							required: !state
-								? 'Vous devez ajouter une photo.'
-								: false
-						})}
-					/>
+					<InputFile register={register} state={state} />
 				</label>
 				{errors?.photo && (
 					<span className="invalid-feedback fw-bold text-center">
