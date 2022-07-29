@@ -22,14 +22,19 @@ const CustomerDetails = (props) => {
 	// Get user ID from params
 	const { id: userID } = useParams()
 
+	// Set component states
 	const [user, setUser] = React.useState()
 	const [isLoading, setIsLoading] = React.useState(true)
+
+	// Get Navigate method
 	const navigate = useNavigate()
+
 	const goToAppointmentPage = React.useCallback(() => {
 		window.electron.send('mainShowAppointmentPage', '')
 	}, [])
 
 	React.useEffect(() => {
+		// Fetching User through its ID
 		fetch(`${window.electron.url}/api/user/${userID}`, {
 			headers: {
 				Authorization: `bearer ${JSON.parse(
@@ -40,13 +45,15 @@ const CustomerDetails = (props) => {
 			.then((res) => {
 				if (res.ok) {
 					res.json().then((data) => {
-						console.log(data)
+						// Retrieve user from response
 						const { data: user } = data
+						// Set User
 						setUser(user)
 					})
 				}
 			})
 			.finally(() => {
+				// Finnaly, unlock isLoading state
 				setIsLoading(false)
 			})
 	}, [])
@@ -54,10 +61,12 @@ const CustomerDetails = (props) => {
 	return (
 		<>
 			{isLoading ? (
+				// While fetching, show spinner
 				<Spinner animation="border" role="status">
 					<span className="visually-hidden">Loading...</span>
 				</Spinner>
 			) : (
+				// Once loaded, show User info
 				<Container
 					style={{
 						height: '100%',
@@ -72,110 +81,107 @@ const CustomerDetails = (props) => {
 						<Col
 							style={{
 								display: 'flex',
-								justifyContent: 'center'
+								flexDirection: 'column',
+								justifyContent: 'space-between'
 							}}
 						>
-							<Container
-								style={{
-									display: 'flex',
-									flexDirection: 'column',
-									justifyContent: 'space-evenly'
-								}}
-							>
-								{/* User PP */}
-								<Row>
-									<Col
+							{/* User PP */}
+							<Row>
+								<Col>
+									{/* Actual PP */}
+									<Box
 										style={{
-											display: 'flex',
-											justifyContent: 'center'
+											height: '300px',
+											width: '300px'
 										}}
 									>
-										<Box
-											style={{
-												height: '300px',
-												width: '300px'
-											}}
-										>
-											<Image
-												style={{ borderRadius: '10px' }}
-												fluid
-												src={
-													window.electron.url +
-													'/avatar/' +
-													userID +
-													'.png'
-												}
-												onError={({
-													currentTarget
-												}) => {
-													currentTarget.onerror = null // prevents looping
-													currentTarget.src = require('../../../../assets/images/blank_profile.png')
-												}}
-											/>
-										</Box>
-									</Col>
-								</Row>
-								{/* ActionsButtons */}
-								<Row
-									style={{
-										display: 'flex',
-										justifyContent: 'space-between'
-									}}
-								>
-									<Col>
-										<Button
-											variant="secondary"
-											onClick={() =>
-												console.log('UserModify')
+										<Image
+											style={{ borderRadius: '10px' }}
+											fluid
+											src={
+												window.electron.url +
+												'/avatar/' +
+												userID +
+												'.png'
 											}
-										>
-											Modifier
-										</Button>
-									</Col>
-									<Col>
-										<Button
-											variant="primary"
-											onClick={goToAppointmentPage}
-											style={{
-												backgroundColor: '#647F94',
-												borderColor: '#647F94'
+											onError={({ currentTarget }) => {
+												currentTarget.onerror = null // prevents looping
+												currentTarget.src = require('../../../../assets/images/blank_profile.png')
 											}}
-										>
-											Prendre Rdv
-										</Button>
-									</Col>
-								</Row>
-							</Container>
+										/>
+									</Box>
+								</Col>
+							</Row>
+							{/* ActionsButtons */}
+							<Row>
+								<Col sx={12}>
+									<Button
+										variant="primary"
+										onClick={goToAppointmentPage}
+										style={{
+											backgroundColor: '#647F94',
+											borderColor: '#647F94',
+											width: '100%'
+										}}
+									>
+										Prendre Rdv
+									</Button>
+								</Col>
+							</Row>
 						</Col>
 						{/* Espace 2: Informations utilisateur */}
 						<Col
 							style={{
 								display: 'flex',
-								flexDirection: 'column'
+								flexDirection: 'column',
+								justifyContent: 'space-between'
 							}}
 						>
-							<Box>
-								<h2>
-									{user?.firstname} {user?.lastname}
-								</h2>
-							</Box>
-							<Box>
-								<p>Tel:{user?.phone}</p>
-								<p>Mail:{user?.email}</p>
-							</Box>
+							{/* User info */}
+							<Row>
+								<Col>
+									<Box>
+										<h2>
+											{user?.firstname} {user?.lastname}
+										</h2>
+									</Box>
+									<Box>
+										<p>Tel:{user?.phone}</p>
+										<p>Mail:{user?.email}</p>
+									</Box>
+								</Col>
+							</Row>
+							{/* Action Button */}
+							<Row>
+								<Col xs={12}>
+									<Button
+										variant="secondary"
+										onClick={() =>
+											console.log('UserModify')
+										}
+										style={{
+											backgroundColor: '#647F94',
+											borderColor: '#647F94',
+											width: '100%'
+										}}
+									>
+										Modifier
+									</Button>
+								</Col>
+							</Row>
 						</Col>
 						{/* Espace 3: Préférences utilisateur */}
 						<Col
 							style={{
 								display: 'flex',
 								flexDirection: 'column',
-								justifyContent: 'flex-start'
+								justifyContent: 'space-between'
 							}}
 						>
 							<Row>
 								<Box>
 									<p>Budget mini: {user?.buyer?.budgetMin}</p>
-									<p>Budget max: {user?.buyer?.budgetMax}</p>
+									<p> Budget max: {user?.buyer?.budgetMax}</p>
 									<p>
 										Surface mini: {user?.buyer?.surfaceMin}
 									</p>
@@ -190,20 +196,23 @@ const CustomerDetails = (props) => {
 								</Box>
 							</Row>
 							<Row>
-								<Button
-									variant="primary"
-									onClick={() =>
-										navigate('/customerPreference', {
-											state: { user: user }
-										})
-									}
-									style={{
-										backgroundColor: '#647F94',
-										borderColor: '#647F94'
-									}}
-								>
-									Modifier
-								</Button>
+								<Col sx={12}>
+									<Button
+										variant="primary"
+										onClick={() =>
+											navigate('/customerPreference', {
+												state: { user: user }
+											})
+										}
+										style={{
+											backgroundColor: '#647F94',
+											borderColor: '#647F94',
+											width: '100%'
+										}}
+									>
+										Modifier
+									</Button>
+								</Col>
 							</Row>
 						</Col>
 					</Row>
