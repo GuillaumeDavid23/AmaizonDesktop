@@ -22,11 +22,11 @@ import { ImCross } from 'react-icons/im'
 import { Col, Image, Row } from 'react-bootstrap'
 import '../InventoryListItem/InventoryListItem.css'
 import Photos from './Photos'
-import { Divider } from '@mui/material'
+import { Divider, Tooltip } from '@mui/material'
 
 const ModalInventory = (props) => {
 	const { inventory, open, handleModalClose } = props
-
+	const [openTips, setOpenTips] = React.useState(false)
 	let condtionsArray = {
 		1: 'lowest',
 		2: 'low',
@@ -34,6 +34,15 @@ const ModalInventory = (props) => {
 		4: 'medium',
 		5: 'high',
 		6: 'highest'
+	}
+
+	let condtionsArrayName = {
+		1: 'Très mauvais',
+		2: 'Mauvais',
+		3: 'Pas top',
+		4: 'Moyen',
+		5: 'Bon',
+		6: 'Très Bon'
 	}
 
 	return (
@@ -84,12 +93,27 @@ const ModalInventory = (props) => {
 									<Image
 										src={require('../../../../assets/images/barre_solo.png')}
 										fluid
+										onMouseEnter={() => setOpenTips(true)}
+										onMouseLeave={() => setOpenTips(false)}
 									/>
-									<Box
-										className={`pointerBarre ${
-											condtionsArray[roomDetail.condition]
-										}`}
-									></Box>
+									<Tooltip
+										open={openTips}
+										arrow
+										placement="right-start"
+										title={
+											condtionsArrayName[
+												roomDetail.condition
+											]
+										}
+									>
+										<Box
+											className={`pointerBarre ${
+												condtionsArray[
+													roomDetail.condition
+												]
+											}`}
+										></Box>
+									</Tooltip>
 								</Box>
 							</Box>
 						)

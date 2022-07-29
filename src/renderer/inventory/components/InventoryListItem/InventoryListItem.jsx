@@ -8,19 +8,20 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 
-
 // Icon import
 import ArrowForward from '@mui/icons-material/ArrowForward'
 
 import { Col, Container, Image, Row } from 'react-bootstrap'
 import './InventoryListItem.css'
 import ModalInventory from '../singleInventory/ModalInventory'
+import { styled, Tooltip, tooltipClasses } from '@mui/material'
 
 const InventoryListItem = (props) => {
 	const { inventory } = props
 
 	// Modal state
 	const [open, setOpen] = React.useState(false)
+	const [openTips, setOpenTips] = React.useState(false)
 
 	const handleModalClose = () => {
 		setOpen(false)
@@ -38,14 +39,23 @@ const InventoryListItem = (props) => {
 		5: 'high',
 		6: 'highest'
 	}
-	let sumCondition = 0;
+
+	let condtionsArrayName = {
+		1: 'Très mauvais',
+		2: 'Mauvais',
+		3: 'Pas top',
+		4: 'Moyen',
+		5: 'Bon',
+		6: 'Très Bon'
+	}
+	let sumCondition = 0
 	let countCondition = 0
 	inventory.lst_roomDetails.forEach((roomDetail) => {
 		countCondition++
 		sumCondition += roomDetail.condition
-	});
+	})
 	let avgCondition = Math.round(sumCondition / countCondition)
-	console.log(avgCondition);
+
 	return (
 		<Container
 			style={{
@@ -72,7 +82,13 @@ const InventoryListItem = (props) => {
 					<Typography align="center" style={{ fontSize: '13px' }}>
 						Ref: {inventory.id_rental.id_property.propertyRef}
 					</Typography>
-					<Box sx={{ width: '100%', marginTop: '10px', marginBottom: '10px' }}>
+					<Box
+						sx={{
+							width: '100%',
+							marginTop: '10px',
+							marginBottom: '10px'
+						}}
+					>
 						<Typography
 							align="center"
 							style={{ textTransform: 'capitalize' }}
@@ -83,10 +99,19 @@ const InventoryListItem = (props) => {
 							<Image
 								src={require('../../../../assets/images/barre_solo.png')}
 								fluid
+								onMouseEnter={() => setOpenTips(true)}
+								onMouseLeave={() => setOpenTips(false)}
 							/>
-							<Box
-								className={`pointerBarre ${condtionsArray[avgCondition]}`}
-							></Box>
+							<Tooltip
+								open={openTips}
+								arrow
+								placement="right-start"
+								title={condtionsArrayName[avgCondition]}
+							>
+								<Box
+									className={`pointerBarre ${condtionsArray[avgCondition]}`}
+								></Box>
+							</Tooltip>
 						</Box>
 					</Box>
 				</Box>
