@@ -38,6 +38,8 @@ function createWindow(url = '/') {
 	win.setTitle(require('../../package.json').appName)
 	win.loadURL(`http://localhost:3000${url}`)
 
+	win.webContents.openDevTools({ mode: 'detach' })
+
 	win.on('closed', () => {
 		if (listWindows.indexOf(win) == 0) {
 			app.quit()

@@ -299,7 +299,6 @@ const CreateAnnounce = () => {
 	const [datasToDisplay, setDatasToDisplay] = useState()
 	const [datasToValidate, setDatasToValidate] = useState()
 	const onSubmit = (data) => {
-		console.log('before:', { ...data })
 		// Hotfix isToSell:
 		if (data.isToSell === undefined) {
 			data.isToSell = true
@@ -364,8 +363,6 @@ const CreateAnnounce = () => {
 			}
 		}
 
-		console.log('after:', data)
-
 		// Génération et traitement du formData (retrait des datas undefined):
 		var formData = new FormData()
 		for (let key in data) {
@@ -428,17 +425,13 @@ const CreateAnnounce = () => {
 				})
 				// On Promise Reject
 				.catch(async (err) => {
-					setSnackParams({
-						message: catchError(err),
-						severity: 'error'
-					})
+					setSnackParams(await catchError(err))
 				})
 		} else {
 			updateProperty(data, token, state.id)
 				// On Promise Successful
 				.then((res) => {
 					if (res !== undefined) {
-						console.log(res)
 						createSeller(checked, res.datas, token)
 							.then((res2) => {
 								if (res2 !== undefined) {
