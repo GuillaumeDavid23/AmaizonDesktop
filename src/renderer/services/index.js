@@ -4,8 +4,17 @@ import {
 	getAgents,
 	updateAgent,
 	createAgent,
-	pushAgentAvatar
+	pushAgentAvatar,
+	getAgentAvailabilities
 } from './Agent'
+
+// Appointment:
+import {
+	createAppointment,
+	getAppointment,
+	getAppointments,
+	updateAppointment
+} from './Appointment'
 
 // AuthProvider:
 import AuthProvider from './AuthProvider'
@@ -36,6 +45,11 @@ export {
 	updateAgent,
 	createAgent,
 	pushAgentAvatar,
+	getAgentAvailabilities,
+	createAppointment,
+	getAppointment,
+	getAppointments,
+	updateAppointment,
 	AuthProvider,
 	getClient,
 	updateClient,

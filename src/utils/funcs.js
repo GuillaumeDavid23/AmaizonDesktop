@@ -30,7 +30,8 @@ const strRandom = (o) => {
 }
 
 const catchError = async (err) => {
-	await err
+	err = await err
+	console.log('errCatch:', err)
 	if (err._W) {
 		err = err._W
 	}

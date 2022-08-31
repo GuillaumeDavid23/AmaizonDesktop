@@ -367,7 +367,6 @@ const CreateAnnounce = () => {
 			}
 		}
 
-
 		// Génération et traitement du formData (retrait des datas undefined):
 		var formData = new FormData()
 		for (let key in data) {
@@ -429,10 +428,7 @@ const CreateAnnounce = () => {
 				})
 				// On Promise Reject
 				.catch(async (err) => {
-					setSnackParams({
-						message: catchError(err),
-						severity: 'error'
-					})
+					setSnackParams(await catchError(err))
 				})
 		} else {
 			updateProperty(data, token, state.id)
