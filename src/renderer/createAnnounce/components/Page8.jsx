@@ -34,8 +34,6 @@ const Page8 = ({
 		propertyRef: 'Référence de la propriété'
 	}
 
-	console.log(datasToDisplay)
-
 	return (
 		<Box
 			className={`d-flex flex-column ${

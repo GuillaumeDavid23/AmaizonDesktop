@@ -94,7 +94,7 @@ const CreateAnnounce = () => {
 	useEffect(() => {
 		if (state) {
 			// Récupération du vendeur de la propriété:
-			getSellerForOneProperty(token, state.id).then((res0) => {
+			getSellerForOneProperty(state.id, token).then((res0) => {
 				getOneProperty(token, state.id)
 					.then((res) => {
 						let {
@@ -156,7 +156,11 @@ const CreateAnnounce = () => {
 						})
 						setValue('amount', amount)
 						setValue('isToSell', isToSell)
-						setChecked(res0.datas._id)
+						if(res0.status === 200){
+							setChecked(res0.datas._id)
+						}else{
+							setChecked()
+						}
 						setPropertyRef(propertyRef)
 					})
 					.catch((error) => {
@@ -167,7 +171,7 @@ const CreateAnnounce = () => {
 					})
 			})
 		}
-	}, [])
+	}, [state])
 
 	// Gestion de la pagination:
 	const [visiblePage, setVisiblePage] = useState(1)
@@ -299,7 +303,6 @@ const CreateAnnounce = () => {
 	const [datasToDisplay, setDatasToDisplay] = useState()
 	const [datasToValidate, setDatasToValidate] = useState()
 	const onSubmit = (data) => {
-		console.log('before:', { ...data })
 		// Hotfix isToSell:
 		if (data.isToSell === undefined) {
 			data.isToSell = true
@@ -364,7 +367,6 @@ const CreateAnnounce = () => {
 			}
 		}
 
-		console.log('after:', data)
 
 		// Génération et traitement du formData (retrait des datas undefined):
 		var formData = new FormData()
@@ -417,7 +419,6 @@ const CreateAnnounce = () => {
 							})
 							.catch(async (err) => {
 								await err
-								console.log('err2:', err)
 							})
 					} else {
 						setSnackParams({
@@ -438,7 +439,6 @@ const CreateAnnounce = () => {
 				// On Promise Successful
 				.then((res) => {
 					if (res !== undefined) {
-						console.log(res)
 						createSeller(checked, res.datas, token)
 							.then((res2) => {
 								if (res2 !== undefined) {
@@ -459,7 +459,6 @@ const CreateAnnounce = () => {
 							})
 							.catch(async (err) => {
 								await err
-								console.log('err2:', err)
 							})
 					} else {
 						setSnackParams({

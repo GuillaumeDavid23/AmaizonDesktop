@@ -87,7 +87,7 @@ const createSeller = async (userId, propertyId, token) => {
 	})
 }
 
-const getSellerForOneProperty = async (userId, propertyId, token) => {
+const getSellerForOneProperty = async (propertyId, token) => {
 	// Returning new Promise
 	return new Promise((resolve, reject) => {
 		// Fetching API
@@ -100,9 +100,12 @@ const getSellerForOneProperty = async (userId, propertyId, token) => {
 		)
 			.then((response) => {
 				// If response 2xx
-				if (response.ok) {
+				if (response.status === 200) {
 					// Returning User info
 					return resolve(response.json())
+				}
+				if(response.status === 204){
+					return resolve(response)
 				}
 				// Else: Returning Error info
 				return reject(response.json())
