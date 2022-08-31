@@ -60,14 +60,8 @@ const Appointments = () => {
 									text="Modifier"
 									className="w-auto ms-3"
 									onClick={() =>
-										navigate('/', {
-											state: {
-												snackParams: {
-													message:
-														'Fonctionnalité à dév',
-													severity: 'warning'
-												}
-											}
+										navigate('/createAppointment', {
+											state: { id: appointment._id }
 										})
 									}
 								/>

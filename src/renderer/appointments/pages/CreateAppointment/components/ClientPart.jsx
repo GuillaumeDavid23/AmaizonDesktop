@@ -1,9 +1,10 @@
-import { Box } from '@mui/material'
+import { Box, IconButton } from '@mui/material'
 import { FormControl } from 'react-bootstrap'
-import { BtnGeneral } from '../../../../globalComponents'
 import { useState } from 'react'
 import { searchClient } from '../../../../services/Client'
 import defaultAvatar from '../../../../../assets/images/blank_profile.png'
+import { BiSearchAlt } from 'react-icons/bi'
+import { REGSTRING } from '../../../../../utils/regex'
 
 const ClientPart = ({ token, register, errors, setValue }) => {
 	const [clientsShown, setClientsShown] = useState([])
@@ -39,17 +40,21 @@ const ClientPart = ({ token, register, errors, setValue }) => {
 				<h2>Ajouter un client</h2>
 				<Box className="d-flex">
 					<FormControl id="clientSearch" placeholder="Rechercher" />
-					<BtnGeneral
-						type="button"
-						text="RECHERCHER"
-						className="w-auto ms-1"
+					<IconButton
+						id="clientSearchBtn"
+						sx={{ color: '#2e3a43' }}
+						aria-label="client search button"
+						component="span"
 						onClick={handleClientSearch}
-					/>
+					>
+						<BiSearchAlt size={30} />
+					</IconButton>
 				</Box>
 				<Box className="mt-4 pe-3" style={{ overflowY: 'scroll' }}>
 					{clientsShown.map((client) => {
 						return (
 							<Box
+								id={'buyer-' + client._id}
 								key={client._id}
 								className={`appointmentFormBox${
 									clientSelected === client._id
@@ -74,7 +79,11 @@ const ClientPart = ({ token, register, errors, setValue }) => {
 					defaultValue={''}
 					className={`d-none${errors.client ? ' is-invalid' : ''}`}
 					{...register('client', {
-						required: 'Vous devez indiquer un Client..'
+						required: 'Vous devez indiquer un Client..',
+						pattern: {
+							value: REGSTRING.value,
+							message: REGSTRING.message
+						}
 					})}
 				/>
 				{errors?.client && (

@@ -2,10 +2,7 @@ import React from 'react'
 
 import PropTypes from 'prop-types'
 
-import Snackbar from '@mui/material/Snackbar'
-import Slide from '@mui/material/Slide'
-
-import MuiAlert from '@mui/material/Alert'
+import { Alert as MuiAlert, Slide, Snackbar } from '@mui/material'
 
 const Alert = React.forwardRef(function Alert(props, ref) {
 	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
