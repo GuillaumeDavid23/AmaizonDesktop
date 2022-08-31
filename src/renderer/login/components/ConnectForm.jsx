@@ -2,7 +2,7 @@
 import React from 'react'
 
 // Navigation import
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 // HookForm imports
 import { useForm, Controller } from 'react-hook-form'
@@ -100,14 +100,27 @@ const ConnectForm = () => {
 		snackParams: { snackMessage, snackSeverity }
 	} = states
 
-	const navigate = useNavigate()
-
+	let { state } = useLocation()
+	console.log(state.snackParams);
 	// Destructuring Snackbar from custom hook
 	const { handleOpen, renderSnack } = useSlideSnack({
 		message: snackMessage,
 		time: 2000,
 		severity: snackSeverity
 	})
+
+	React.useEffect(() => {
+		if (state && state.snackParams) {
+			let { message, severity } = state.snackParams
+			dispatch({ type: actions.SET_SNACKMESSAGE, payload: message })
+			dispatch({ type: actions.SET_SNACKSEVERITY, payload: severity })
+		}
+
+		if (snackMessage) {
+			handleOpen()
+		}
+	}, [snackMessage])
+	
 
 	// Prevent default mouseDown behavior
 	const handleMouseDownPassword = (event) => {
@@ -280,7 +293,7 @@ const ConnectForm = () => {
 							</Col>
 						</Row>
 						{/* Remember Me */}
-						<Row
+						{/* <Row
 							className="justify-content-center"
 							style={{ width: '100%', margin: 'auto' }}
 						>
@@ -306,7 +319,7 @@ const ConnectForm = () => {
 									Se souvenir de moi
 								</label>
 							</div>
-						</Row>
+						</Row> */}
 						{/* Submit Button */}
 						<Row
 							xs="10"

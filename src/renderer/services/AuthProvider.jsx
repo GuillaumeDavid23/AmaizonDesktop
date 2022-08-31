@@ -2,7 +2,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import AuthContext from '../contexts/AuthContext'
 import { sleep } from '../../utils/funcs'
 import React from 'react'
-import { checkBearer, checkRefreshToken } from './Client'
+import { checkBearer } from './Client'
 
 const AuthProvider = ({ children }) => {
 	const navigate = useNavigate()
@@ -59,21 +59,35 @@ const AuthProvider = ({ children }) => {
 
 	const handleLogout = () => {
 		localStorage.removeItem('REACT_TOKEN_AUTH_AMAIZON')
-		navigate('/login')
-		console.log('Vous avez été déconnecté.')
+		navigate('/login', {
+			state: {
+				snackParams: {
+					message: 'Vous avez été déconnecté.',
+					severity: 'error'
+				}
+			}
+		})
+		console.log()
 	}
 
 	const verifyToken = async () => {
 		try {
-			const responseCheckAuth = await checkBearer(authToken)
-			
-			if (responseCheckAuth.status_code !== 200 ) {
-				localStorage.removeItem('REACT_TOKEN_AUTH_AMAIZON')
-				setAuthToken(null)
-			} 
+			setAuthToken(
+				localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON')
+					? JSON.parse(
+							localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON')
+					  )
+					: null
+			)
+			const responseCheckAuth = await checkBearer(
+				authToken
+			)
+
+			if (responseCheckAuth.status_code !== 200) {
+				handleLogout()
+			}
 		} catch (error) {
-			localStorage.removeItem('REACT_TOKEN_AUTH_AMAIZON')
-			setAuthToken(null)
+			handleLogout()
 		}
 	}
 
