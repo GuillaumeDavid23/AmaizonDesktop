@@ -10,14 +10,11 @@ import Button from 'react-bootstrap/Button'
 import { Container, Row, Col, Image } from 'react-bootstrap'
 import { Box, Typography } from '@mui/material'
 
-
 // React Router import
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 // CSS import
 import './AgentDetails.css'
-import { FaUser } from 'react-icons/fa'
-import { BtnGeneral } from '../../../globalComponents'
 import CustomerItem from './components/CustomerItem'
 
 const AgentDetails = (props) => {
@@ -26,13 +23,8 @@ const AgentDetails = (props) => {
 
 	const [user, setUser] = React.useState()
 	const [isLoading, setIsLoading] = React.useState(true)
-	const navigate = useNavigate()
 	const goToAppointmentPage = React.useCallback(() => {
 		window.electron.send('mainShowAppointmentPage', '')
-	}, [])
-
-	const callNewWindowForCustomer = React.useCallback((customerId) => {
-		window.electron.send('showCustomerDetailWindow', customerId)
 	}, [])
 
 	React.useEffect(() => {
