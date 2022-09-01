@@ -1,8 +1,6 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Box, Button, Grid, Typography } from '@mui/material'
-import Modal from 'react-bootstrap/Modal'
 import { ArrowForward } from '@mui/icons-material'
-import { AgentDetails } from './components'
 import { useNavigate } from 'react-router-dom'
 import { Image } from 'react-bootstrap'
 
@@ -11,15 +9,9 @@ const AgentListItem = ({ agent }) => {
 	let navigate = useNavigate()
 
 	// Modal state
-	const [open, setOpen] = useState(false)
-
-	const handleModalClose = () => {
-		setOpen(false)
-	}
-
-	const handleModalOpen = () => {
-		setOpen(true)
-	}
+	const callNewWindowForUser = React.useCallback(() => {
+		window.electron.send('showAgentDetailWindow', agent._id)
+	}, [])
 
 	return (
 		<Grid
@@ -33,14 +25,6 @@ const AgentListItem = ({ agent }) => {
 				boxShadow: '3px 5px 10px #737373'
 			}}
 		>
-			{/* CustomerInfo Modal */}
-			<Modal
-				show={open}
-				onHide={handleModalClose}
-				style={{ height: '800px' }}
-			>
-				<AgentDetails user={agent} />
-			</Modal>
 			{/* User Informations */}
 			<Grid item sx={{ display: 'flex', flexDirection: 'row' }}>
 				{/* Profil Pic */}
@@ -150,7 +134,7 @@ const AgentListItem = ({ agent }) => {
 							}
 						}}
 						endIcon={<ArrowForward />}
-						onClick={handleModalOpen}
+						onClick={callNewWindowForUser}
 					>
 						Voir plus
 					</Button>

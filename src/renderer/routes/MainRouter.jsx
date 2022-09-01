@@ -21,6 +21,7 @@ import CustomerPreference from '../customerPreference/CustomerPreference'
 import Inventory from '../inventory/Inventory'
 import Appointments from '../appointments/Appointments'
 import CreateAppointment from '../appointments/pages/CreateAppointment/CreateAppointment'
+import AgentDetails from '../agents/components/agentDetails/AgentDetails'
 
 const MainRouter = () => {
 	return (
@@ -116,6 +117,16 @@ const MainRouter = () => {
 						<PrivateRoute>
 							<Agents />
 						</PrivateRoute>
+					}
+				/>
+
+				{/* Private Route Agents Single*/}
+				<Route
+					path="/agent/:id"
+					element={
+						<PrivateMultiWindowRoutes>
+							<AgentDetails />
+						</PrivateMultiWindowRoutes>
 					}
 				/>
 

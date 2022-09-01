@@ -80,6 +80,13 @@ ipcMain.on('showCustomerDetailWindow', (event, data) => {
 	createWindow(`/customers/${customerId}`)
 })
 
+ipcMain.on('showAgentDetailWindow', (event, data) => {
+	let agentId
+	agentId = Array.isArray(data) ? data[0] : data
+
+	createWindow(`/agent/${agentId}`)
+})
+
 ipcMain.on('mainShowAppointmentPage', (event, data) => {
 	let customerId
 	customerId = Array.isArray(data) ? data[0] : data
