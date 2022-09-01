@@ -161,10 +161,41 @@ const searchProperties = async (data) => {
 	})
 }
 
+const changeDispo = (propertyId, userToken) => {
+	// Returning new Promise
+	return new Promise((resolve, reject) => {
+		// Fetching API
+		fetch(`${window.electron.url}/api/property/dispo/${propertyId}`, {
+			method: 'PATCH',
+			headers: {
+				// Accept: 'multipart/form-data',
+				// 'Content-Type': 'multipart/form-data',
+				Authorization: 'bearer ' + userToken
+			}
+		})
+			.then((response) => {
+				// If response 2xx
+				if (response.ok) {
+					// Returning User info
+					return resolve(response.json())
+				}
+				// Else: Returning Error info
+				return reject(response.json())
+			})
+			.catch((err) => {
+				// Handling Fetch problems
+				return reject({
+					message: "L'API ne semble pas être disponible"
+				})
+			})
+	})
+}
+
 export {
 	getAllProperties,
 	getOneProperty,
 	createProperty,
 	updateProperty,
-	searchProperties
+	searchProperties,
+	changeDispo
 }
