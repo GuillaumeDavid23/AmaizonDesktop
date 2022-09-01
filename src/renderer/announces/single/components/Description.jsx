@@ -28,7 +28,7 @@ const Description = (props) => {
 		if (snackParams.message) {
 			handleOpen()
 		}
-	}, [snackParams])
+	}, [snackParams, handleOpen])
 	
 	const handleDispo = (dispo) => {
 		changeDispo(data._id, authToken).then((response) => {

@@ -50,7 +50,7 @@ const AgentPart = ({
 			.catch(async (err) => {
 				setSnackParams(await catchError(err))
 			})
-	}, [])
+	}, [setSnackParams])
 
 	const [agentShown, setAgentShown] = useState()
 	const handleAgentPick = (agentId) => {

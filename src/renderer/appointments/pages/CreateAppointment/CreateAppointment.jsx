@@ -42,7 +42,7 @@ const CreateAppointment = () => {
 		if (snackParams.message) {
 			handleOpen()
 		}
-	}, [snackParams])
+	}, [snackParams, handleOpen])
 
 	// Déclaration useNavigate:
 	const navigate = useNavigate()
@@ -141,23 +141,11 @@ const CreateAppointment = () => {
 					// })
 				})
 		}
-	}, [])
-
-	// Trigger utile pour l'update:
-	useEffect(() => {
-		if (state && appointment) {
-			setTimeout(() => {
-				document.querySelector('#buyer-' + appointment.buyer.id).click()
-				document
-					.querySelector('#property-' + appointment.property.id)
-					.click()
-				getAgentSchedule()
-			}, 500)
-		}
-	}, [appointment])
+	}, [setValue, state])
 
 	// Récupération de l'agenda de l'agent concerné pour checker si plage libre:
 	const [schedule, setSchedule] = useState()
+
 	const getAgentSchedule = () => {
 		let { day, month, year, agent } = getValues()
 		if (day === '' || month === '' || year === '' || agent === '') {
@@ -179,6 +167,19 @@ const CreateAppointment = () => {
 				})
 		}
 	}
+
+	// Trigger utile pour l'update:
+	useEffect(() => {
+		if (state && appointment) {
+			setTimeout(() => {
+				document.querySelector('#buyer-' + appointment.buyer.id).click()
+				document
+					.querySelector('#property-' + appointment.property.id)
+					.click()
+				getAgentSchedule()
+			}, 500)
+		}
+	}, [appointment, state])
 
 	const onSubmit = async (data) => {
 		// Reformattage préventif des datas date:

@@ -8,7 +8,7 @@ const PrivateRoute = ({ children }) => {
 
 	React.useEffect(() => {
 		verifyToken()
-	}, [location])
+	}, [location, verifyToken])
 
 	return !authToken ? (
 		<Navigate to="/login" state={{ from: location }} replace />

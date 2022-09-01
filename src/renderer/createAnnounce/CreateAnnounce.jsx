@@ -47,7 +47,7 @@ const CreateAnnounce = () => {
 		if (snackParams.message) {
 			handleOpen()
 		}
-	}, [snackParams])
+	}, [snackParams, handleOpen])
 
 	// Destructuring HookForm hook:
 	const {
@@ -171,7 +171,7 @@ const CreateAnnounce = () => {
 					})
 			})
 		}
-	}, [state])
+	}, [state, setValue, token])
 
 	// Gestion de la pagination:
 	const [visiblePage, setVisiblePage] = useState(1)
@@ -264,7 +264,7 @@ const CreateAnnounce = () => {
 				console.log(error)
 			}
 		}
-	}, [checked])
+	}, [checked, token])
 
 	// Gestion de l'affichage des erreurs:
 	if (Object.keys(errors).length > 0 && visiblePage === 7) {

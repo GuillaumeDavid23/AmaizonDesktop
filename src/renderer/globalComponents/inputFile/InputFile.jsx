@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Image } from 'react-bootstrap'
+import { Image } from 'react-bootstrap'
 import './InputFile.css'
 //This components is for create search forms
 const InputFile = ({register, state}) => {

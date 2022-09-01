@@ -2,18 +2,15 @@
 import React from 'react'
 
 // Layout imports
-import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 
 // MUI Design import
 import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
 
 // Bootstrap design imports
 import Modal from 'react-bootstrap/Modal'
 
 // Icon import
-import ArrowForward from '@mui/icons-material/ArrowForward'
 import { RiAdminFill, RiKey2Fill, RiDoorOpenFill } from 'react-icons/ri'
 import { GiElectric, GiWaterDrop } from 'react-icons/gi'
 import { IoFlame } from 'react-icons/io5'
@@ -22,7 +19,7 @@ import { ImCross } from 'react-icons/im'
 import { Col, Image, Row } from 'react-bootstrap'
 import '../InventoryListItem/InventoryListItem.css'
 import Photos from './Photos'
-import { Divider, Tooltip } from '@mui/material'
+import { Tooltip } from '@mui/material'
 
 const ModalInventory = (props) => {
 	const { inventory, open, handleModalClose } = props

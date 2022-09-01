@@ -14,15 +14,6 @@ const Page6 = ({
 	checked,
 	setChecked
 }) => {
-	// Récupération du vendeur à l'update:
-	useEffect(() => {
-		if (checked && !searchSeller) {
-			getClient(checked, token).then((res) => {
-				setSearchSeller(res.data.lastname)
-			})
-		}
-	}, [checked])
-
 	// Recherche du Seller:
 	const [searchSeller, setSearchSeller] = useState('')
 	const [sellers, setSellers] = useState([])
@@ -39,8 +30,17 @@ const Page6 = ({
 			setSellers([])
 		}
 		//Get ALL des vendeurs et affichage A FAIRE !!
-	}, [searchSeller])
+	}, [searchSeller, token])
 
+	// Récupération du vendeur à l'update:
+	useEffect(() => {
+		if (checked && !searchSeller) {
+			getClient(checked, token).then((res) => {
+				setSearchSeller(res.data.lastname)
+			})
+		}
+	}, [checked, searchSeller, token])
+	
 	return (
 		<Box className={`form-part ${visiblePage !== 6 ? 'd-none' : ''}`}>
 			<h1>Etape 6 - Nom du vendeur:</h1>

@@ -1,19 +1,23 @@
 import { useState, useEffect } from 'react'
-import { Button, Col, Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import { AnimatedPage } from '../globalComponents'
 import Title from '../globalComponents/Title/Title'
 import { Box, Typography } from '@mui/material'
-import { FaUserAlt } from 'react-icons/fa'
 import './Home.css'
 import ListAppoint from '../globalComponents/ListAppoint/ListAppoint'
 import { Pie } from 'react-chartjs-2'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import AgentCard from './components/AgentCard'
 import moment from 'moment'
-import { useSlideSnack } from '../hooks'
+import { useAuth, useSlideSnack } from '../hooks'
 import { useLocation } from 'react-router-dom'
 import React from 'react'
+import { ChartsNbAndTypeOfProperty } from '../services/Stats'
+import { getAgents } from '../services/Agent'
+import { getAllForAnAgent } from '../services/Appointment'
+
 ChartJS.register(ArcElement, Tooltip, Legend)
+
 const Home = (props) => {
 	const [allAgents, setAllAgents] = useState([])
 	const [charts, setCharts] = useState([])
@@ -33,70 +37,31 @@ const Home = (props) => {
 		if (snackParams.message) {
 			handleOpen()
 		}
-	}, [snackParams])
+	}, [snackParams, handleOpen])
 
 	let { state } = useLocation()
+	const { authToken } = useAuth()
 	React.useEffect(() => {
-		let token = JSON.parse(localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON'))
-		fetch(window.electron.url + '/api/user/agents', {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json;charset=utf-8',
-				Authorization: `bearer ${token}`
-			}
+		getAgents().then((response) => {
+			setAllAgents(response.datas)
 		})
-			.then((response) => {
-				return response.json()
-			})
-			.then((response) => {
-				setAllAgents(response.datas)
-			})
-			.catch((error) => {
-				console.log(error)
-			})
 
-		fetch(window.electron.url + '/api/property/charts', {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json;charset=utf-8',
-				authorization: `bearer ${token}`
-			}
+		ChartsNbAndTypeOfProperty(authToken).then((response) => {
+			setCharts(response.charts)
 		})
-			.then((response) => {
-				return response.json()
-			})
-			.then((response) => {
-				setCharts(response.charts)
-			})
-			.catch((error) => {
-				console.log(error)
-			})
 
-		fetch(window.electron.url + '/api/appointment/getAllForAnAgent', {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json;charset=utf-8',
-				authorization: `bearer ${token}`
-			}
+		getAllForAnAgent(authToken).then((response) => {
+			setAppointments(response.datas)
 		})
-			.then((response) => {
-				return response.json()
-			})
-			.then((response) => {
-				setAppointments(response.datas)
-			})
-			.catch((error) => {
-				console.log(error)
-			})
 
 		// Récupération d'une potentiel props SnackBar:
 		if (state && state.snackParams) {
 			let { message, severity } = state.snackParams
 			setSnackParams({ message, severity })
 		}
-	}, [])
+	}, [authToken, state])
 
-	const ChartJS = {
+	const ChartPie = {
 		labels: ['Appartement', 'Maison'],
 		datasets: [
 			{
@@ -146,7 +111,7 @@ const Home = (props) => {
 								>
 									Type d'annonces en ligne
 								</Typography>
-								<Pie data={ChartJS} />
+								<Pie data={ChartPie} />
 							</Col>
 							<Col xs={12} className="h-50">
 								<Row>

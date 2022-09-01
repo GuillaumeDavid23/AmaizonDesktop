@@ -2,7 +2,7 @@ import React from 'react'
 
 import Box from '@mui/material/Box'
 import { useForm, Controller } from 'react-hook-form'
-import { OutlinedInput, TextField } from '@mui/material'
+import { TextField } from '@mui/material'
 import { Col, Row } from 'react-bootstrap'
 import BtnGeneral from '../../globalComponents/BtnGeneral/BtnGeneral'
 import { createClient, pushUserAvatar } from '../../services/Client'
@@ -34,8 +34,7 @@ const AddForm = () => {
 		register,
 		handleSubmit,
 		control,
-		setValue,
-		formState: { errors, isValid }
+		formState: { errors }
 	} = useForm({
 		mode: 'onBlur',
 		reValidateMode: 'onBlur',

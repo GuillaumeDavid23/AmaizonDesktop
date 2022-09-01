@@ -2,7 +2,7 @@
 import React from 'react'
 
 // Navigation import
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 // HookForm imports
 import { useForm, Controller } from 'react-hook-form'
@@ -24,9 +24,6 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
 // Custom hook import
 import { useSlideSnack, useAuth } from '../../hooks'
-
-// Custom function import
-import { sleep } from '../../../utils/funcs'
 
 // Image imports
 import AmaizonLogo from '../../../assets/brand/Amaizon_logo.png'
@@ -101,7 +98,6 @@ const ConnectForm = () => {
 	} = states
 
 	let { state } = useLocation()
-	console.log(state.snackParams);
 	// Destructuring Snackbar from custom hook
 	const { handleOpen, renderSnack } = useSlideSnack({
 		message: snackMessage,
@@ -119,7 +115,7 @@ const ConnectForm = () => {
 		if (snackMessage) {
 			handleOpen()
 		}
-	}, [snackMessage])
+	}, [snackMessage, handleOpen, state])
 	
 
 	// Prevent default mouseDown behavior

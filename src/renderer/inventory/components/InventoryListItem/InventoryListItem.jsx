@@ -11,10 +11,10 @@ import Button from '@mui/material/Button'
 // Icon import
 import ArrowForward from '@mui/icons-material/ArrowForward'
 
-import { Col, Container, Image, Row } from 'react-bootstrap'
+import { Container, Image, Row } from 'react-bootstrap'
 import './InventoryListItem.css'
 import ModalInventory from '../singleInventory/ModalInventory'
-import { styled, Tooltip, tooltipClasses } from '@mui/material'
+import { Tooltip } from '@mui/material'
 
 const InventoryListItem = (props) => {
 	const { inventory } = props

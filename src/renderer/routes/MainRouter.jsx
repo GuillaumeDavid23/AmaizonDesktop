@@ -22,6 +22,7 @@ import Inventory from '../inventory/Inventory'
 import Appointments from '../appointments/Appointments'
 import CreateAppointment from '../appointments/pages/CreateAppointment/CreateAppointment'
 import AgentDetails from '../agents/components/agentDetails/AgentDetails'
+import Stats from '../stats/Stats'
 
 const MainRouter = () => {
 	return (
@@ -172,6 +173,15 @@ const MainRouter = () => {
 					element={
 						<PrivateRoute>
 							<CreateAppointment />
+						</PrivateRoute>
+					}
+				/>
+
+				<Route
+					path="/stats"
+					element={
+						<PrivateRoute>
+							<Stats />
 						</PrivateRoute>
 					}
 				/>

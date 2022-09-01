@@ -5,7 +5,7 @@ import { AnimatedPage } from "../globalComponents";
 import Title from '../globalComponents/Title/Title'
 import PreferenceForm from './components/PreferenceForm'
 import './CustomerPreference.css'
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 const CustomerPreference = () => {
 	const {state} = useLocation()
 	const user = state.user

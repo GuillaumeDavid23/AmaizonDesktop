@@ -87,4 +87,24 @@ const updateAppointment = async (id, token, data) => {
 	})
 }
 
-export { createAppointment, getAppointment, getAppointments, updateAppointment }
+const getAllForAnAgent = async (token) => {
+	return fetch(window.electron.url + '/api/appointment/getAllForAnAgent', {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json;charset=utf-8',
+			authorization: `bearer ${token}`
+		}
+	})
+		.then((response) => {
+			return response.json()
+		})
+		.catch((errors) => console.log(errors))
+}
+
+export {
+	createAppointment,
+	getAppointment,
+	getAppointments,
+	updateAppointment,
+	getAllForAnAgent
+}

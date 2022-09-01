@@ -1,5 +1,5 @@
 import { SidebarHeader } from 'react-pro-sidebar'
-import { Box, IconButton, TextField } from '@mui/material'
+import { Box, IconButton } from '@mui/material'
 import { Image } from 'react-bootstrap'
 import LogoFull from '../../../../assets/images/LogoFull.png'
 import { IoMenu } from 'react-icons/io5'

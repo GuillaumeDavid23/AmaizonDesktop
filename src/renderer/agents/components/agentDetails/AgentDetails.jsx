@@ -47,7 +47,7 @@ const AgentDetails = (props) => {
 			.finally(() => {
 				setIsLoading(false)
 			})
-	}, [])
+	}, [userID])
 
 	return (
 		<>

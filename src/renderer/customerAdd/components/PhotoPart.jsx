@@ -1,6 +1,5 @@
 import { Box } from '@mui/material'
 import React from 'react'
-import { Image } from 'react-bootstrap'
 import { strRandom } from '../../../utils/funcs'
 import InputFile from '../../globalComponents/inputFile/InputFile'
 import '../CustomerAdd.css'

@@ -17,6 +17,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 // CSS import
 import './CustomerDetails.css'
+import { getClient } from '../../../services/Client'
+import { useAuth } from '../../../hooks'
 
 const CustomerDetails = (props) => {
 	// Get user ID from params
@@ -28,15 +30,10 @@ const CustomerDetails = (props) => {
 	const goToAppointmentPage = React.useCallback(() => {
 		window.electron.send('mainShowAppointmentPage', '')
 	}, [])
+	const { authToken } = useAuth()
 
 	React.useEffect(() => {
-		fetch(`${window.electron.url}/api/user/${userID}`, {
-			headers: {
-				Authorization: `bearer ${JSON.parse(
-					localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON')
-				)}`
-			}
-		})
+		getClient(userID, authToken)
 			.then((res) => {
 				if (res.ok) {
 					res.json().then((data) => {
@@ -49,7 +46,7 @@ const CustomerDetails = (props) => {
 			.finally(() => {
 				setIsLoading(false)
 			})
-	}, [])
+	}, [authToken, userID])
 
 	return (
 		<>

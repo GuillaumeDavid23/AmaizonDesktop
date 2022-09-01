@@ -30,7 +30,7 @@ export const REGNUM = {
 }
 
 export const REGEMAIL = {
-	value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+	value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g,
 	message: 'Vous devez indiquer un email valide.'
 }
 

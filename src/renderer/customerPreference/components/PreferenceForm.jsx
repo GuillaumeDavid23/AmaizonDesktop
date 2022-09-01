@@ -12,7 +12,7 @@ const PreferenceForm = ({ user }) => {
 	const {
 		handleSubmit,
 		control,
-		formState: { errors, isValid }
+		formState: { errors }
 	} = useForm({
 		mode: 'onBlur',
 		reValidateMode: 'onBlur',

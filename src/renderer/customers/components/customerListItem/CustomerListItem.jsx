@@ -20,7 +20,7 @@ const CustomerListItem = (props) => {
 
 	const callNewWindowForUser = React.useCallback(() => {
 		window.electron.send('showCustomerDetailWindow', customer._id)
-	}, [])
+	}, [customer._id])
 
 	return (
 		<Grid

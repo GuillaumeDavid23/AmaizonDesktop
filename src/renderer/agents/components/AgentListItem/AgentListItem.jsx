@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Box, Button, Grid, Typography } from '@mui/material'
 import { ArrowForward } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
@@ -11,7 +11,7 @@ const AgentListItem = ({ agent }) => {
 	// Modal state
 	const callNewWindowForUser = React.useCallback(() => {
 		window.electron.send('showAgentDetailWindow', agent._id)
-	}, [])
+	}, [agent._id])
 
 	return (
 		<Grid
