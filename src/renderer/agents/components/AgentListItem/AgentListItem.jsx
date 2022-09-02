@@ -51,18 +51,29 @@ const AgentListItem = ({ agent }) => {
 				<AgentDetails user={agent} />
 			</Modal>
 			{/* User Informations */}
-			<Grid item sx={{ display: 'flex', flexDirection: 'row' }}>
+			<Grid
+				item
+				sx={{
+					display: 'flex',
+					flexDirection: 'row',
+					justifyContent: 'between'
+				}}
+			>
 				{/* Profil Pic */}
 				<Box
 					sx={{
+						display: 'flex',
 						height: '100px',
 						width: '100px',
-						borderRadius: '10px'
+						borderRadius: '10px',
+						marginLeft: '0.5em'
 					}}
 				>
 					<Image
-						style={{ borderRadius: '10px' }}
-						fluid
+						style={{
+							borderRadius: '10px',
+							overflowX: 'hidden'
+						}}
 						src={
 							window.electron.url +
 							'/avatar/' +
@@ -76,21 +87,28 @@ const AgentListItem = ({ agent }) => {
 					/>
 				</Box>
 				{/* Agent Info + Prefs */}
-				<Box sx={{ paddingLeft: '10px' }}>
+				<Box sx={{ paddingLeft: '10px', marginRight: '0.5em' }}>
 					<Typography>
 						{agent.firstname} {agent.lastname}
 					</Typography>
-					<Typography>
-						(<i>{agent.email}</i>)
-					</Typography>
-					<Typography>
-						<BsFillTelephoneFill />
-						Appeler
-					</Typography>
-					<Typography>
-						<HiMail />
-						Email
-					</Typography>
+					<a
+						className="text-decoration-none text-dark"
+						href={`tel:${agent.agent.phonePro}`}
+					>
+						<Typography sx={{ fontSize: '0.8em' }}>
+							<BsFillTelephoneFill />
+							{agent.agent.phonePro}
+						</Typography>
+					</a>
+					<a
+						className="text-decoration-none text-dark"
+						href={`mailto:${agent.mail}`}
+					>
+						<Typography sx={{ fontSize: '0.8em' }}>
+							<HiMail />
+							{agent.email}
+						</Typography>
+					</a>
 				</Box>
 			</Grid>
 			{/* User Actions */}
@@ -145,6 +163,7 @@ const AgentListItem = ({ agent }) => {
 						Rendez-vous
 					</Button>
 					<Button
+						disabled
 						variant="contained"
 						className="actionBtnAgentListItem"
 						sx={{

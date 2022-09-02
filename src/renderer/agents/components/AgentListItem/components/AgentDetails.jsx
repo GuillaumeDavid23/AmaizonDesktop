@@ -11,7 +11,8 @@ import { Box } from '@mui/material'
 // Bootstrap Design imports
 import { Button, Col, Container, Modal, Row } from 'react-bootstrap'
 
-const CustomerDetails = ({ user, handleModalClose }) => {
+const AgentDetails = ({ user, handleModalClose }) => {
+	console.log(user)
 	return (
 		<>
 			{/* <Modal.Header closeButton>
@@ -91,14 +92,14 @@ const CustomerDetails = ({ user, handleModalClose }) => {
 	)
 }
 
-CustomerDetails.propTypes = {
+AgentDetails.propTypes = {
 	user: PropTypes.object.isRequired,
 	handleModalClose: PropTypes.func
 }
 
-CustomerDetails.defaultProps = {
+AgentDetails.defaultProps = {
 	user: { name: 'John Doe' },
 	handleModalClose: () => console.error('handleModalClose callback not set!')
 }
 
-export default CustomerDetails
+export default AgentDetails
