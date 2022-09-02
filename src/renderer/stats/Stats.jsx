@@ -4,35 +4,60 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { AnimatedPage, Title } from '../globalComponents'
 import { useAuth } from '../hooks'
 import { ChartsNbAndTypeOfProperty } from '../services/Stats'
-import { Pie } from 'react-chartjs-2'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { Bar, Line, Pie } from 'react-chartjs-2'
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, PointElement, LineElement } from 'chart.js'
 import './Stats.css'
 
-ChartJS.register(ArcElement, Tooltip, Legend)
+ChartJS.register(
+	ArcElement,
+	Tooltip,
+	Legend,
+	CategoryScale,
+	LinearScale,
+	BarElement,
+	PointElement,
+	LineElement
+)
 
 const Stats = () => {
 	const { authToken } = useAuth()
-	const [typeCharts, setTypeCharts] = React.useState([])
+	const [countProperty, setCountProperty] = React.useState([])
+	const [countCreatedClient, setCountCreatedClient] = React.useState([])
 	React.useEffect(() => {
 		ChartsNbAndTypeOfProperty(authToken).then((response) => {
-			setTypeCharts(response.charts)
+			setCountProperty(response.countProperty)
+			setCountCreatedClient(response.createdClient)
 		})
 	}, [authToken])
 
-	const ChartPie = {
+	const ChartPieForAnnounceType = {
 		labels: ['Appartement', 'Maison'],
 		datasets: [
 			{
-				data: typeCharts,
+				data: countProperty,
 				backgroundColor: [
 					'rgba(255, 99, 132, 0.2)',
 					'rgba(54, 162, 235, 0.2)'
 				],
 				borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
-				borderWidth: 1
+				borderWidth: 1,
+				hoverOffset: 4
 			}
 		]
 	}
+	const ChartBarForCreatedClient = {
+		datasets: [
+			{
+				label: 'Nombre de clients',
+				data: countCreatedClient,
+				fill: false,
+				borderColor: 'rgb(75, 192, 192)',
+				tension: 0.3
+			}
+		]
+	}
+
+
 	return (
 		<AnimatedPage>
 			<Container className="h-100">
@@ -42,7 +67,13 @@ const Stats = () => {
 						<Typography variant="h5" className="text-center">
 							Nombre d'annonces par type
 						</Typography>
-						<Pie data={ChartPie} />
+						<Pie data={ChartPieForAnnounceType} />
+					</Col>
+					<Col xs={6}>
+						<Typography variant="h5" className="text-center">
+							Clients créé sur les 30 derniers jours
+						</Typography>
+						<Line data={ChartBarForCreatedClient}  />
 					</Col>
 				</Row>
 			</Container>

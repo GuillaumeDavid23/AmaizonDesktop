@@ -47,7 +47,7 @@ const Home = (props) => {
 		})
 
 		ChartsNbAndTypeOfProperty(authToken).then((response) => {
-			setCharts(response.charts)
+			setCharts(response.countProperty)
 		})
 
 		getAllForAnAgent(authToken).then((response) => {
