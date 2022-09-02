@@ -23,6 +23,7 @@ import Appointments from '../appointments/Appointments'
 import CreateAppointment from '../appointments/pages/CreateAppointment/CreateAppointment'
 import AgentDetails from '../agents/components/agentDetails/AgentDetails'
 import Stats from '../stats/Stats'
+import Helps from '../helps/Helps'
 
 const MainRouter = () => {
 	return (
@@ -182,6 +183,15 @@ const MainRouter = () => {
 					element={
 						<PrivateRoute>
 							<Stats />
+						</PrivateRoute>
+					}
+				/>
+
+				<Route
+					path="/helps"
+					element={
+						<PrivateRoute>
+							<Helps />
 						</PrivateRoute>
 					}
 				/>

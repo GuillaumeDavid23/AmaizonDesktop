@@ -12,7 +12,7 @@ const Navigation = () => {
 		<ProSidebar collapsed={collapsed}>
 			<Header collapsed={collapsed} isCollapsed={isCollapsed} />
 			<Body navigate={navigate} />
-			<Footer collapsed={collapsed} />
+			<Footer collapsed={collapsed} navigate={navigate} />
 		</ProSidebar>
 	)
 }
