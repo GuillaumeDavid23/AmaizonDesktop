@@ -4,6 +4,9 @@ import Modal from 'react-bootstrap/Modal'
 import { ArrowForward } from '@mui/icons-material'
 import { AgentDetails } from './components'
 import { useNavigate } from 'react-router-dom'
+import { BsFillTelephoneFill } from 'react-icons/bs'
+import { HiMail } from 'react-icons/hi'
+import { Image } from 'react-bootstrap'
 
 const AgentListItem = ({ agent }) => {
 	// Déclaration useNavigate:
@@ -18,6 +21,13 @@ const AgentListItem = ({ agent }) => {
 
 	const handleModalOpen = () => {
 		setOpen(true)
+	}
+
+	const sxActionBtns = {
+		width: { sm: '70%', md: '33%' },
+		'&:hover': {
+			backgroundColor: '#647F94'
+		}
 	}
 
 	return (
@@ -47,10 +57,24 @@ const AgentListItem = ({ agent }) => {
 					sx={{
 						height: '100px',
 						width: '100px',
-						backgroundColor: 'blue',
 						borderRadius: '10px'
 					}}
-				></Box>
+				>
+					<Image
+						style={{ borderRadius: '10px' }}
+						fluid
+						src={
+							window.electron.url +
+							'/avatar/' +
+							agent._id +
+							'.png'
+						}
+						onError={({ currentTarget }) => {
+							currentTarget.onerror = null // prevents looping
+							currentTarget.src = require('../../../../assets/images/blank_profile.png')
+						}}
+					/>
+				</Box>
 				{/* Agent Info + Prefs */}
 				<Box sx={{ paddingLeft: '10px' }}>
 					<Typography>
@@ -58,6 +82,14 @@ const AgentListItem = ({ agent }) => {
 					</Typography>
 					<Typography>
 						(<i>{agent.email}</i>)
+					</Typography>
+					<Typography>
+						<BsFillTelephoneFill />
+						Appeler
+					</Typography>
+					<Typography>
+						<HiMail />
+						Email
 					</Typography>
 				</Box>
 			</Grid>
@@ -81,14 +113,10 @@ const AgentListItem = ({ agent }) => {
 				>
 					<Button
 						variant="contained"
+						className="actionBtnAgentListItem"
 						sx={{
-							fontSize: '0.8em',
-							width: { sm: '70%', md: '33%' },
-							backgroundColor: '#647F94',
-							borderRadius: '10px 0px 0px 10px',
-							'&:hover': {
-								backgroundColor: '#647F94'
-							}
+							...sxActionBtns,
+							borderRadius: '10px 0px 0px 10px'
 						}}
 						onClick={() =>
 							navigate('/createAgent', {
@@ -100,15 +128,8 @@ const AgentListItem = ({ agent }) => {
 					</Button>
 					<Button
 						variant="contained"
-						sx={{
-							fontSize: '0.8em',
-							width: { sm: '70%', md: '33%' },
-							backgroundColor: '#647F94',
-							borderRadius: '0px',
-							'&:hover': {
-								backgroundColor: '#647F94'
-							}
-						}}
+						className="actionBtnAgentListItem"
+						sx={sxActionBtns}
 						onClick={() =>
 							navigate('/', {
 								state: {
@@ -125,14 +146,10 @@ const AgentListItem = ({ agent }) => {
 					</Button>
 					<Button
 						variant="contained"
+						className="actionBtnAgentListItem"
 						sx={{
-							fontSize: '0.8em',
-							width: { sm: '70%', md: '33%' },
-							backgroundColor: '#647F94',
-							borderRadius: '0px 10px 10px 0px',
-							'&:hover': {
-								backgroundColor: '#647F94'
-							}
+							...sxActionBtns,
+							borderRadius: '0px 10px 10px 0px'
 						}}
 						endIcon={<ArrowForward />}
 						onClick={handleModalOpen}
