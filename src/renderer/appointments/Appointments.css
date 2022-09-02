@@ -1,0 +1,42 @@
+#appointmentsList {
+    overflow-y: scroll;
+}
+
+#appointmentForm {
+    border: solid 1px black;
+    border-radius: 0 15px 0 15px;
+    background-color: #DCD0C1;
+    padding: 1em;
+    width: 75%;
+}
+
+.appointmentFormPart {
+    width: 33%;
+    margin: 0 1em;
+}
+
+.appointmentFormPart h2 {
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.appointmentFormBox {
+    display: flex;
+    border: 1px solid black;
+    padding: 1em;
+    margin: 1em 0;
+    border-radius: 0 0.8em 0.8em 0.8em;
+    box-shadow: 5px 2px 2px black;
+    cursor: pointer;
+}
+
+.dateTimeAppointmentInput {
+    width: 50px;
+    border-radius: 10px;
+}
+
+#agentSchedule {
+    overflow-x: scroll;
+    border-radius: 10px;
+    background-color: white;
+}

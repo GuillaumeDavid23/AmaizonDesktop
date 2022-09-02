@@ -1,0 +1,62 @@
+.barreBox{
+    position: relative;
+}
+
+.pointerBarre{
+    height: 100%;
+    width: 3%;
+    background-color: #496072;
+    position: absolute;
+    top: 1.5px;
+}
+
+.highest{
+    left: calc(100% - 11%);
+}
+
+.high{
+    left: calc(100% - 26%);
+}
+
+.medium{
+    left: calc(100% - 43%);
+}
+
+.medium-low{
+    left: calc(100% - 59%);
+}
+
+.low{
+    left: calc(100% - 75%);
+}
+
+.lowest{
+    left: calc(100% - 92%);
+}
+
+.modalSingle .modal-content{
+    border-radius: 0px 50px 50px 50px;
+    min-height: 500px;
+    padding: 40px;
+}
+
+.content{
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+}
+
+.divider{
+    border-right: 1px solid rgb(173, 168, 168);
+}
+
+.crossClose{
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.crossClose:hover{
+    color: #496072;
+    transform: scale(0.9);
+    transition: 0.5s;
+}

@@ -35,6 +35,7 @@ import Amaizon from '../../../assets/brand/Amaizon_full.png'
 
 // CSS styles import
 import './ConnectForm.css'
+import { FormControl, InputLabel, TextField } from '@mui/material'
 
 // Component initial states
 const initialStates = {
@@ -133,8 +134,8 @@ const ConnectForm = () => {
 		reValidateMode: 'onBlur',
 		shouldFocusError: true,
 		defaultValues: {
-			email: 'mgarnier@amaizon.com',
-			password: 'Jesuispas1garnier!'
+			email: '',
+			password: ''
 		}
 	})
 
@@ -211,174 +212,175 @@ const ConnectForm = () => {
 		<Container fluid className="connectBlock">
 			{/* Snackbar */}
 			<Box className="d-flex justify-content-end">{renderSnack}</Box>
-
-			{/* Logos */}
-			<Box className="d-flex flex-column align-items-center">
-				<Image src={AmaizonLogo} style={{ width: '15%' }} />
-				<Image src={Amaizon} style={{ width: '25%' }} />
-			</Box>
-
-			{/* Form and stuffs */}
-			<Box
-				component="form"
-				onSubmit={handleSubmit(onSubmit)}
-				noValidate
-				sx={{
-					display: 'grid',
-					gap: 2
-				}}
-			>
-				{/* Title */}
-				<Row>
-					<h1 style={{ textAlign: 'center' }}>Connexion</h1>
-				</Row>
-				{/* Actual Form */}
-				<Row className="flex-column align-items-center">
-					{/* Email input */}
-					<Col
-						xs="10"
-						lg="6"
-						className="d-flex justify-content-center align-items-center flex-column"
+			<Row className="align-items-center h-100">
+				<Col xs={6} className="d-flex flex-column align-items-center">
+					<Image src={AmaizonLogo} style={{ width: '35%' }} />
+					<Image src={Amaizon} style={{ width: '55%' }} />
+				</Col>
+				<Col xs={6}>
+					{/* Form and stuffs */}
+					<Box
+						component="form"
+						onSubmit={handleSubmit(onSubmit)}
+						noValidate
+						sx={{
+							display: 'grid',
+							gap: 2
+						}}
 					>
-						<Controller
-							name={'email'}
-							control={control}
-							render={({ field }) => (
-								<OutlinedInput
-									className={
-										!errors.email
-											? 'form-control'
-											: 'form-control is-invalid'
-									}
-									variant="filled"
-									placeholder="Adresse email"
-									{...field}
-									value={field.value || ''}
-									sx={{ width: '50%' }}
+						{/* Title */}
+						<Row>
+							<h1 style={{ textAlign: 'center' }}>Connexion</h1>
+						</Row>
+						{/* Actual Form */}
+						<Row className="flex-column align-items-center">
+							{/* Email input */}
+							<Col
+								xs="10"
+								lg="6"
+								className="d-flex justify-content-center align-items-center flex-column"
+							>
+								<Controller
+									name={'email'}
+									control={control}
+									render={({ field }) => (
+										<TextField
+											variant="outlined"
+											required
+											label="Email"
+											className={
+												!errors.email
+													? 'form-control'
+													: 'form-control is-invalid'
+											}
+											{...field}
+											value={field.value || ''}
+										/>
+									)}
+									rules={{
+										required:
+											'Vous devez indiquer votre email.',
+										pattern: {
+											value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+											message: 'Entrer une email valide'
+										}
+									}}
 								/>
-							)}
-							rules={{
-								required: 'Vous devez indiquer votre email.',
-								pattern: {
-									value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-									message: 'Entrer une email valide'
-								}
-							}}
-						/>
-						{errors?.email && (
-							<span className="invalid-feedback fw-bold text-center">
-								{errors.email.message}
-							</span>
-						)}
-					</Col>
-					{/* Password input */}
-					<Col
-						xs="10"
-						lg="6"
-						className="d-flex justify-content-center align-items-center flex-column mt-4"
-					>
-						<Controller
-							name={'password'}
-							control={control}
-							render={({ field }) => (
-								<OutlinedInput
-									id="OutlinedConnectPassword"
-									label="a"
-									className={
-										!errors.password
-											? 'form-control'
-											: 'form-control is-invalid'
-									}
-									variant="filled"
-									{...field}
-									value={field.value || ''}
-									placeholder="Mot de passe"
-									type={
-										states.isPasswordVisible
-											? 'text'
-											: 'password'
-									}
-									endAdornment={
-										<InputAdornment position="end">
-											<IconButton
-												aria-label="toggle password visibility"
-												onClick={handlePasswordChange}
-												onMouseDown={
-													handleMouseDownPassword
-												}
-												edge="end"
-											>
-												{states.isPasswordVisible ? (
-													<VisibilityOff />
-												) : (
-													<Visibility />
-												)}
-											</IconButton>
-										</InputAdornment>
-									}
-									sx={{ width: '50%' }}
-								/>
-							)}
-							rules={{
-								required:
-									'Vous devez remplir votre mot de passe'
-							}}
-						/>
-						{errors?.password && (
-							<span className="invalid-feedback fw-bold text-center">
-								{errors.password.message}
-							</span>
-						)}
-					</Col>
-				</Row>
-				{/* Remember Me */}
-				<Row
-					xs="10"
-					lg="6"
-					className="justify-content-center"
-					style={{ width: '100%', margin: 'auto' }}
-				>
-					<div className="d-flex justify-content-center align-items-center">
-						<label className="switch">
-							<Controller
-								name={'rememberMe'}
-								control={control}
-								render={({ field }) => (
-									<input
-										type="checkbox"
-										{...field}
-										value={field.value}
-									/>
+								{errors?.email && (
+									<span className="invalid-feedback fw-bold text-center">
+										{errors.email.message}
+									</span>
 								)}
-							/>
-							<span className="slider round"></span>
-						</label>
-						<label
-							htmlFor="rememberMe"
-							className="form-check-label ms-2"
+							</Col>
+							{/* Password input */}
+							<Col
+								xs="10"
+								lg="6"
+								className="d-flex justify-content-center align-items-center flex-column mt-4"
+							>
+								<Controller
+									name={'password'}
+									control={control}
+									render={({ field }) => (
+											<TextField
+												id="OutlinedConnectPassword"
+												variant='outlined'
+												label='Mot de passe'
+												className={
+													!errors.password
+														? 'form-control'
+														: 'form-control is-invalid'
+												}
+												{...field}
+												value={field.value || ''}
+												type={
+													states.isPasswordVisible
+														? 'text'
+														: 'password'
+												}
+												InputProps={{
+													endAdornment: (
+														<InputAdornment position="end">
+															<IconButton
+																aria-label="toggle password visibility"
+																onClick={
+																	handlePasswordChange
+																}
+																onMouseDown={
+																	handleMouseDownPassword
+																}
+																edge="end"
+															>
+																{states.isPasswordVisible ? (
+																	<VisibilityOff />
+																) : (
+																	<Visibility />
+																)}
+															</IconButton>
+														</InputAdornment>
+													)
+												}}
+											/>
+									)}
+									rules={{
+										required:
+											'Vous devez remplir votre mot de passe'
+									}}
+								/>
+								{errors?.password && (
+									<span className="invalid-feedback fw-bold text-center">
+										{errors.password.message}
+									</span>
+								)}
+							</Col>
+						</Row>
+						{/* Remember Me */}
+						<Row
+							className="justify-content-center"
+							style={{ width: '100%', margin: 'auto' }}
 						>
-							Se souvenir de moi
-						</label>
-					</div>
-				</Row>
-				{/* Submit Button */}
-				<Row
-					xs="10"
-					lg="6"
-					className="d-flex justify-content-center mb-3"
-					style={{ width: '50%', margin: 'auto' }}
-				>
-					<LoadingButton
-						type="submit"
-						loading={states.isFetching}
-						disabled={!isValid}
-						variant="contained"
-						sx={{ backgroundColor: '#647f94' }}
-					>
-						CONNEXION
-					</LoadingButton>
-				</Row>
-			</Box>
+							<div className="d-flex justify-content-center align-items-center">
+								<label className="switch">
+									<Controller
+										name={'rememberMe'}
+										control={control}
+										render={({ field }) => (
+											<input
+												type="checkbox"
+												{...field}
+												value={field.value}
+											/>
+										)}
+									/>
+									<span className="slider round"></span>
+								</label>
+								<label
+									htmlFor="rememberMe"
+									className="form-check-label ms-2"
+								>
+									Se souvenir de moi
+								</label>
+							</div>
+						</Row>
+						{/* Submit Button */}
+						<Row
+							xs="10"
+							lg="6"
+							className="d-flex justify-content-center mb-3"
+						>
+							<LoadingButton
+								type="submit"
+								loading={states.isFetching}
+								disabled={!isValid}
+								variant="contained"
+								sx={{ backgroundColor: '#647f94' }}
+							>
+								CONNEXION
+							</LoadingButton>
+						</Row>
+					</Box>
+				</Col>
+			</Row>
 		</Container>
 	)
 }

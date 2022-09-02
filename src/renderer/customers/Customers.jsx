@@ -1,19 +1,20 @@
 // React import
 import React from 'react'
 
+// React Router import
+import { useNavigate } from 'react-router-dom'
+
 // Layout imports
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 
-// MUI Design imports
-import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
-
 // Bootstrap Design imports
 import FormControl from 'react-bootstrap/FormControl'
+import Button from 'react-bootstrap/Button'
 
 // Sub component imports
 import { CustomerListItem } from './components'
+import Title from '../globalComponents/Title/Title'
 
 // Initial component States
 const initialStates = {
@@ -57,6 +58,7 @@ const Customers = () => {
 	const [states, dispatch] = React.useReducer(CReducer, initialStates)
 	const { searchCustomer, users, filteredUsers } = states
 
+	// Filter change Handler
 	const handleChange = ({ target: { value } }) => {
 		dispatch({ type: actions.SET_SEARCHCUSTOMER, payload: value })
 
@@ -68,9 +70,15 @@ const Customers = () => {
 
 			// filtering on firstname + lastname + email
 			newCustomerList.push(
-				...users.filter((user) => user.firstname.includes(value)),
-				...users.filter((user) => user.lastname.includes(value)),
-				...users.filter((user) => user.email.includes(value))
+				...users.filter((user) =>
+					user.firstname.toLowerCase().includes(value)
+				),
+				...users.filter((user) =>
+					user.lastname.toLowerCase().includes(value)
+				),
+				...users.filter((user) =>
+					user.email.toLowerCase().includes(value)
+				)
 			)
 
 			// Using Set to get UNIQUE customers
@@ -84,6 +92,10 @@ const Customers = () => {
 		})
 	}
 
+	// Get navigation
+	const navigate = useNavigate()
+
+	// Fetch customer withhis id
 	React.useEffect(() => {
 		fetch(`${window.electron.url}/api/user/customers`, {
 			headers: {
@@ -105,13 +117,34 @@ const Customers = () => {
 		})
 	}, [])
 
+	// Electron KeyHandling Callback
+	const handleElectronKeyPress = React.useCallback((event) => {
+		const { key, ctrlKey, altKey } = event
+		console.log(`Got key, ctrl, alt: ${key} ${ctrlKey} ${altKey}`)
+
+		if (ctrlKey && key === 'n') {
+			window.electron.send('mainGoToPage', '/customerAdd')
+		}
+
+		return
+	}, [])
+
+	// ReactJS Key handling
+	React.useEffect(() => {
+		window.addEventListener('keydown', handleElectronKeyPress, true)
+
+		return () => {
+			window.removeEventListener('keydown', handleElectronKeyPress, true)
+		}
+	}, [handleElectronKeyPress])
+
 	return (
 		<Grid sx={{ height: '100%' }}>
-			<Box sx={{ height: '10%' }}>
+			<Box>
 				{/* Component Header */}
-				<Typography>Client</Typography>
+				<Title text="Client" variant="h5" />
 
-				{/* Filter input */}
+				{/* Filter Input */}
 				<Box
 					sx={{
 						display: 'flex',
@@ -127,6 +160,7 @@ const Customers = () => {
 						value={searchCustomer || ''}
 					/>
 				</Box>
+				{/* Add user Button */}
 				<Box
 					sx={{
 						display: 'flex',
@@ -134,7 +168,17 @@ const Customers = () => {
 						paddingRight: '50px'
 					}}
 				>
-					<Button variant="contained">Ajouter un client</Button>
+					<Button
+						style={{
+							backgroundColor: '#647F94',
+							borderColor: '#647F94'
+						}}
+						onClick={() => {
+							navigate('/customerAdd')
+						}}
+					>
+						Ajouter un client
+					</Button>
 				</Box>
 			</Box>
 
@@ -145,7 +189,7 @@ const Customers = () => {
 					marginTop: '0px',
 					paddingX: '20px',
 					overflowY: 'scroll',
-					height: '90%'
+					height: '75%'
 				}}
 				spacing={3}
 			>

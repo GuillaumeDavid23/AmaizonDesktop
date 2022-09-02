@@ -1,13 +1,10 @@
-// React import
-import React from 'react'
-
 // Auth import
 import AuthProvider from '../services/AuthProvider'
 
 // Nav imports
 import { Routes, Route } from 'react-router-dom'
 import PrivateRoute from '../routes/PrivateRoutes'
-import MenuRoute from '../routes/MenuRoute'
+import PrivateMultiWindowRoutes from '../routes/PrivateMultiWindowRoutes'
 
 // View imports
 import Login from '../login/Login'
@@ -19,6 +16,11 @@ import CreateAgent from '../agents/create/CreateAgent'
 import CreateAnnounce from '../createAnnounce/CreateAnnounce'
 import SingleAnnounce from '../announces/single/SingleAnnounce'
 import CustomerAdd from '../customerAdd/CustomerAdd'
+import { CustomerDetails } from '../customers/components'
+import CustomerPreference from '../customerPreference/CustomerPreference'
+import Inventory from '../inventory/Inventory'
+import Appointments from '../appointments/Appointments'
+import CreateAppointment from '../appointments/pages/CreateAppointment/CreateAppointment'
 
 const MainRouter = () => {
 	return (
@@ -54,6 +56,16 @@ const MainRouter = () => {
 						<PrivateRoute>
 							<Customers />
 						</PrivateRoute>
+					}
+				/>
+
+				{/* Private Route Customers Single*/}
+				<Route
+					path="/customers/:id"
+					element={
+						<PrivateMultiWindowRoutes>
+							<CustomerDetails />
+						</PrivateMultiWindowRoutes>
 					}
 				/>
 
@@ -113,6 +125,42 @@ const MainRouter = () => {
 					element={
 						<PrivateRoute>
 							<CreateAgent />
+						</PrivateRoute>
+					}
+				/>
+
+				{/* Private Route add preference client*/}
+				<Route
+					path="/customerPreference"
+					element={
+						<PrivateRoute>
+							<CustomerPreference />
+						</PrivateRoute>
+					}
+				/>
+				<Route
+					path="/appointments"
+					element={
+						<PrivateRoute>
+							<Appointments />
+						</PrivateRoute>
+					}
+				/>
+
+				{/* Private Route list inventory*/}
+				<Route
+					path="/inventory"
+					element={
+						<PrivateRoute>
+							<Inventory />
+						</PrivateRoute>
+					}
+				/>
+				<Route
+					path="/createAppointment"
+					element={
+						<PrivateRoute>
+							<CreateAppointment />
 						</PrivateRoute>
 					}
 				/>

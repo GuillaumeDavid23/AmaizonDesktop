@@ -9,28 +9,18 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 
-// Bootstrap design imports
-import Modal from 'react-bootstrap/Modal'
+// Bootstrap Design import
+import { Image } from 'react-bootstrap'
 
 // Icon import
 import ArrowForward from '@mui/icons-material/ArrowForward'
 
-// Custom component import
-import { CustomerDetails } from '../index'
-
 const CustomerListItem = (props) => {
 	const { customer } = props
 
-	// Modal state
-	const [open, setOpen] = React.useState(false)
-
-	const handleModalClose = () => {
-		setOpen(false)
-	}
-
-	const handleModalOpen = () => {
-		setOpen(true)
-	}
+	const callNewWindowForUser = React.useCallback(() => {
+		window.electron.send('showCustomerDetailWindow', customer._id)
+	}, [])
 
 	return (
 		<Grid
@@ -44,25 +34,30 @@ const CustomerListItem = (props) => {
 				boxShadow: '3px 5px 10px #737373'
 			}}
 		>
-			{/* CustomerInfo Modal */}
-			<Modal
-				show={open}
-				onHide={handleModalClose}
-				style={{ height: '800px' }}
-			>
-				<CustomerDetails user={customer} />
-			</Modal>
 			{/* User Informations */}
 			<Grid item sx={{ display: 'flex', flexDirection: 'row' }}>
 				{/* Profil Pic */}
 				<Box
 					sx={{
 						height: '100px',
-						width: '100px',
-						backgroundColor: 'blue',
-						borderRadius: '10px'
+						width: '100px'
 					}}
-				></Box>
+				>
+					<Image
+						style={{ borderRadius: '10px' }}
+						fluid
+						src={
+							window.electron.url +
+							'/avatar/' +
+							customer._id +
+							'.png'
+						}
+						onError={({ currentTarget }) => {
+							currentTarget.onerror = null // prevents looping
+							currentTarget.src = require('../../../../assets/images/blank_profile.png')
+						}}
+					/>
+				</Box>
 				{/* Customer Info + Prefs */}
 				<Box sx={{ paddingLeft: '10px' }}>
 					<Typography>
@@ -71,7 +66,13 @@ const CustomerListItem = (props) => {
 					</Typography>
 
 					<Typography>
-						<i>Préférences W.I.P</i>
+						Tel:
+						{customer?.phone === ''
+							? ' Non renseigné'
+							: customer?.phone}
+					</Typography>
+					<Typography>
+						Mail: {customer?.email}
 					</Typography>
 				</Box>
 			</Grid>
@@ -101,7 +102,8 @@ const CustomerListItem = (props) => {
 							borderRadius: '10px 0px 0px 10px',
 							'&:hover': {
 								backgroundColor: '#647F94'
-							}
+							},
+							fontSize: '75%'
 						}}
 					>
 						Modifier
@@ -114,7 +116,8 @@ const CustomerListItem = (props) => {
 							borderRadius: '0px',
 							'&:hover': {
 								backgroundColor: '#647F94'
-							}
+							},
+							fontSize: '75%'
 						}}
 					>
 						Rendez-vous
@@ -127,10 +130,11 @@ const CustomerListItem = (props) => {
 							borderRadius: '0px 10px 10px 0px',
 							'&:hover': {
 								backgroundColor: '#647F94'
-							}
+							},
+							fontSize: '75%'
 						}}
 						endIcon={<ArrowForward />}
-						onClick={handleModalOpen}
+						onClick={callNewWindowForUser}
 					>
 						Voir plus
 					</Button>

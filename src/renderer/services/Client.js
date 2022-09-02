@@ -24,9 +24,7 @@ const updateClient = async (id, token, data) => {
 		body: JSON.stringify(data)
 	})
 		.then((response) => {
-			if (response.ok) {
-				return response.json()
-			}
+			return response.json()
 		})
 		.catch((errors) => console.log(errors))
 }
@@ -42,9 +40,7 @@ const createClient = async (token, data) => {
 		body: JSON.stringify(data)
 	})
 		.then((response) => {
-			if (response.ok) {
-				return response.json()
-			}
+			return response.json()
 		})
 		.catch((errors) => console.log(errors))
 }
@@ -120,11 +116,31 @@ const getSellerForOneProperty = async (userId, propertyId, token) => {
 	})
 }
 
+const pushUserAvatar = async (token, data) => {
+	return fetch(`${window.electron.url}/api/user/pushUserAvatar`, {
+		method: 'POST',
+		headers: {
+			// Accept: 'application/json',
+			// 'Content-Type': 'application/json',
+			Authorization: `bearer ${token}`
+		},
+		// body: JSON.stringify(data)
+		body: data
+	})
+		.then((response) => {
+			if (response.ok) {
+				return response.json()
+			}
+		})
+		.catch((errors) => console.log(errors))
+}
+
 export {
 	getClient,
 	updateClient,
 	createClient,
 	searchClient,
 	createSeller,
-	getSellerForOneProperty
+	getSellerForOneProperty,
+	pushUserAvatar
 }
