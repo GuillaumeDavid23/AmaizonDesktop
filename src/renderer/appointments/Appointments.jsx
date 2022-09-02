@@ -1,10 +1,12 @@
-import { BtnGeneral } from '../globalComponents'
+import { BtnGeneral, ListAppoint } from '../globalComponents'
 import { useState, useEffect } from 'react'
-import { getAppointments } from '../services/Appointment'
+import { getAppointments, getAllAppointmentsForAnAgent } from '../services'
 import { Box } from '@mui/material'
 import { useNavigate, useLocation } from 'react-router-dom'
 import './Appointments.css'
 import { useSlideSnack } from '../hooks'
+import moment from 'moment'
+import { catchError } from '../../utils/funcs'
 
 const Appointments = () => {
 	// Récupération du token:
@@ -30,50 +32,121 @@ const Appointments = () => {
 		}
 	}, [snackParams])
 
-	// Récupération des rendez-vous:
-	const [appointments, setAppointments] = useState([])
+	// Récupération d'une potentiel props SnackBar:
 	useEffect(() => {
-		getAppointments(token)
-			.then((res) => {
-				setAppointments(res.appointments)
-			})
-			.catch((error) => {
-				console.log(error)
-			})
-
-		// Récupération d'une potentiel props SnackBar:
 		if (state && state.snackParams) {
 			let { message, severity } = state.snackParams
 			setSnackParams({ message, severity })
 		}
 	}, [])
 
+	// Récupération des rendez-vous:
+	const [appointments, setAppointments] = useState([])
+	const [showAllAppointment, setShowAllAppointment] = useState(false)
+	useEffect(() => {
+		if (!showAllAppointment) {
+			getAllAppointmentsForAnAgent(token)
+				.then((res) => {
+					setAppointments(res.datas)
+				})
+				.catch(async (error) => {
+					setSnackParams(await catchError(error))
+				})
+		} else {
+			getAppointments(token)
+				.then((res) => {
+					setAppointments(res.appointments)
+				})
+				.catch(async (error) => {
+					setSnackParams(await catchError(error))
+				})
+		}
+	}, [showAllAppointment])
+
 	return (
 		<>
-			<Box className="d-flex justify-content-center align-items-center flex-column h-100">
-				<ul id="appointmentsList">
-					{appointments.map((appointment) => {
-						return (
-							<li key={appointment._id}>
-								<span>{appointment._id}</span>
-								<BtnGeneral
-									text="Modifier"
-									className="w-auto ms-3"
-									onClick={() =>
-										navigate('/createAppointment', {
-											state: { id: appointment._id }
-										})
-									}
-								/>
-							</li>
-						)
-					})}
-				</ul>
-				<BtnGeneral
-					text="Nouveau rendez-vous"
-					className="w-auto"
-					onClick={() => navigate('/createAppointment')}
-				/>
+			<Box className="mt-3 mx-2">
+				<Box className="d-flex h-75">
+					<Box className="w-20">
+						<ListAppoint
+							title="Aujourd'hui"
+							data={appointments}
+							date={moment()}
+						/>
+					</Box>
+					<Box className="w-20">
+						<ListAppoint
+							title={
+								moment()
+									.add(1, 'days')
+									.format('dddd')
+									.charAt(0)
+									.toUpperCase() +
+								moment().add(1, 'days').format('dddd').slice(1)
+							}
+							data={appointments}
+							date={moment().add(1, 'days')}
+						/>
+					</Box>
+					<Box className="w-20">
+						<ListAppoint
+							title={
+								moment()
+									.add(2, 'days')
+									.format('dddd')
+									.charAt(0)
+									.toUpperCase() +
+								moment().add(2, 'days').format('dddd').slice(1)
+							}
+							data={appointments}
+							date={moment().add(2, 'days')}
+						/>
+					</Box>
+					<Box className="w-20">
+						<ListAppoint
+							title={
+								moment()
+									.add(3, 'days')
+									.format('dddd')
+									.charAt(0)
+									.toUpperCase() +
+								moment().add(3, 'days').format('dddd').slice(1)
+							}
+							data={appointments}
+							date={moment().add(3, 'days')}
+						/>
+					</Box>
+					<Box className="w-20">
+						<ListAppoint
+							title={
+								moment()
+									.add(4, 'days')
+									.format('dddd')
+									.charAt(0)
+									.toUpperCase() +
+								moment().add(4, 'days').format('dddd').slice(1)
+							}
+							data={appointments}
+							date={moment().add(4, 'days')}
+						/>
+					</Box>
+				</Box>
+				<Box className="d-flex justify-content-center mb-3">
+					<BtnGeneral
+						text={`${
+							!showAllAppointment ? 'Tout les' : 'Mes'
+						} rendez-vous`}
+						className="me-2"
+						onClick={() =>
+							setShowAllAppointment(!showAllAppointment)
+						}
+					/>
+					<BtnGeneral
+						text="Nouveau rendez-vous"
+						className="ms-2"
+						onClick={() => navigate('/createAppointment')}
+					/>
+				</Box>
 			</Box>
 			{renderSnack}
 		</>

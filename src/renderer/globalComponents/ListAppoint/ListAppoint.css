@@ -3,6 +3,7 @@
     border-radius: 0px 15px 15px 15px;
     height: 90%;
     box-shadow: 1px 3px 8px 1px rgba(75, 75, 75, 0.75);
+    overflow-y: scroll;
 }
 .appointBoxTitle{
     border-radius: 0px 15px 0 0;

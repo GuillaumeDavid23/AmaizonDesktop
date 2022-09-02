@@ -13,7 +13,8 @@ import {
 	createAppointment,
 	getAppointment,
 	getAppointments,
-	updateAppointment
+	updateAppointment,
+	getAllAppointmentsForAnAgent
 } from './Appointment'
 
 // AuthProvider:
@@ -48,6 +49,7 @@ export {
 	getAppointment,
 	getAppointments,
 	updateAppointment,
+	getAllAppointmentsForAnAgent,
 	AuthProvider,
 	getClient,
 	updateClient,

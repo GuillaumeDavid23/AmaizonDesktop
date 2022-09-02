@@ -1,20 +1,19 @@
 import { useState, useEffect } from 'react'
-import { Button, Col, Row } from 'react-bootstrap'
-import { AnimatedPage } from '../globalComponents'
-import Title from '../globalComponents/Title/Title'
+import { Col, Row } from 'react-bootstrap'
+import { AnimatedPage, ListAppoint, Title } from '../globalComponents'
 import { Box, Typography } from '@mui/material'
-import { FaUserAlt } from 'react-icons/fa'
 import './Home.css'
-import ListAppoint from '../globalComponents/ListAppoint/ListAppoint'
 import { Pie } from 'react-chartjs-2'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
-import AgentCard from './components/AgentCard'
+import { AgentCard } from './components'
 import moment from 'moment'
 import { useSlideSnack } from '../hooks'
 import { useLocation } from 'react-router-dom'
-import React from 'react'
+import { getAllAppointmentsForAnAgent } from '../services'
+import { catchError } from '../../utils/funcs'
+
 ChartJS.register(ArcElement, Tooltip, Legend)
-const Home = (props) => {
+const Home = () => {
 	const [allAgents, setAllAgents] = useState([])
 	const [charts, setCharts] = useState([])
 	const [appointments, setAppointments] = useState([])
@@ -36,8 +35,9 @@ const Home = (props) => {
 	}, [snackParams])
 
 	let { state } = useLocation()
-	React.useEffect(() => {
+	useEffect(() => {
 		let token = JSON.parse(localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON'))
+
 		fetch(window.electron.url + '/api/user/agents', {
 			method: 'GET',
 			headers: {
@@ -51,8 +51,8 @@ const Home = (props) => {
 			.then((response) => {
 				setAllAgents(response.datas)
 			})
-			.catch((error) => {
-				console.log(error)
+			.catch(async (error) => {
+				setSnackParams(await catchError(error))
 			})
 
 		fetch(window.electron.url + '/api/property/charts', {
@@ -68,25 +68,16 @@ const Home = (props) => {
 			.then((response) => {
 				setCharts(response.charts)
 			})
-			.catch((error) => {
-				console.log(error)
+			.catch(async (error) => {
+				setSnackParams(await catchError(error))
 			})
 
-		fetch(window.electron.url + '/api/appointment/getAllForAnAgent', {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json;charset=utf-8',
-				authorization: `bearer ${token}`
-			}
-		})
-			.then((response) => {
-				return response.json()
-			})
+		getAllAppointmentsForAnAgent(token)
 			.then((response) => {
 				setAppointments(response.datas)
 			})
-			.catch((error) => {
-				console.log(error)
+			.catch(async (error) => {
+				setSnackParams(await catchError(error))
 			})
 
 		// Récupération d'une potentiel props SnackBar:
