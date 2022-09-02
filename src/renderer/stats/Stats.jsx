@@ -63,17 +63,17 @@ const Stats = () => {
 			<Container className="h-100">
 				<Title text="Statistiques" variant="h4" />
 				<Row className="h-100">
+					<Col xs={9}>
+						<Typography variant="h5" className="text-center">
+							Clients créé sur les 30 derniers jours
+						</Typography>
+						<Line data={ChartBarForCreatedClient}  />
+					</Col>
 					<Col xs={3}>
 						<Typography variant="h5" className="text-center">
 							Nombre d'annonces par type
 						</Typography>
 						<Pie data={ChartPieForAnnounceType} />
-					</Col>
-					<Col xs={6}>
-						<Typography variant="h5" className="text-center">
-							Clients créé sur les 30 derniers jours
-						</Typography>
-						<Line data={ChartBarForCreatedClient}  />
 					</Col>
 				</Row>
 			</Container>
