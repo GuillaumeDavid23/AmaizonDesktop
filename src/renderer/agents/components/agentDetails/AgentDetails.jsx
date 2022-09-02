@@ -16,6 +16,8 @@ import { useParams } from 'react-router-dom'
 // CSS import
 import './AgentDetails.css'
 import CustomerItem from './components/CustomerItem'
+import { getAgent } from '../../../services/Agent'
+import { useAuth } from '../../../hooks'
 
 const AgentDetails = (props) => {
 	// Get user ID from params
@@ -26,23 +28,12 @@ const AgentDetails = (props) => {
 	const goToAppointmentPage = React.useCallback(() => {
 		window.electron.send('mainShowAppointmentPage', '')
 	}, [])
-
+	const { authToken } = useAuth()
 	React.useEffect(() => {
-		fetch(`${window.electron.url}/api/user/${userID}`, {
-			headers: {
-				Authorization: `bearer ${JSON.parse(
-					localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON')
-				)}`
-			}
-		})
+		getAgent(userID, authToken)
 			.then((res) => {
-				if (res.ok) {
-					res.json().then((data) => {
-						console.log(data)
-						const { data: user } = data
-						setUser(user)
-					})
-				}
+				const { data: user } = res
+				setUser(user)
 			})
 			.finally(() => {
 				setIsLoading(false)
@@ -176,7 +167,7 @@ const AgentDetails = (props) => {
 						>
 							<Row
 								style={{
-									height: '80%',
+									height: '80%'
 								}}
 							>
 								<Typography variant="h6" align="center">
@@ -191,7 +182,9 @@ const AgentDetails = (props) => {
 									{user?.agent.customers.length > 0 &&
 										user.agent.customers.map((customer) => {
 											return (
-												<CustomerItem customer={customer} />
+												<CustomerItem
+													customer={customer}
+												/>
 											)
 										})}
 								</Box>

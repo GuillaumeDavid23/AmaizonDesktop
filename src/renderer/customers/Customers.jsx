@@ -119,8 +119,7 @@ const Customers = () => {
 
 	// Electron KeyHandling Callback
 	const handleElectronKeyPress = React.useCallback((event) => {
-		const { key, ctrlKey, altKey } = event
-		console.log(`Got key, ctrl, alt: ${key} ${ctrlKey} ${altKey}`)
+		const { key, ctrlKey } = event
 
 		if (ctrlKey && key === 'n') {
 			window.electron.send('mainGoToPage', '/customerAdd')

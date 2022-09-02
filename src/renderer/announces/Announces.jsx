@@ -7,7 +7,26 @@ import HomeCards from './components/HomeCards/HomeCards'
 
 const Announces = () => {
 	const [properties, setProperties] = React.useState([])
+	// Electron KeyHandling Callback
+	const handleElectronKeyPress = React.useCallback((event) => {
+		const { key, ctrlKey } = event
 
+		if (ctrlKey && key === 'n') {
+			window.electron.send('mainGoToPage', '/createAnnounce')
+		}
+
+		return
+	}, [])
+
+	// ReactJS Key handling
+	React.useEffect(() => {
+		window.addEventListener('keydown', handleElectronKeyPress, true)
+
+		return () => {
+			window.removeEventListener('keydown', handleElectronKeyPress, true)
+		}
+	}, [handleElectronKeyPress])
+	
 	return (
 		<AnimatedPage>
 			<Container className="h-100">
@@ -15,9 +34,7 @@ const Announces = () => {
 					setProperties={setProperties}
 					properties={properties}
 				/>
-				<Row
-					className="justify-content-center justify-content-lg-center overflow-auto"
-				>
+				<Row className="justify-content-center justify-content-lg-center overflow-auto">
 					{properties.map((property) => {
 						return (
 							<Col

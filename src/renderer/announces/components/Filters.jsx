@@ -14,9 +14,13 @@ import {
 	BsFillCircleFill,
 } from 'react-icons/bs'
 import CheckBox from '../../globalComponents/Checkbox'
+import { useAuth } from "../../hooks";
+import { searchProperties } from "../../services/Property";
 
 const Filters = ({ setProperties, properties }) => {
     const [filtersActive, setFiltersActive] = useState(false);
+    const { authToken } = useAuth()
+
     var lastSearch = JSON.parse(localStorage.getItem("LAST_SEARCH_FILTERS"));
     if (!lastSearch) {
         lastSearch = {};
@@ -67,8 +71,8 @@ const Filters = ({ setProperties, properties }) => {
 		lastSearch.search ? lastSearch.search : ''
 	)
 	const [dispo, setDispo] = useState(
-        lastSearch.dispo ? lastSearch.dispo : "agent"
-    );
+		lastSearch.isToSell === 'normal' ? lastSearch.isToSell : 'agent'
+	)
 
     const [open, setOpen] = useState(false);
 
@@ -111,10 +115,10 @@ const Filters = ({ setProperties, properties }) => {
     };
 
 	const handleDispo = (e) => {
-		if (!e.target.checked) {
+		if (e.target.checked) {
             setDispo("agent");
         } else {
-            setDispo("");
+            setDispo('normal')
         }
 	}
 
@@ -137,223 +141,213 @@ const Filters = ({ setProperties, properties }) => {
 			isToSell: dispo
 		}
 		localStorage.setItem('LAST_SEARCH_FILTERS', JSON.stringify(filters))
-		fetch(window.electron.url + "/api/property/searchProperties", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json;charset=utf-8",
-                Authorization: `bearer ${localStorage.getItem(
-                    "REACT_TOKEN_AUTH_AMAIZON"
-                )}`,
-            },
-            body: JSON.stringify(filters),
-        })
-            .then((response) => {
-                return response.json();
-            })
-            .then((response) => {
-                setProperties(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        searchProperties(filters, authToken)
+			.then((response) => {
+				setProperties(response.data)
+			})
+			.catch((error) => {
+				console.log(error)
+			})
 	}
 
 	return (
-        <Container className="d-flex justify-content-center pt-4 mb-4">
-            <Row
-                id="filters"
-                className="d-flex justify-content-around p-4 w-100"
-            >
-                <Row className="justify-content-center align-items-center flex-column flex-lg-row w-100">
-                    <Col
-                        xs="12"
-                        lg="8"
-                        className="d-flex flex-column flex-lg-row justify-content-center"
-                    >
-                        <FormControl
-                            type="search"
-                            placeholder="Effectuez votre recherche..."
-                            className="me-2 header-search-input"
-                            aria-label="Search"
-                            onChange={handleSearch}
-                            value={search}
-                        />
-                        <Button
-                            className="custom-btn "
-                            onClick={() => handleSearchClick()}
-                            aria-controls="filtersAdvanced"
-                            aria-expanded={open}
-                        >
-                            Rechercher <BsSearch className="ms-2" />
-                        </Button>
-                    </Col>
-                    <Col
-                        xs="12"
-                        lg="12"
-                        className="d-flex justify-content-center mt-3"
-                    >
-                        <button
-                            href="#"
-                            className="custom-btn-advanced"
-                            onClick={() => setOpen(!open)}
-                            aria-controls="filtersAdvanced"
-                            aria-expanded={open}
-                        >
-                            {filtersActive ? (
-                                <BsFillCircleFill
-                                    size={12}
-                                    color="green"
-                                    className="me-2"
-                                />
-                            ) : (
-                                ""
-                            )}
-                            Recherche avancé
-                            {open ? (
-                                <BsChevronDown className="ms-1" />
-                            ) : (
-                                <BsChevronUp className="ms-1" />
-                            )}
-                        </button>
-                    </Col>
-                </Row>
-                <Collapse in={open} className="mt-3">
-                    <Row
-                        id="filtersAdvanced"
-                        className="justify-content-center"
-                    >
-                        <Col xs="10" lg="2">
-                            <div>
-                                <label className="fw-bold text-center w-100">
-                                    Type de vente
-                                </label>
-                            </div>
-                            <select
-                                value={transactionType}
-                                className="form-select "
-                                onChange={handleTransactionType}
-                                name="transactionType"
-                                id="transactionType"
-                            >
-                                <option value="">Acheter ou Louer</option>
-                                <option value="Achat">Achat</option>
-                                <option value="Location">Location</option>
-                            </select>
-                        </Col>
-                        <Col xs="10" lg="2">
-                            <div>
-                                <label className="fw-bold text-center w-100">
-                                    Type de bien
-                                </label>
-                            </div>
-                            <select
-                                value={propertyType}
-                                className="form-select "
-                                onChange={handlePropertyType}
-                                name="propertyType"
-                                id="propertyType"
-                            >
-                                <option value="">Choisissez une valeur</option>
-                                <option value="Maison">Maison</option>
-                                <option value="Appartement">Appartement</option>
-                            </select>
-                        </Col>
-                        <Col xs="5" lg="2">
-                            <div>
-                                <label className="fw-bold text-center w-100">
-                                    Localisation
-                                </label>
-                            </div>
-                            {/* <Input
+		<Container className="d-flex justify-content-center pt-4 mb-4">
+			<Row
+				id="filters"
+				className="d-flex justify-content-around p-4 w-100"
+			>
+				<Row className="justify-content-center align-items-center flex-column flex-lg-row w-100">
+					<Col
+						xs="12"
+						lg="8"
+						className="d-flex flex-column flex-lg-row justify-content-center"
+					>
+						<FormControl
+							type="search"
+							placeholder="Effectuez votre recherche..."
+							className="me-2 header-search-input"
+							aria-label="Search"
+							onChange={handleSearch}
+							value={search}
+						/>
+						<Button
+							className="custom-btn "
+							onClick={() => handleSearchClick()}
+							aria-controls="filtersAdvanced"
+							aria-expanded={open}
+						>
+							Rechercher <BsSearch className="ms-2" />
+						</Button>
+					</Col>
+					<Col
+						xs="12"
+						lg="12"
+						className="d-flex justify-content-center mt-3"
+					>
+						<button
+							href="#"
+							className="custom-btn-advanced"
+							onClick={() => setOpen(!open)}
+							aria-controls="filtersAdvanced"
+							aria-expanded={open}
+						>
+							{filtersActive ? (
+								<BsFillCircleFill
+									size={12}
+									color="green"
+									className="me-2"
+								/>
+							) : (
+								''
+							)}
+							Recherche avancé
+							{open ? (
+								<BsChevronDown className="ms-1" />
+							) : (
+								<BsChevronUp className="ms-1" />
+							)}
+						</button>
+					</Col>
+				</Row>
+				<Collapse in={open} className="mt-3">
+					<Row
+						id="filtersAdvanced"
+						className="justify-content-center"
+					>
+						<Col xs="10" lg="2">
+							<div>
+								<label className="fw-bold text-center w-100">
+									Type de vente
+								</label>
+							</div>
+							<select
+								value={transactionType}
+								className="form-select "
+								onChange={handleTransactionType}
+								name="transactionType"
+								id="transactionType"
+							>
+								<option value="">Acheter ou Louer</option>
+								<option value="Achat">Achat</option>
+								<option value="Location">Location</option>
+							</select>
+						</Col>
+						<Col xs="10" lg="2">
+							<div>
+								<label className="fw-bold text-center w-100">
+									Type de bien
+								</label>
+							</div>
+							<select
+								value={propertyType}
+								className="form-select "
+								onChange={handlePropertyType}
+								name="propertyType"
+								id="propertyType"
+							>
+								<option value="">Choisissez une valeur</option>
+								<option value="Maison">Maison</option>
+								<option value="Appartement">Appartement</option>
+							</select>
+						</Col>
+						<Col xs="5" lg="2">
+							<div>
+								<label className="fw-bold text-center w-100">
+									Localisation
+								</label>
+							</div>
+							{/* <Input
 								id="location"
 								type="text"
 								placeholder="Amiens, Paris.."
 								onBlur={handleLocation}
 								value={location ? location : ''}
 							/> */}
-                        </Col>
-                        <Col xs="7" lg="2">
-                            <div>
-                                <label className="fw-bold text-center w-100">
-                                    Prix
-                                </label>
-                            </div>
-                            <div className="d-flex align-items-center">
-                                <FormControl
-                                    id="minPrice"
-                                    type="text"
-                                    placeholder="Min"
-                                    onChange={handleMinPrice}
-                                    value={minPrice}
-                                />
-                                <strong className="ms-2 me-2">-</strong>
-                                <FormControl
-                                    id="maxPrice"
-                                    type="text"
-                                    placeholder="Max"
-                                    onChange={handleMaxPrice}
-                                    value={maxPrice}
-                                />
-                            </div>
-                        </Col>
-                        <Col xs="6" lg="2">
-                            <div>
-                                <label className="fw-bold text-center w-100">
-                                    Pièce
-                                </label>
-                            </div>
-                            <div className="d-flex align-items-center">
-                                <FormControl
-                                    id="roomNumberMin"
-                                    type="number"
-                                    placeholder="Min"
-                                    onChange={handleRoomNumberMin}
-                                    value={roomNumberMin}
-                                />
-                                <strong className="ms-2 me-2">-</strong>
-                                <FormControl
-                                    id="roomNumberMax"
-                                    type="number"
-                                    placeholder="Max"
-                                    value={roomNumberMax}
-                                    onChange={handleRoomNumberMax}
-                                />
-                            </div>
-                        </Col>
-                        <Col xs="6" lg="2" className="d-flex flex-column">
-                            <div>
-                                <label className="fw-bold text-center w-100">
-                                    Surface
-                                </label>
-                            </div>
-                            <div className="d-flex align-items-center">
-                                <FormControl
-                                    id="surfaceMin"
-                                    type="number"
-                                    placeholder="Min"
-                                    onChange={handleSurfaceMin}
-                                    value={surfaceMin ? surfaceMin : ""}
-                                />
-                                <strong className="ms-2 me-2">-</strong>
-                                <FormControl
-                                    id="surfaceMax"
-                                    type="number"
-                                    placeholder="Max"
-                                    onChange={handleSurfaceMax}
-                                    value={surfaceMax ? surfaceMax : ""}
-                                />
-                            </div>
-                        </Col>
-                        <Col className="d-flex align-items-center mt-3">
-                            Non dispo
-                            <CheckBox className="m-2" change={handleDispo} />
-                            Dispo
-                        </Col>
-                    </Row>
-                </Collapse>
-            </Row>
-        </Container>
-    );
+						</Col>
+						<Col xs="7" lg="2">
+							<div>
+								<label className="fw-bold text-center w-100">
+									Prix
+								</label>
+							</div>
+							<div className="d-flex align-items-center">
+								<FormControl
+									id="minPrice"
+									type="text"
+									placeholder="Min"
+									onChange={handleMinPrice}
+									value={minPrice}
+								/>
+								<strong className="ms-2 me-2">-</strong>
+								<FormControl
+									id="maxPrice"
+									type="text"
+									placeholder="Max"
+									onChange={handleMaxPrice}
+									value={maxPrice}
+								/>
+							</div>
+						</Col>
+						<Col xs="6" lg="2">
+							<div>
+								<label className="fw-bold text-center w-100">
+									Pièce
+								</label>
+							</div>
+							<div className="d-flex align-items-center">
+								<FormControl
+									id="roomNumberMin"
+									type="number"
+									placeholder="Min"
+									onChange={handleRoomNumberMin}
+									value={roomNumberMin}
+								/>
+								<strong className="ms-2 me-2">-</strong>
+								<FormControl
+									id="roomNumberMax"
+									type="number"
+									placeholder="Max"
+									value={roomNumberMax}
+									onChange={handleRoomNumberMax}
+								/>
+							</div>
+						</Col>
+						<Col xs="6" lg="2" className="d-flex flex-column">
+							<div>
+								<label className="fw-bold text-center w-100">
+									Surface
+								</label>
+							</div>
+							<div className="d-flex align-items-center">
+								<FormControl
+									id="surfaceMin"
+									type="number"
+									placeholder="Min"
+									onChange={handleSurfaceMin}
+									value={surfaceMin ? surfaceMin : ''}
+								/>
+								<strong className="ms-2 me-2">-</strong>
+								<FormControl
+									id="surfaceMax"
+									type="number"
+									placeholder="Max"
+									onChange={handleSurfaceMax}
+									value={surfaceMax ? surfaceMax : ''}
+								/>
+							</div>
+						</Col>
+						<Col className="d-flex align-items-center mt-3">
+							<CheckBox
+								className="m-2"
+								onChange={handleDispo}
+							/>
+							Inclure les non dispo
+						</Col>
+					</Row>
+				</Collapse>
+			</Row>
+		</Container>
+	)
 }
 
 export default Filters

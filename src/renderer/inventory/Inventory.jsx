@@ -14,6 +14,9 @@ import FormControl from 'react-bootstrap/FormControl'
 // Sub component imports
 import { InventoryListItem } from './components'
 import Title from '../globalComponents/Title/Title'
+import { BtnGeneral } from '../globalComponents'
+import { useAuth } from '../hooks'
+import { getInventories } from '../services/Inventories'
 
 // Initial component States
 const initialStates = {
@@ -50,9 +53,9 @@ const CReducer = (states, action) => {
 			return { ...states }
 	}
 }
-
 // Actual Component
 const Inventory = () => {
+	const { authToken } = useAuth()
 	// Setting up component Reducer
 	const [states, dispatch] = React.useReducer(CReducer, initialStates)
 	const { searchInventory, inventories, filteredInventories } = states
@@ -85,23 +88,12 @@ const Inventory = () => {
 	}
 
 	React.useEffect(() => {
-		fetch(`${window.electron.url}/api/inventory`, {
-			headers: {
-				Authorization: `bearer ${JSON.parse(
-					localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON')
-				)}`
-			}
-		}).then((res) => {
-			if (res.ok) {
-				res.json().then((data) => {
-					const { inventories } = data
-					console.log(inventories);
-					dispatch({
-						type: actions.INIT_INVENTORIES,
-						payload: inventories
-					})
-				})
-			}
+		getInventories(authToken).then((res) => {
+			const { inventories } = res
+			dispatch({
+				type: actions.INIT_INVENTORIES,
+				payload: inventories
+			})
 		})
 	}, [])
 
@@ -109,7 +101,7 @@ const Inventory = () => {
 		<Grid sx={{ height: '100%' }}>
 			<Box>
 				{/* Component Header */}
-				<Title text="Client" variant="h5" />
+				<Title text="Etat des lieux" variant="h5" />
 
 				{/* Filter input */}
 				<Box
@@ -126,15 +118,6 @@ const Inventory = () => {
 						placeholder="Rechercher..."
 						value={searchInventory || ''}
 					/>
-				</Box>
-				<Box
-					sx={{
-						display: 'flex',
-						justifyContent: 'flex-end',
-						paddingRight: '50px'
-					}}
-				>
-					<Button variant="contained">Ajouter un client</Button>
 				</Box>
 			</Box>
 

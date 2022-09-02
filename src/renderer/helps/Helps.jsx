@@ -13,7 +13,7 @@ const Helps = () => {
 		<AnimatedPage>
 			<Container className="h-100">
 				<Title text="Aidez-moi !" variant="h4" />
-				<Row className="h-100">
+				<Row className="h-100 mt-5">
 					<Col>
 						<Typography variant="h5">
 							{' '}
@@ -22,7 +22,7 @@ const Helps = () => {
 						<List>
 							<ListItem>
 								<ListItemText
-									primary="Ajouter un client (Sur la liste)"
+									primary="Ajouter client / agent / propriété (Sur la liste)"
 									secondary="CTRL + N"
 								/>
 							</ListItem>

@@ -132,14 +132,15 @@ const updateProperty = async (data, userToken, propertyId) => {
 	})
 }
 
-const searchProperties = async (data) => {
+const searchProperties = async (data, authToken) => {
 	// Returning new Promise
 	return new Promise((resolve, reject) => {
 		// Fetching API
 		fetch(`${window.electron.url}/api/property/searchProperties`, {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json;charset=utf-8'
+				'Content-Type': 'application/json;charset=utf-8',
+				Authorization: 'bearer ' + authToken
 			},
 			body: JSON.stringify(data)
 		})
@@ -197,5 +198,5 @@ export {
 	createProperty,
 	updateProperty,
 	searchProperties,
-	changeDispo
+	changeDispo,
 }
