@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import {
     Col,
@@ -121,10 +122,11 @@ const Filters = ({ setProperties, properties }) => {
             setDispo('normal')
         }
 	}
-
-	if (properties.length === 0) {
-		handleSearchClick()
-	}
+	React.useEffect(() => {
+		if (properties.length === 0) {
+			handleSearchClick()
+		}
+	}, [])
 
 	function handleSearchClick() {
 		let filters = {
