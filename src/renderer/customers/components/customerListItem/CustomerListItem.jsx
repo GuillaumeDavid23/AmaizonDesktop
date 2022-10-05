@@ -11,6 +11,11 @@ import Button from '@mui/material/Button'
 
 // Bootstrap Design import
 import { Image } from 'react-bootstrap'
+import {
+	BsEyeFill,
+	BsCalendar2Date,
+	BsPen
+} from 'react-icons/bs'
 
 // Icon import
 import ArrowForward from '@mui/icons-material/ArrowForward'
@@ -71,9 +76,7 @@ const CustomerListItem = (props) => {
 							? ' Non renseigné'
 							: customer?.phone}
 					</Typography>
-					<Typography>
-						Mail: {customer?.email}
-					</Typography>
+					<Typography>Mail: {customer?.email}</Typography>
 				</Box>
 			</Grid>
 			{/* User Actions */}
@@ -106,7 +109,7 @@ const CustomerListItem = (props) => {
 							fontSize: '75%'
 						}}
 					>
-						Modifier
+						<BsPen size={20} />
 					</Button>
 					<Button
 						variant="contained"
@@ -120,7 +123,7 @@ const CustomerListItem = (props) => {
 							fontSize: '75%'
 						}}
 					>
-						Rendez-vous
+						<BsCalendar2Date size={20}/>
 					</Button>
 					<Button
 						variant="contained"
@@ -136,7 +139,7 @@ const CustomerListItem = (props) => {
 						endIcon={<ArrowForward />}
 						onClick={callNewWindowForUser}
 					>
-						Voir plus
+						<BsEyeFill size={20} />
 					</Button>
 				</Box>
 			</Grid>
