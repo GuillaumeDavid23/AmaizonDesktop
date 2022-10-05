@@ -25,7 +25,7 @@ const CustomerDetails = (props) => {
 	const { id: userID } = useParams()
 
 	const [user, setUser] = React.useState()
-	const [isLoading, setIsLoading] = React.useState(true)
+	const [isLoading, setIsLoading] = React.useState(false)
 	const navigate = useNavigate()
 	const goToAppointmentPage = React.useCallback(() => {
 		window.electron.send('mainShowAppointmentPage', '')
@@ -35,19 +35,18 @@ const CustomerDetails = (props) => {
 	React.useEffect(() => {
 		getClient(userID, authToken)
 			.then((res) => {
-				if (res.ok) {
-					res.json().then((data) => {
-						console.log(data)
-						const { data: user } = data
-						setUser(user)
-					})
+				if (res) {
+					setUser(res.data)
 				}
+			})
+			.catch((error) => {
+				console.log(error);
 			})
 			.finally(() => {
 				setIsLoading(false)
 			})
+			
 	}, [authToken, userID])
-
 	return (
 		<>
 			{isLoading ? (
