@@ -19,6 +19,15 @@ import { useNavigate, useParams } from 'react-router-dom'
 import './CustomerDetails.css'
 import { getClient } from '../../../services/Client'
 import { useAuth } from '../../../hooks'
+import { Typography } from '@mui/material'
+import { BsEyeFill, BsCalendar2Date, BsPen } from 'react-icons/bs'
+const Typo = ({ title, text }) => {
+	return (
+		<Typography fontFamily="Dosis" fontSize={16}>
+			{title} : {text}
+		</Typography>
+	)
+}
 
 const CustomerDetails = (props) => {
 	// Get user ID from params
@@ -27,11 +36,17 @@ const CustomerDetails = (props) => {
 	const [user, setUser] = React.useState()
 	const [isLoading, setIsLoading] = React.useState(false)
 	const navigate = useNavigate()
+	
+	const { authToken } = useAuth()
+
 	const goToAppointmentPage = React.useCallback(() => {
 		window.electron.send('mainShowAppointmentPage', '')
 	}, [])
-	const { authToken } = useAuth()
 
+	const goToModifyUser = React.useCallback(() => {
+		window.electron.send('mainShowModifyCustomer', userID)
+	}, [])
+	
 	React.useEffect(() => {
 		getClient(userID, authToken)
 			.then((res) => {
@@ -40,12 +55,11 @@ const CustomerDetails = (props) => {
 				}
 			})
 			.catch((error) => {
-				console.log(error);
+				console.log(error)
 			})
 			.finally(() => {
 				setIsLoading(false)
 			})
-			
 	}, [authToken, userID])
 	return (
 		<>
@@ -63,103 +77,91 @@ const CustomerDetails = (props) => {
 						padding: '50px'
 					}}
 				>
-					<Row style={{ height: '100%' }}>
-						{/* Espace 1: PP + ActionButton "Modifier"/"RDV" */}
+					{/* Espace 1: PP + ActionButton "Modifier"/"RDV" */}
+					<Row
+						style={{
+							height: '100%',
+							flexDirection: 'column',
+							justifyContent: 'center',
+							alignItems: 'center'
+						}}
+					>
+						{/* User PP */}
 						<Col
+							xs={6}
 							style={{
 								display: 'flex',
-								justifyContent: 'center'
+								justifyContent: 'center',
+								marginBottom: 20
 							}}
 						>
-							<Container
+							<Box
 								style={{
-									display: 'flex',
-									flexDirection: 'column',
-									justifyContent: 'space-evenly'
+									borderRadius: '100px',
+									padding: '8px',
+									position: 'relative',
+									backgroundImage: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='100' ry='100' stroke='rgb(100, 127, 148)' stroke-width='7' stroke-dasharray='20' stroke-dashoffset='16' stroke-linecap='butt'/%3e%3c/svg%3e")`
 								}}
 							>
-								{/* User PP */}
-								<Row>
-									<Col
-										style={{
-											display: 'flex',
-											justifyContent: 'center'
-										}}
-									>
-										<Box
-											style={{
-												height: '300px',
-												width: '300px'
-											}}
-										>
-											<Image
-												style={{ borderRadius: '10px' }}
-												fluid
-												src={
-													window.electron.url +
-													'/avatar/' +
-													userID +
-													'.png'
-												}
-												onError={({
-													currentTarget
-												}) => {
-													currentTarget.onerror = null // prevents looping
-													currentTarget.src = require('../../../../assets/images/blank_profile.png')
-												}}
-											/>
-										</Box>
-									</Col>
-								</Row>
-								{/* ActionsButtons */}
-								<Row
-									style={{
-										display: 'flex',
-										justifyContent: 'space-between'
+								<Image
+									style={{ borderRadius: '50%' }}
+									fluid
+									src={
+										window.electron.url +
+										'/avatar/' +
+										userID +
+										'.png'
+									}
+									onError={({ currentTarget }) => {
+										currentTarget.onerror = null // prevents looping
+										currentTarget.src = require('../../../../assets/images/blank_profile.png')
 									}}
+								/>
+								<Box
+									style={{
+										width: '40px',
+										height: '40px',
+										borderRadius: '50%',
+										border: '3px solid white',
+										backgroundColor: '#647F94',
+										position: 'absolute',
+										bottom: '-10px',
+										left: '0',
+										right: '0',
+										marginLeft: 'auto',
+										marginRight: 'auto',
+										display: 'flex',
+										justifyContent: 'center',
+										alignItems: 'center',
+										cursor: 'pointer'
+									}}
+									onClick={goToModifyUser}
 								>
-									<Col>
-										<Button
-											variant="secondary"
-											onClick={() =>
-												console.log('UserModify')
-											}
-										>
-											Modifier
-										</Button>
-									</Col>
-									<Col>
-										<Button
-											variant="primary"
-											onClick={goToAppointmentPage}
-											style={{
-												backgroundColor: '#647F94',
-												borderColor: '#647F94'
-											}}
-										>
-											Prendre Rdv
-										</Button>
-									</Col>
-								</Row>
-							</Container>
+									<BsPen size={18} color="white" />
+								</Box>
+							</Box>
 						</Col>
+
 						{/* Espace 2: Informations utilisateur */}
 						<Col
+							xs={5}
 							style={{
 								display: 'flex',
-								flexDirection: 'column'
+								flexDirection: 'column',
+								width: '100%'
 							}}
 						>
-							<Box>
-								<h2>
-									{user?.firstname} {user?.lastname}
-								</h2>
-							</Box>
-							<Box>
-								<p>Tel:{user?.phone}</p>
-								<p>Mail:{user?.email}</p>
-							</Box>
+							<Typography
+								fontWeight="semi-bold"
+								fontFamily="Dosis"
+								fontSize={25}
+							>
+								{user?.firstname} {user?.lastname}
+							</Typography>
+							<Typo title="Téléphone" text={user?.phone} />
+							<Typo title="Email" text={user?.email} />
 						</Col>
+
 						{/* Espace 3: Préférences utilisateur */}
 						<Col
 							style={{
@@ -169,38 +171,81 @@ const CustomerDetails = (props) => {
 							}}
 						>
 							<Row>
-								<Box>
-									<p>Budget mini: {user?.buyer?.budgetMin}</p>
-									<p>Budget max: {user?.buyer?.budgetMax}</p>
-									<p>
-										Surface mini: {user?.buyer?.surfaceMin}
-									</p>
-									<p>
-										Surface max: {user?.buyer?.surfaceMax}
-									</p>
-									<p>Localisation: {user?.buyer?.city}</p>
-									<p>
-										Nombre de pièces: {user?.buyer?.rooms}
-									</p>
-									<p>Transaction: {user?.buyer?.type}</p>
-								</Box>
-							</Row>
-							<Row>
-								<Button
-									variant="primary"
-									onClick={() =>
-										navigate('/customerPreference', {
-											state: { user: user }
-										})
-									}
-									style={{
-										backgroundColor: '#647F94',
-										borderColor: '#647F94'
-									}}
+								<Typography
+									fontWeight="semi-bold"
+									fontFamily="Dosis"
+									fontSize={25}
 								>
-									Modifier
-								</Button>
+									Préférences de recherches
+								</Typography>
+								<Col>
+									<Typo
+										title="Budget mini"
+										text={user?.buyer?.budgetMin}
+									/>
+									<Typo
+										title="Budget max"
+										text={user?.buyer?.budgetMax}
+									/>
+									<Typo
+										title="Surface mini"
+										text={user?.buyer?.surfaceMin}
+									/>
+									<Typo
+										title="Surface max"
+										text={user?.buyer?.surfaceMax}
+									/>
+								</Col>
+								<Col>
+									<Typo
+										title="Localisation"
+										text={user?.buyer?.city}
+									/>
+									<Typo
+										title="Nombre de pièces"
+										text={user?.buyer?.rooms}
+									/>
+									<Typo
+										title="Transaction"
+										text={user?.buyer?.type}
+									/>
+								</Col>
 							</Row>
+						</Col>
+
+						{/* ActionsButtons */}
+						<Col
+							xs={1}
+							style={{
+								display: 'flex',
+								justifyContent: 'space-between',
+								width: '100%'
+							}}
+						>
+							<Button
+								variant="primary"
+								onClick={() =>
+									navigate('/customerPreference', {
+										state: { user: user }
+									})
+								}
+								style={{
+									backgroundColor: '#647F94',
+									borderColor: '#647F94'
+								}}
+							>
+								Modifier les préférences
+							</Button>
+							<Button
+								variant="primary"
+								onClick={goToAppointmentPage}
+								style={{
+									backgroundColor: '#647F94',
+									borderColor: '#647F94'
+								}}
+							>
+								Prendre Rdv
+							</Button>
 						</Col>
 					</Row>
 				</Container>

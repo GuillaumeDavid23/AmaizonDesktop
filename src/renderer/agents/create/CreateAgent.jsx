@@ -17,6 +17,7 @@ import { Form } from './components'
 const CreateAgent = () => {
 	// Déclaration navigation:
 	const navigate = useNavigate()
+	const [file, setFile] = useState({})
 
 	// Gestion de la snack Params:
 	const [snackParams, setSnackParams] = useState({
@@ -28,11 +29,11 @@ const CreateAgent = () => {
 		time: 2000,
 		severity: snackParams.severity
 	})
-	useEffect(() => {
-		if (snackParams.message) {
-			handleOpen()
-		}
-	}, [snackParams])
+	// useEffect(() => {
+	// 	if (snackParams.message) {
+	// 		handleOpen()
+	// 	}
+	// }, [snackParams])
 
 	// Récupération du token:
 	const token = JSON.parse(localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON'))
@@ -117,7 +118,7 @@ const CreateAgent = () => {
 
 	return (
 		<AnimatedPage className="h-100">
-			<Title text="Créer un Agent" />
+			<Title text={!state ? 'Créer un Agent' : 'Modifier un Agent'} />
 			<Box className="d-flex justify-content-center align-items-center h-75">
 				<Form
 					state={state}
@@ -126,6 +127,8 @@ const CreateAgent = () => {
 					control={control}
 					register={register}
 					errors={errors}
+					setFile={setFile}
+					file={file}
 				/>
 			</Box>
 			{/* Snackbar */}

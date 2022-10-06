@@ -52,7 +52,7 @@ const ListAppoint = ({ data, title, date }) => {
         return listItems;
     }
     return (
-        <Box className="appointBox">
+        <Box className="appointBox p-0 me-2">
             <Box className="appointBoxTitle">
                 <Typography variant="h5" component="div" className="">
                     {title}

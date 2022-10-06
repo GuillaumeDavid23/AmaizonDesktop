@@ -65,18 +65,19 @@ const CustomerListItem = (props) => {
 				</Box>
 				{/* Customer Info + Prefs */}
 				<Box sx={{ paddingLeft: '10px' }}>
+					<Typography>Client n°{customer.ref}</Typography>
 					<Typography>
-						{customer.firstname} {customer.lastname} (
-						<i>{customer.email}</i>)
+						{customer.firstname} {customer.lastname}
 					</Typography>
-
-					<Typography>
-						Tel:
+					<Typography fontStyle="italic" fontSize={14}>
+						Tel:{' '}
 						{customer?.phone === ''
 							? ' Non renseigné'
 							: customer?.phone}
 					</Typography>
-					<Typography>Mail: {customer?.email}</Typography>
+					<Typography fontStyle="italic" fontSize={14}>
+						Mail: {customer?.email}
+					</Typography>
 				</Box>
 			</Grid>
 			{/* User Actions */}
@@ -123,7 +124,7 @@ const CustomerListItem = (props) => {
 							fontSize: '75%'
 						}}
 					>
-						<BsCalendar2Date size={20}/>
+						<BsCalendar2Date size={20} />
 					</Button>
 					<Button
 						variant="contained"

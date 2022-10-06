@@ -141,8 +141,10 @@ const ConnectForm = () => {
 		reValidateMode: 'onBlur',
 		shouldFocusError: true,
 		defaultValues: {
-			email: localStorage.getItem('REMEMBER_ME') ? JSON.parse(localStorage.getItem('REMEMBER_ME')) : '',
-			password: 'Guillaume5'
+			email: localStorage.getItem('REMEMBER_ME')
+				? JSON.parse(localStorage.getItem('REMEMBER_ME'))
+				: '',
+			password: 'JszAL55j6BFb7FpH'
 		}
 	})
 

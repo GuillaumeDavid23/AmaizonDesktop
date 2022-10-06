@@ -23,10 +23,11 @@ contextMenu({
 
 let listWindows = []
 
-function createWindow(url = '/') {
+function createWindow(url = '/', options = {width: 1600, height: 900, resizable: true}) {
 	let win = new BrowserWindow({
-		width: 1200,
-		height: 800,
+		width: options.width,
+		height: options.height,
+		resizable: options.resizable,
 		autoHideMenuBar: true,
 		webPreferences: {
 			nodeIntegration: false,
@@ -41,7 +42,7 @@ function createWindow(url = '/') {
 	win.webContents.openDevTools({ mode: 'detach' })
 
 	win.on('closed', () => {
-		if (listWindows.indexOf(win) == 0) {
+		if (listWindows.indexOf(win) === 0) {
 			app.quit()
 		}
 
@@ -76,8 +77,13 @@ ipcMain.on('mailto', (evt, data) => {
 ipcMain.on('showCustomerDetailWindow', (event, data) => {
 	let customerId
 	customerId = Array.isArray(data) ? data[0] : data
-
-	createWindow(`/customers/${customerId}`)
+	let options = {
+		width: 492,
+		height: 626,
+		resizable: false
+	}
+	
+	createWindow(`/customers/${customerId}`, options)
 })
 
 ipcMain.on('showAgentDetailWindow', (event, data) => {
@@ -92,6 +98,13 @@ ipcMain.on('mainShowAppointmentPage', (event, data) => {
 	customerId = Array.isArray(data) ? data[0] : data
 
 	listWindows[0].loadURL(`http://localhost:3000/home`)
+})
+
+ipcMain.on('mainShowModifyCustomer', (event, data) => {
+	let customerId
+	customerId = Array.isArray(data) ? data[0] : data
+
+	listWindows[0].loadURL(`http://localhost:3000/customerAdd?id=${customerId}`)
 })
 
 ipcMain.on('mainGoToPage', (event, data) => {

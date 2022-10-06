@@ -3,7 +3,6 @@ import FirstnamePart from './FirstnamePart'
 import LastnamePart from './LastnamePart'
 import PasswordPart from './PasswordPart'
 import PhoneProPart from './PhoneProPart'
-import PhotoPart from './PhotoPart'
 import ValidationButton from './ValidationButton'
 
 export {
@@ -12,6 +11,5 @@ export {
 	LastnamePart,
 	PasswordPart,
 	PhoneProPart,
-	PhotoPart,
 	ValidationButton
 }

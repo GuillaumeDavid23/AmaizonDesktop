@@ -3,7 +3,7 @@ import { Box, Button, Grid, Typography } from '@mui/material'
 import { ArrowForward } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { Image } from 'react-bootstrap'
-
+import { BsEyeFill, BsCalendar2Date, BsPen } from 'react-icons/bs'
 const AgentListItem = ({ agent }) => {
 	// Déclaration useNavigate:
 	let navigate = useNavigate()
@@ -53,10 +53,13 @@ const AgentListItem = ({ agent }) => {
 				{/* Agent Info + Prefs */}
 				<Box sx={{ paddingLeft: '10px' }}>
 					<Typography>
-						{agent.firstname} {agent.lastname}
+						Agent n°{agent.ref}
 					</Typography>
 					<Typography>
-						(<i>{agent.email}</i>)
+						{agent.firstname} {agent.lastname}
+					</Typography>
+					<Typography fontStyle="italic" fontSize={14}>
+						{agent.email}
 					</Typography>
 				</Box>
 			</Grid>
@@ -95,7 +98,7 @@ const AgentListItem = ({ agent }) => {
 							})
 						}
 					>
-						Modifier
+						<BsPen size={20} />
 					</Button>
 					<Button
 						variant="contained"
@@ -120,7 +123,7 @@ const AgentListItem = ({ agent }) => {
 							})
 						}
 					>
-						Rendez-vous
+						<BsCalendar2Date size={20} />
 					</Button>
 					<Button
 						variant="contained"
@@ -136,7 +139,7 @@ const AgentListItem = ({ agent }) => {
 						endIcon={<ArrowForward />}
 						onClick={callNewWindowForUser}
 					>
-						Voir plus
+						<BsEyeFill size={20} />
 					</Button>
 				</Box>
 			</Grid>

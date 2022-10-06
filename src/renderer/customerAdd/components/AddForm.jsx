@@ -5,11 +5,45 @@ import { useForm, Controller } from 'react-hook-form'
 import { TextField } from '@mui/material'
 import { Col, Row } from 'react-bootstrap'
 import BtnGeneral from '../../globalComponents/BtnGeneral/BtnGeneral'
-import { createClient, pushUserAvatar } from '../../services/Client'
+import { createClient, getClient, pushUserAvatar, updateClient } from '../../services/Client'
 import { useSlideSnack } from '../../hooks'
-import PhotoPart from './PhotoPart'
-import { useLocation, useNavigate } from 'react-router-dom'
+import PhotoPart from '../../globalComponents/PhotoPart/PhotoPart'
+import {
+	useLocation,
+	useNavigate,
+	useSearchParams
+} from 'react-router-dom'
+
+import { useAuth } from '../../hooks'
+
 const AddForm = () => {
+	const { authToken } = useAuth()
+
+	const [searchParams, setSearchParams] = useSearchParams()
+	const [user, setUser] = React.useState({})
+	const userID = searchParams.get('id')
+	const [messageSnack, setMessageSnack] = React.useState('Rien')
+	const [severity, setSeverity] = React.useState('success')
+	const [file, setFile] = React.useState({})
+	
+	React.useEffect(() => {
+		if(userID){
+			getClient(userID, authToken)
+				.then((res) => {
+					if (res) {
+						setUser(res.data)
+						setValue('lastname', res.data.lastname)
+						setValue('firstname', res.data.firstname)
+						setValue('email', res.data.email)
+						setValue('phone', res.data.phone)
+					}
+				})
+				.catch((error) => {
+					console.log(error)
+				})
+		}
+	}, [authToken, userID])
+
 	const shuffle = function (chain) {
 		var a = chain.split(''),
 			n = a.length
@@ -34,15 +68,15 @@ const AddForm = () => {
 		register,
 		handleSubmit,
 		control,
+		setValue,
 		formState: { errors }
 	} = useForm({
 		mode: 'onBlur',
 		reValidateMode: 'onBlur',
-		shouldFocusError: true
+		shouldFocusError: true,
 	})
 	let { state } = useLocation()
-	const [messageSnack, setMessageSnack] = React.useState('Rien')
-	const [severity, setSeverity] = React.useState('success')
+	
 
 	// Destructuring Snackbar from custom hook
 	const { handleOpen, renderSnack } = useSlideSnack({
@@ -50,46 +84,64 @@ const AddForm = () => {
 		time: 2000,
 		severity: severity
 	})
+
 	const onSubmit = (data) => {
 		// Séparation de la photo pour le 2ème appel:
 		let photo = data.photo[0]
 		delete data.photo
-		handleOpen()
-		data = { ...data, password: mdp }
-		let token = JSON.parse(localStorage.getItem('REACT_TOKEN_AUTH_AMAIZON'))
-		createClient(token, data)
-			.then((response) => {
-				setMessageSnack(response.message)
-				setSeverity(response.status_code === 201 ? 'success' : 'error')
-				handleOpen()
-				if (response.status_code === 201) {
-				// Push de la photo:
-				let photoBody = new FormData()
-				photoBody.append('_id', !state ? response.user._id : state.id)
-				photoBody.append('photo', photo)
-				pushUserAvatar(token, photoBody).then((response) => {
-
-					// Redirection:
-					navigate('/customers', {
-						state: {
-							snackParams: {
-								message: `Agent ${
-									!state ? 'crée' : 'modifié'
-								} !`,
-								severity: 'success'
-							}
-						}
+		if (userID) {
+			data = { ...data,
+			password: user.password}
+			let photoBody = new FormData()
+			photoBody.append('_id', !state ? user._id : state.id)
+			photoBody.append('photo', file)
+			
+			updateClient(userID, authToken, data).then((resp) => {
+				setMessageSnack(resp.message)
+				setSeverity(resp.status_code === 201 ? 'success' : 'error')
+				if(resp.status_code === 201){
+					pushUserAvatar(authToken, photoBody).then((resp) => {
+						handleOpen()
 					})
+				}
+			})
+		}else{
+			data = { ...data, password: mdp }
+			createClient(authToken, data)
+				.then((response) => {
+					setMessageSnack(response.message)
+					setSeverity(response.status_code === 201 ? 'success' : 'error')
+					handleOpen()
+					if (response.status_code === 201) {
+						// Push de la photo:
+						let photoBody = new FormData()
+						photoBody.append(
+							'_id',
+							!state ? response.user._id : state.id
+						)
+						photoBody.append('photo', file)
+						pushUserAvatar(authToken, photoBody).then((response) => {
+							// Redirection:
+							navigate('/customers', {
+								state: {
+									snackParams: {
+										message: `Agent ${
+											!state ? 'crée' : 'modifié'
+										} !`,
+										severity: 'success'
+									}
+								}
+							})
+						})
+					} else {
+						setMessageSnack('ERREUR')
+					}
 				})
-
-			} else {
-				setMessageSnack('ERREUR')
-			}
-			})
-			.catch((error) => {
-				setMessageSnack('Une erreur est survenue ! ')
-				handleOpen()
-			})
+				.catch((error) => {
+					setMessageSnack('Une erreur est survenue ! ')
+					handleOpen()
+				})
+		}
 
 		
 	}
@@ -238,7 +290,14 @@ const AddForm = () => {
 				</Col>
 
 				{/* Photo Form part */}
-				<PhotoPart state={state} register={register} errors={errors} />
+				<PhotoPart
+					state={state}
+					register={register}
+					errors={errors}
+					update={userID ? true : false}
+					setFile={setFile}
+					file={file}
+				/>
 			</Row>
 			<Row className="mt-5">
 				<Col className="justify-content-center d-flex">
