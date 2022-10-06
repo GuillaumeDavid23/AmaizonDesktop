@@ -126,7 +126,7 @@ const Home = (props) => {
 									className="overflow-auto"
 									style={{ height: '100%' }}
 								>
-									<Col>
+									<Col className='d-flex flex-column align-items-center'>
 										{allAgents.map((agent, index) => (
 											<AgentCard
 												agent={agent}
